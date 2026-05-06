@@ -319,7 +319,7 @@ Use the response to validate user input before quote creation.
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CURRENCY_NOT_FOUND | 400 | Invalid `fromAsset`/`toAsset` pair. |
+| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid `fromAsset`/`toAsset` pair. |
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
@@ -420,7 +420,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | Name | Code | Description |
 | --- | --- | --- |
 | `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated for provided values. |
-| CURRENCY_NOT_FOUND | 400 | Invalid asset or network. |
+| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid asset or network. |
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
@@ -818,7 +818,7 @@ Use the response to validate selected source crypto and target fiat assets befor
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CURRENCY_NOT_FOUND | 400 | Invalid/unknown asset mapping requested by merchant configuration. |
+| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid/unknown asset mapping requested by merchant configuration. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 ### Step 2. Get payment providers

@@ -64,13 +64,13 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 | Name | Type | Description |
 |---|---|---|
 | `fiatAssets` | `array of objects` | List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows. |
-| `fiatAssets[].id` | `string` | Fiat asset identifier. |
-| `fiatAssets[].code` | `string` | Fiat asset code used in exchange requests. |
+| `fiatAssets[].id` | `string` | Internal fiat asset identifier used in API requests and routing logic. |
+| `fiatAssets[].code` | `string` | Currency code that can be displayed to the client in UI. |
 | `cryptoAssets` | `array of objects` | List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows. |
-| `cryptoAssets[].id` | `string` | Crypto asset identifier. |
-| `cryptoAssets[].code` | `string` | Crypto asset code used in exchange requests. |
-| `cryptoAssets[].network` | `string` | Network name used for chain-specific assets. |
-| `cryptoAssets[].protocol` | `string/null` | Token protocol for tokenized assets, if applicable. |
+| `cryptoAssets[].id` | `string` | Internal crypto asset identifier used in API requests; may include network-specific suffixes such as `USDT_TRC`. |
+| `cryptoAssets[].code` | `string` | Asset ticker displayed to the client; can differ from `id` when asset is network-specific. |
+| `cryptoAssets[].network` | `string` | Blockchain network that must be used for sending or receiving this crypto asset. |
+| `cryptoAssets[].protocol` | `string` | Token protocol shown to prevent sending funds through the wrong network. |
 
 ### Errors
 
@@ -143,7 +143,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 
 | Name | Type | Required | Description |
 |---|---|---:|---|
-| `clientId` | `string` | No | Client identifier in WhiteBird system for merchant scope checks. |
+| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | `fiatAsset` | `string` | No | Fiat code filter for provider routes. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
@@ -220,7 +220,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 
 | Name | Type | Required | Description |
 |---|---|---:|---|
-| `clientId` | `string` | Yes | Client identifier used to scope available payment methods. |
+| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 | `fiatAsset` | `string` | No | Fiat code filter for payment methods. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
@@ -232,13 +232,13 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 
 | Name | Type | Description |
 |---|---|---|
-| `[].id` | `string` | Payment method token identifier used in quote request. |
-| `[].number` | `string` | Masked card/account representation for UI display. |
+| `[].id` | `string` | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
+| `[].number` | `string` | Masked payment method number shown to client. |
 | `[].brand` | `string` | Payment brand, if applicable. |
 | `[].providerId` | `string` | Provider identifier. |
-| `[].providerType` | `string` | Provider type value (for current examples: `ASSIST`). |
-| `[].status` | `string` | Payment method status (use enabled methods in flow). |
-| `[].isRestricted` | `boolean` | Restriction flag for method availability. |
+| `[].providerType` | `string` | Provider type, for example `ASSIST` or `CA`. |
+| `[].status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
+| `[].isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
 | `[].isCrypto` | `boolean` | Indicates crypto payment method record. |
 | `[].country` | `string` | Country associated with the payment method. |
 | `[].currency` | `string` | Payment currency code, if returned. |
@@ -268,7 +268,7 @@ Use the response to validate user input before quote creation.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | No | WhiteBird client identifier. |
+| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | fromAsset | object | Yes | Source asset object. |
 | fromAsset.code | string | Yes | Source asset code. |
 | fromAsset.network | string \| null | No | Source asset network for crypto assets. |
@@ -292,7 +292,7 @@ Use the response to validate user input before quote creation.
 | Name | Code | Description |
 | --- | --- | --- |
 | CURRENCY_NOT_FOUND | 400 | Invalid `fromAsset`/`toAsset` pair. |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
@@ -342,7 +342,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | No | WhiteBird client identifier. |
+| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | fromAsset | object | Yes | Source asset object. |
 | fromAsset.code | string | Yes | Source asset code. |
 | fromAsset.network | string \| null | No | Source asset network for crypto assets. |
@@ -378,7 +378,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | --- | --- | --- |
 | INVALID_QUOTE | 400 | Quote cannot be calculated for provided values. |
 | CURRENCY_NOT_FOUND | 400 | Invalid asset or network. |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
@@ -535,7 +535,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 
 | Name | Code | Description |
 | --- | --- | --- |
-| ORDER_NOT_FOUND | 404 | Order not found or not accessible in merchant scope. |
+| `404 ORDER_NOT_FOUND` | BUSINESS | Order not found or not accessible in merchant scope. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -625,7 +625,7 @@ Use the response for quick status restore when user returns to the flow.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | Yes | WhiteBird client identifier. |
+| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 
 ### Request
 
@@ -648,7 +648,7 @@ Use the response for quick status restore when user returns to the flow.
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -688,7 +688,7 @@ Use the response to build transaction history screens and filtering/pagination U
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | Yes | WhiteBird client identifier. |
+| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 
 ### Response
 
@@ -706,7 +706,7 @@ Use the response to build transaction history screens and filtering/pagination U
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Invalid pageable/filter request. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
@@ -773,13 +773,13 @@ Use the response to validate selected source crypto and target fiat assets befor
 | Name | Type | Description |
 | --- | --- | --- |
 | fiatAssets | array of objects | List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows. |
-| fiatAssets[].id | string | Asset identifier. |
-| fiatAssets[].code | string | Fiat currency code. |
+| `fiatAssets[].id` | `string` | Internal fiat asset identifier used in API requests and routing logic. |
+| `fiatAssets[].code` | `string` | Currency code that can be displayed to the client in UI. |
 | cryptoAssets | array of objects | List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows. |
-| cryptoAssets[].id | string | Asset identifier. |
-| cryptoAssets[].code | string | Crypto currency code. |
-| cryptoAssets[].network | string | Blockchain network name. |
-| cryptoAssets[].protocol | string \| null | Token protocol (if tokenized asset). |
+| `cryptoAssets[].id` | `string` | Internal crypto asset identifier used in API requests; may include network-specific suffixes such as `USDT_TRC`. |
+| `cryptoAssets[].code` | `string` | Asset ticker displayed to the client; can differ from `id` when asset is network-specific. |
+| `cryptoAssets[].network` | `string` | Blockchain network that must be used for sending or receiving this crypto asset. |
+| `cryptoAssets[].protocol` | `string` | Token protocol shown to prevent sending funds through the wrong network. |
 
 ### Errors
 
@@ -835,7 +835,7 @@ Use the response to select provider and payout corridor before requesting paymen
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | No | WhiteBird client identifier in merchant context. |
+| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | fiatAsset | string | No | Fiat asset code used for filtering providers. |
 | orderType | string | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | destination | string | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
@@ -854,7 +854,7 @@ Use the response to select provider and payout corridor before requesting paymen
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -964,7 +964,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | Yes | WhiteBird client identifier. |
+| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 | fiatAsset | string | No | Fiat asset filter. |
 | orderType | string | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | destination | string | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
@@ -992,7 +992,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -1049,7 +1049,7 @@ Use the response to validate the amount before quote creation.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | No | WhiteBird client identifier. |
+| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | fromAsset | object | Yes | Source asset object. |
 | fromAsset.code | string | Yes | Source asset code. |
 | fromAsset.network | string \| null | No | Source asset network for crypto assets. |
@@ -1072,8 +1072,8 @@ Use the response to validate the amount before quote creation.
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CURRENCY_NOT_FOUND | 400 | Invalid `fromAsset`/`toAsset` pair. |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid `fromAsset`/`toAsset` pair. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
@@ -1124,7 +1124,7 @@ Use the response `quoteId` to create the sell order.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | No | WhiteBird client identifier. |
+| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | fromAsset | object | Yes | Source asset object. |
 | fromAsset.code | string | Yes | Source asset code. |
 | fromAsset.network | string \| null | No | Source asset network for crypto assets. |
@@ -1159,8 +1159,8 @@ Use the response `quoteId` to create the sell order.
 | Name | Code | Description |
 | --- | --- | --- |
 | INVALID_QUOTE | 400 | Quote cannot be calculated for provided values. |
-| CURRENCY_NOT_FOUND | 400 | Invalid asset or network. |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid asset or network. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
@@ -1313,7 +1313,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
 
 | Name | Code | Description |
 | --- | --- | --- |
-| ORDER_NOT_FOUND | 404 | Order not found or not accessible in merchant scope. |
+| `404 ORDER_NOT_FOUND` | BUSINESS | Order not found or not accessible in merchant scope. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -1403,7 +1403,7 @@ Use the response to restore flow state when user comes back to the session.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | Yes | WhiteBird client identifier. |
+| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 
 ### Request
 
@@ -1417,13 +1417,13 @@ Use the response to restore flow state when user comes back to the session.
 | --- | --- | --- |
 | id | string | Current active order id. |
 | status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| clientId | string | WhiteBird client identifier in the order payload. |
+| `clientId` | `string` | Client identifier used to scope the request to a specific client. |
 
 ### Errors
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -1460,7 +1460,7 @@ Use the response for history UI, status analytics, and reconciliation.
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| clientId | string | Yes | WhiteBird client identifier. |
+| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 
 ### Response
 
@@ -1478,7 +1478,7 @@ Use the response for history UI, status analytics, and reconciliation.
 
 | Name | Code | Description |
 | --- | --- | --- |
-| CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
+| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Invalid pageable/filter request. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |

@@ -20,30 +20,100 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 **Response**
 ```json
 {
-  "fiatAssets": [
-    { "id": "BYN", "code": "BYN" },
-    { "id": "EUR", "code": "EUR" },
-    { "id": "RUB", "code": "RUB" },
-    { "id": "USD", "code": "USD" }
-  ],
-  "cryptoAssets": [
-    { "id": "BNB", "code": "BNB", "network": "BNB" },
-    { "id": "USDC_BNB", "code": "USDC", "network": "BNB", "protocol": "BEP-20" },
-    { "id": "USDT_BNB", "code": "USDT", "network": "BNB", "protocol": "BEP-20" },
-    { "id": "BTC", "code": "BTC", "network": "Bitcoin" },
-    { "id": "AAVE", "code": "AAVE", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "ETH", "code": "ETH", "network": "Ethereum" },
-    { "id": "LINK", "code": "LINK", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "PAXG", "code": "PAXG", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "UNI", "code": "UNI", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "USDC_ERC", "code": "USDC", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "USDT_ERC", "code": "USDT", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "XAUT", "code": "XAUT", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "TON", "code": "TON", "network": "Ton" },
-    { "id": "USDT_TON", "code": "USDT", "network": "Ton", "protocol": "TON" },
-    { "id": "TRX", "code": "TRX", "network": "Tron" },
-    { "id": "USDT_TRC", "code": "USDT", "network": "Tron", "protocol": "TRC-20" }
-  ]
+    "fiatAssets": [
+        {
+            "id": "BYN",
+            "code": "BYN"
+        },
+        {
+            "id": "EUR",
+            "code": "EUR"
+        },
+        {
+            "id": "RUB",
+            "code": "RUB"
+        },
+        {
+            "id": "USD",
+            "code": "USD"
+        }
+    ],
+    "cryptoAssets": [
+        {
+            "id": "BTC",
+            "code": "BTC",
+            "network": "Bitcoin"
+        },
+        {
+            "id": "AAVE",
+            "code": "AAVE",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "ETH",
+            "code": "ETH",
+            "network": "Ethereum"
+        },
+        {
+            "id": "LINK",
+            "code": "LINK",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "PAXG",
+            "code": "PAXG",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "UNI",
+            "code": "UNI",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "USDC_ERC",
+            "code": "USDC",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "USDT_ERC",
+            "code": "USDT",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "XAUT",
+            "code": "XAUT",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "TON",
+            "code": "TON",
+            "network": "Ton"
+        },
+        {
+            "id": "USDT_TON",
+            "code": "USDT",
+            "network": "Ton",
+            "protocol": "TON"
+        },
+        {
+            "id": "TRX",
+            "code": "TRX",
+            "network": "Tron"
+        },
+        {
+            "id": "USDT_TRC",
+            "code": "USDT",
+            "network": "Tron",
+            "protocol": "TRC-20"
+        }
+    ]
 }
 ```
 
@@ -762,30 +832,100 @@ Use the response to validate selected source crypto and target fiat assets befor
 **Response**
 ```json
 {
-  "fiatAssets": [
-    { "id": "BYN", "code": "BYN" },
-    { "id": "EUR", "code": "EUR" },
-    { "id": "RUB", "code": "RUB" },
-    { "id": "USD", "code": "USD" }
-  ],
-  "cryptoAssets": [
-    { "id": "BNB", "code": "BNB", "network": "BNB" },
-    { "id": "USDC_BNB", "code": "USDC", "network": "BNB", "protocol": "BEP-20" },
-    { "id": "USDT_BNB", "code": "USDT", "network": "BNB", "protocol": "BEP-20" },
-    { "id": "BTC", "code": "BTC", "network": "Bitcoin" },
-    { "id": "AAVE", "code": "AAVE", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "ETH", "code": "ETH", "network": "Ethereum" },
-    { "id": "LINK", "code": "LINK", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "PAXG", "code": "PAXG", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "UNI", "code": "UNI", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "USDC_ERC", "code": "USDC", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "USDT_ERC", "code": "USDT", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "XAUT", "code": "XAUT", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "TON", "code": "TON", "network": "Ton" },
-    { "id": "USDT_TON", "code": "USDT", "network": "Ton", "protocol": "TON" },
-    { "id": "TRX", "code": "TRX", "network": "Tron" },
-    { "id": "USDT_TRC", "code": "USDT", "network": "Tron", "protocol": "TRC-20" }
-  ]
+    "fiatAssets": [
+        {
+            "id": "BYN",
+            "code": "BYN"
+        },
+        {
+            "id": "EUR",
+            "code": "EUR"
+        },
+        {
+            "id": "RUB",
+            "code": "RUB"
+        },
+        {
+            "id": "USD",
+            "code": "USD"
+        }
+    ],
+    "cryptoAssets": [
+        {
+            "id": "BTC",
+            "code": "BTC",
+            "network": "Bitcoin"
+        },
+        {
+            "id": "AAVE",
+            "code": "AAVE",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "ETH",
+            "code": "ETH",
+            "network": "Ethereum"
+        },
+        {
+            "id": "LINK",
+            "code": "LINK",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "PAXG",
+            "code": "PAXG",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "UNI",
+            "code": "UNI",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "USDC_ERC",
+            "code": "USDC",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "USDT_ERC",
+            "code": "USDT",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "XAUT",
+            "code": "XAUT",
+            "network": "Ethereum",
+            "protocol": "ERC-20"
+        },
+        {
+            "id": "TON",
+            "code": "TON",
+            "network": "Ton"
+        },
+        {
+            "id": "USDT_TON",
+            "code": "USDT",
+            "network": "Ton",
+            "protocol": "TON"
+        },
+        {
+            "id": "TRX",
+            "code": "TRX",
+            "network": "Tron"
+        },
+        {
+            "id": "USDT_TRC",
+            "code": "USDT",
+            "network": "Tron",
+            "protocol": "TRC-20"
+        }
+    ]
 }
 ```
 

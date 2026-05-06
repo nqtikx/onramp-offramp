@@ -229,7 +229,9 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 | `config.paymentSystems` | `array of objects` | Payment systems list for provider. |
 | `config.paymentSystems[].paymentSystem` | `string` | Payment system name (for example `VISA`, `MIR`, `BelCard`). |
 | `config.paymentSystems[].type` | `string` | Provider channel type. |
+| `config.paymentSystems[].directions` | `array of objects` | Supported operation directions for this payment system. |
 | `config.paymentSystems[].directions[].direction` | `string` | Direction for payment system route (`BUY`/`SELL`). |
+| `config.paymentSystems[].directions[].currencies` | `array of objects` | Supported currencies for selected direction. |
 | `config.paymentSystems[].directions[].currencies[].currency` | `string` | Fiat currency for this route. |
 | `config.paymentSystems[].directions[].currencies[].countries` | `array<string>` | Optional country restrictions for this route. |
 | `commissions` | `array of objects` | Commission settings for provider. |
@@ -380,6 +382,7 @@ Use the response to validate user input before quote creation.
 | Name | Type | Description |
 | --- | --- | --- |
 | asset | object | Asset used for limit values. |
+| asset.id | string | Internal asset identifier. |
 | asset.code | string | Asset code. |
 | asset.network | string \| null | Asset network if applicable. |
 | min | number | Minimum allowed amount. |
@@ -475,7 +478,13 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | --- | --- | --- |
 | quoteId | string | Quote identifier used for order creation. |
 | fromAsset | object | Resolved source asset and amount. |
+| fromAsset.code | string | Source asset code. |
+| fromAsset.network | string \| null | Source asset network if returned. |
+| fromAsset.amount | string | Source amount used in quote calculation. |
 | toAsset | object | Resolved target asset and amount. |
+| toAsset.code | string | Target asset code. |
+| toAsset.network | string \| null | Target asset network if returned. |
+| toAsset.amount | string | Target amount resolved by quote calculation. |
 | rate | number | Final client rate. |
 | plainRate | number | Market/base rate before final quote adjustments. |
 | fee | object | Fee breakdown object. |
@@ -660,18 +669,62 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | id | string | Order identifier. |
 | type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| creationDate | string | Order creation timestamp in server date-time format. |
+| modificationDate | string | Last order update timestamp in server date-time format. |
 | number | number | Internal order number. |
 | exchangeOperation | object | Exchange side details (input/output, rates, fees). |
+| exchangeOperation.inputCurrency | string | Source asset/currency code. |
+| exchangeOperation.inputAsset | number | Source amount. |
+| exchangeOperation.outputCurrency | string | Destination asset/currency code. |
+| exchangeOperation.outputAsset | number | Destination amount. |
+| exchangeOperation.exchangeFeeAssetInFiat | number | Exchange fee represented in fiat asset. |
+| exchangeOperation.bonusOutputAsset | number \| null | Bonus amount, if promo bonus is applied. |
+| exchangeOperation.plainRatio | number | Base rate before final adjustments. |
+| exchangeOperation.ratio | number | Final client-facing rate. |
+| exchangeOperation.currencyPair | object | Currency pair metadata. |
+| exchangeOperation.currencyPair.fromCurrency | string | Pair source currency code. |
+| exchangeOperation.currencyPair.toCurrency | string | Pair destination currency code. |
 | cryptoTransaction | object | Crypto transfer details. |
+| cryptoTransaction.hash | string \| null | Blockchain transaction hash when available. |
+| cryptoTransaction.externalCryptoAddress | string \| null | External wallet address used in operation. |
+| cryptoTransaction.internalCryptoAddress | string \| null | Internal wallet/deposit address used in operation. |
+| cryptoTransaction.fromAddress | string \| null | Source blockchain address. |
+| cryptoTransaction.toAddress | string \| null | Destination blockchain address. |
 | cryptoTransaction.status | string | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
+| cryptoTransaction.currency | string | Crypto asset code used in transaction. |
+| cryptoTransaction.fee | number \| null | Blockchain/network fee amount. |
+| cryptoTransaction.feePaymentEnabledByClient | boolean | Whether client-paid network fee mode is enabled. |
+| cryptoTransaction.type | string | Crypto transfer processing type. |
+| cryptoTransaction.comment | string \| null | Transaction comment, if provided. |
 | fiatTransaction | object | Fiat processing details. |
 | fiatTransaction.status | string | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
+| fiatTransaction.paymentToken | string \| null | Payment method token used by provider leg. |
+| fiatTransaction.post | string \| null | Provider postback payload/reference, if returned. |
+| fiatTransaction.brand | string \| null | Card/payment brand returned by provider. |
+| fiatTransaction.internalToken | string \| null | Internal provider token/reference. |
+| fiatTransaction.orderIdentity | string \| null | Provider-side order reference used for reconciliation. |
+| fiatTransaction.link | string \| null | Provider payment link/reference. |
+| fiatTransaction.providerType | string \| null | Fiat provider type. |
+| fiatTransaction.paymentType | string \| null | Provider payment channel/type. |
+| fiatTransaction.processingBank | string \| null | Processing bank, if returned by provider. |
+| fiatTransaction.resultMessage | string \| null | Provider processing message. |
+| fiatTransaction.currency | string \| null | Fiat currency used by provider transaction. |
+| fiatTransaction.processorTransactionNumber | string \| null | Provider processor transaction identifier. |
+| client | object | Client scope details. |
+| client.clientId | string | Client identifier used for request scoping. |
 | operationType | string | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
 | exchangeType | string | Exchange direction as internal enum value. |
-| fromSource / toSource | string | Source side enum values (`EXT`/`INT`). |
+| orderType | string | Internal order subtype. |
+| submitByResident | boolean \| null | Resident submission flag, if applicable. |
+| merchantName | string | Merchant name associated with order. |
+| merchantBonus | number \| null | Merchant bonus amount, if applicable. |
+| promoCodeDetails | object \| null | Promo code details object, if applied. |
+| fromSource | string | Source side enum value (`EXT`/`INT`). |
+| toSource | string | Destination side enum value (`EXT`/`INT`). |
 | serverDate | string | Server timestamp in server date-time format. |
 | completionDate | string \| null | Completion timestamp in server date-time format. |
 | resultMessage | string \| null | Processing message. |
+| expiresAtDate | string \| null | Order expiration timestamp in server date-time format. |
 
 ### Errors
 
@@ -1014,8 +1067,19 @@ Use the response to select provider and payout corridor before requesting paymen
 | id | string | Provider identifier. |
 | name | string | Provider display name. |
 | addPaymentMethod | boolean | Indicates whether payment method binding/creation is available. |
+| config | object | Provider routing configuration. |
 | config.paymentSystems | array of objects | Supported payment systems/directions/currencies. |
+| config.paymentSystems[].paymentSystem | string | Payment system name (for example `VISA`, `MIR`, `BelCard`). |
+| config.paymentSystems[].type | string | Provider channel type. |
+| config.paymentSystems[].directions | array of objects | Supported operation directions for this payment system. |
+| config.paymentSystems[].directions[].direction | string | Direction for payment system route (`BUY`/`SELL`). |
+| config.paymentSystems[].directions[].currencies | array of objects | Supported currencies for selected direction. |
+| config.paymentSystems[].directions[].currencies[].currency | string | Fiat currency for this route. |
+| config.paymentSystems[].directions[].currencies[].countries | array of strings | Optional country restrictions for this route. |
 | commissions | array of objects | Provider commission configuration. |
+| commissions[].bank | string | Bank group key for commission row. |
+| commissions[].buyCommission | string | Commission value/range for buy direction. |
+| commissions[].sellCommission | string | Commission value/range for sell direction. |
 
 ### Errors
 
@@ -1159,6 +1223,7 @@ Use the response to validate the amount before quote creation.
 | Name | Type | Description |
 | --- | --- | --- |
 | asset | object | Asset used for limit values. |
+| asset.id | string | Internal asset identifier. |
 | asset.code | string | Asset code. |
 | asset.network | string \| null | Asset network if applicable. |
 | min | number | Minimum allowed amount. |
@@ -1255,7 +1320,13 @@ Use the response `quoteId` to create the sell order.
 | --- | --- | --- |
 | quoteId | string | Quote identifier used for order creation. |
 | fromAsset | object | Resolved source asset and amount. |
+| fromAsset.code | string | Source asset code. |
+| fromAsset.network | string \| null | Source asset network if returned. |
+| fromAsset.amount | string | Source amount used in quote calculation. |
 | toAsset | object | Resolved target asset and amount. |
+| toAsset.code | string | Target asset code. |
+| toAsset.network | string \| null | Target asset network if returned. |
+| toAsset.amount | string | Target amount resolved by quote calculation. |
 | rate | number | Final client rate. |
 | plainRate | number | Market/base rate before final quote adjustments. |
 | fee | object | Fee breakdown object. |
@@ -1382,10 +1453,61 @@ Use the response to track payout processing, crypto deposit state, and final sta
 | id | string | Order identifier. |
 | type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| creationDate | string | Order creation timestamp in server date-time format. |
+| modificationDate | string | Last order update timestamp in server date-time format. |
+| number | number | Internal order number. |
 | exchangeOperation | object | Exchange side details (input/output, rates, fees). |
+| exchangeOperation.inputCurrency | string | Source asset/currency code. |
+| exchangeOperation.inputAsset | number | Source amount. |
+| exchangeOperation.outputCurrency | string | Destination asset/currency code. |
+| exchangeOperation.outputAsset | number | Destination amount. |
+| exchangeOperation.exchangeFeeAssetInFiat | number | Exchange fee represented in fiat asset. |
+| exchangeOperation.bonusOutputAsset | number \| null | Bonus amount, if promo bonus is applied. |
+| exchangeOperation.plainRatio | number | Base rate before final adjustments. |
+| exchangeOperation.ratio | number | Final client-facing rate. |
+| exchangeOperation.currencyPair | object | Currency pair metadata. |
+| exchangeOperation.currencyPair.fromCurrency | string | Pair source currency code. |
+| exchangeOperation.currencyPair.toCurrency | string | Pair destination currency code. |
+| cryptoTransaction | object | Crypto transfer details. |
+| cryptoTransaction.hash | string \| null | Blockchain transaction hash when available. |
+| cryptoTransaction.externalCryptoAddress | string \| null | External wallet address used in operation. |
+| cryptoTransaction.internalCryptoAddress | string \| null | Internal wallet/deposit address used in operation. |
+| cryptoTransaction.fromAddress | string \| null | Source blockchain address. |
+| cryptoTransaction.toAddress | string \| null | Destination blockchain address. |
 | cryptoTransaction.status | string | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
+| cryptoTransaction.currency | string | Crypto asset code used in transaction. |
+| cryptoTransaction.fee | number \| null | Blockchain/network fee amount. |
+| cryptoTransaction.feePaymentEnabledByClient | boolean | Whether client-paid network fee mode is enabled. |
+| cryptoTransaction.type | string | Crypto transfer processing type. |
+| cryptoTransaction.comment | string \| null | Transaction comment, if provided. |
+| fiatTransaction | object | Fiat processing details. |
 | fiatTransaction.status | string | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
+| fiatTransaction.paymentToken | string \| null | Payment method token used by provider leg. |
+| fiatTransaction.post | string \| null | Provider postback payload/reference, if returned. |
+| fiatTransaction.brand | string \| null | Card/payment brand returned by provider. |
+| fiatTransaction.internalToken | string \| null | Internal provider token/reference. |
+| fiatTransaction.orderIdentity | string \| null | Provider-side order reference used for reconciliation. |
+| fiatTransaction.link | string \| null | Provider payment link/reference. |
+| fiatTransaction.providerType | string \| null | Fiat provider type. |
+| fiatTransaction.paymentType | string \| null | Provider payment channel/type. |
+| fiatTransaction.processingBank | string \| null | Processing bank, if returned by provider. |
+| fiatTransaction.resultMessage | string \| null | Provider processing message. |
+| fiatTransaction.currency | string \| null | Fiat currency used by provider transaction. |
+| fiatTransaction.processorTransactionNumber | string \| null | Provider processor transaction identifier. |
+| client | object | Client scope details. |
+| client.clientId | string | Client identifier used for request scoping. |
 | operationType | string | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
+| serverDate | string | Server timestamp in server date-time format. |
+| exchangeType | string | Exchange direction as internal enum value. |
+| orderType | string | Internal order subtype. |
+| completionDate | string \| null | Completion timestamp in server date-time format. |
+| resultMessage | string \| null | Processing message. |
+| submitByResident | boolean \| null | Resident submission flag, if applicable. |
+| merchantName | string | Merchant name associated with order. |
+| merchantBonus | number \| null | Merchant bonus amount, if applicable. |
+| promoCodeDetails | object \| null | Promo code details object, if applied. |
+| fromSource | string | Source side enum value (`EXT`/`INT`). |
+| toSource | string | Destination side enum value (`EXT`/`INT`). |
 | expiresAtDate | string \| null | Order expiration timestamp in server date-time format. |
 
 ### Errors

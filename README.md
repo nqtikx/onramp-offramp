@@ -1,1 +1,839 @@
-# OnRamp-OffRamp
+## 2. OnRamp (fiat -> crypto) — Merchant API
+Below is a tested OnRamp flow with real request/response examples.
+> All requests are merchant backend-to-backend using `x-api-key`.
+
+## [Errors and Status Routing (V2 OnRamp / OffRamp)](./Errors%20and%20Status%20Routing.md)
+
+### Headers
+- `x-api-key: {{apiKey}}`
+- `Content-Type: application/json`
+---
+### Step 1. Get available assets
+**POST** `{{URL}/api/v2/exchange/merchant/assets`
+
+**Response**
+```json
+{
+  "fiatAssets": [
+    { "id": "BYN", "code": "BYN" },
+    { "id": "EUR", "code": "EUR" },
+    { "id": "RUB", "code": "RUB" },
+    { "id": "USD", "code": "USD" }
+  ],
+  "cryptoAssets": [
+    { "id": "BNB", "code": "BNB", "network": "BNB" },
+    { "id": "USDC_BNB", "code": "USDC", "network": "BNB", "protocol": "BEP-20" },
+    { "id": "USDT_BNB", "code": "USDT", "network": "BNB", "protocol": "BEP-20" },
+    { "id": "BTC", "code": "BTC", "network": "Bitcoin" },
+    { "id": "AAVE", "code": "AAVE", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "ETH", "code": "ETH", "network": "Ethereum" },
+    { "id": "LINK", "code": "LINK", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "PAXG", "code": "PAXG", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "UNI", "code": "UNI", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "USDC_ERC", "code": "USDC", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "USDT_ERC", "code": "USDT", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "XAUT", "code": "XAUT", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "TON", "code": "TON", "network": "Ton" },
+    { "id": "USDT_TON", "code": "USDT", "network": "Ton", "protocol": "TON" },
+    { "id": "TRX", "code": "TRX", "network": "Tron" },
+    { "id": "USDT_TRC", "code": "USDT", "network": "Tron", "protocol": "TRC-20" }
+  ]
+}
+```
+### Step 2. Get payment providers
+**POST** {{URL}/api/v2/exchange/merchant/payment/provider
+
+**Request**
+```json
+{
+  "clientId": "{{clientId}}",
+  "fiatAsset": "BYN",
+  "orderType": "BUY"
+}
+```
+Response
+```json
+[
+  {
+    "id": "ASSIST",
+    "name": "ASSIST",
+    "addPaymentMethod": true,
+    "config": {
+      "paymentSystems": [
+        {
+          "paymentSystem": "VISA",
+          "type": "PSP",
+          "directions": [
+            {
+              "direction": "BUY",
+              "currencies": [
+                {
+                  "currency": "BYN",
+                  "countries": ["Belarus", "Azerbaijan", "Armenia", "Kazakhstan", "Kyrgyzstan", "Moldova", "Tajikistan", "Turkmenistan", "Uzbekistan", "Georgia"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "commissions": [
+      {
+        "bank": "OTHER",
+        "buyCommission": "3,5-4,9",
+        "sellCommission": "3,0-4,9"
+      }
+    ]
+  },
+  {
+    "id": "MTS",
+    "name": "MTS",
+    "addPaymentMethod": true,
+    "config": {
+      "paymentSystems": [
+        {
+          "paymentSystem": "MIR",
+          "type": "PSP",
+          "directions": [
+            {
+              "direction": "SELL",
+              "currencies": [
+                { "currency": "RUB", "countries": ["Russia"] }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "commissions": [
+      { "buyCommission": "2,5", "sellCommission": "2,0" }
+    ]
+  },
+  {
+    "id": "CA",
+    "name": "CA",
+    "addPaymentMethod": false,
+    "config": {
+      "paymentSystems": [
+        {
+          "paymentSystem": "CA",
+          "type": "CA",
+          "directions": [
+            {
+              "direction": "BUY",
+              "currencies": [
+                { "currency": "RUB" },
+                { "currency": "BYN" },
+                { "currency": "USD" },
+                { "currency": "EUR" },
+                { "currency": "AED" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "commissions": [
+      { "buyCommission": "2,5", "sellCommission": "1,5" }
+    ]
+  }
+]
+```
+### Step 3. Get payment methods
+**POST** {{URL}/api/v2/exchange/merchant/payment/method
+
+> Take paymentToken (id) for the selected provider with status=ENABLED and isRestricted=false.
+
+**Request**
+```json
+{
+  "clientId": "{{clientId}}",
+  "fiatAsset": "BYN",
+  "orderType": "BUY"
+}
+```
+**Response**
+```json
+[
+  {
+    "id": "8ff59a79-461a-4c6f-8f77-832cfa836c86",
+    "number": "**** **** **** 1111",
+    "brand": "VISA",
+    "providerId": "ASSIST",
+    "providerType": "ASSIST",
+    "status": "ENABLED",
+    "isRestricted": false,
+    "isCrypto": false,
+    "country": "Russia"
+  },
+  {
+    "providerId": "BRAZINO",
+    "providerType": "BRAZINO",
+    "status": "ENABLED",
+    "name": "BRAZINO"
+  },
+  {
+    "providerId": "CARUSELL",
+    "providerType": "CARUSELL",
+    "status": "CURRENCY_DISABLED",
+    "name": "CARUSELL",
+    "supportedCurrencies": ["RUB"]
+  }
+]
+```
+### Step 4. Calculate limits (v2)
+**POST** {{URL}/api/v2/exchange/merchant/limit
+
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "toAsset": {
+        "code": "TRX",
+        "network": "Tron"
+    },
+    "fromAsset": {
+        "code": "RUB",
+        "network": null
+        
+    },
+    "paymentMethod": "CA"
+}
+```
+**Response**
+```json
+{
+    "asset": {
+        "id": "RUB",
+        "code": "RUB"
+    },
+    "min": 263.16,
+    "max": 1182894.74
+}
+```
+### Step 5. Create quote (v2)
+**POST** {{URL}/api/v2/exchange/merchant/quote
+
+> From response take quoteId.
+> [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
+
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "fromAsset": {
+        "code": "RUB",
+        "network": null,
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "TRX",
+        "network": "Tron"
+    },
+    "paymentMethod": "CA",
+    "paymentMethodToken": "{{payment_token}}"
+}
+```
+**Response**
+```json
+{
+    "quoteId": "8bed6c08-90bc-4521-81d7-68bb0176ebae",
+    "fromAsset": {
+        "code": "RUB",
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "TRX",
+        "network": "Tron",
+        "amount": "5.127711"
+    },
+    "rate": 29.2528,
+    "plainRate": 27.13,
+    "fee": {
+        "total": 3.75,
+        "service": null,
+        "network": 0.263,
+        "asset": "RUB"
+    },
+    "expirationDate": "2026-04-27T11:11:11+0000"
+}
+```
+### Step 6. Buy Crypto (v2)
+**GET** {{URL}/api/v2/exchange/merchant/buy?destinationCryptoAddress={{walletAddress}}&quoteId={{quoteId}}
+
+> From response take orderId.
+
+**Params**
+
+| Key | Value |
+|-----|-------|
+| destinationCryptoAddress | {{walletAddress}} |
+| quoteId | {{quoteId}} |
+
+**Response**
+```json
+{
+    "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
+    "type": "BUY",
+    "status": "PROCESSING",
+    "creationDate": "2026-04-27T11:13:26.237357",
+    "modificationDate": "2026-04-27T11:13:27.727824",
+    "fiatPaymentLink": "c76ca74d-7aea-4688-942e-8385c413826f"
+}
+```
+### Step 7. Get order by ID
+**GET** {{URL}/api/v2/exchange/merchant/order?orderId={{Order_ID}}
+
+**Response**
+```json
+{
+    "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
+    "type": "BUY",
+    "status": "PROCESSING",
+    "creationDate": "2026-04-27T11:13:26.237357",
+    "modificationDate": "2026-04-27T11:13:27.727824",
+    "number": 831000003994,
+    "exchangeOperation": {
+        "inputCurrency": "RUB",
+        "inputAsset": 270,
+        "outputCurrency": "TRX",
+        "outputAsset": 9.440281,
+        "exchangeFeeAssetInFiat": 6.75,
+        "bonusOutputAsset": null,
+        "plainRatio": 27.13,
+        "ratio": 28.6008,
+        "currencyPair": {
+            "fromCurrency": "RUB",
+            "toCurrency": "TRX"
+        }
+    },
+    "cryptoTransaction": {
+        "hash": null,
+        "externalCryptoAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+        "internalCryptoAddress": null,
+        "fromAddress": null,
+        "toAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+        "status": "NEW",
+        "currency": "TRX",
+        "fee": null,
+        "feePaymentEnabledByClient": false,
+        "type": "AUTO",
+        "comment": null
+    },
+    "fiatTransaction": {
+        "status": "PROCESSING",
+        "paymentToken": "59676b7a-da24-4916-8236-1efef6796009",
+        "post": null,
+        "brand": null,
+        "internalToken": null,
+        "orderIdentity": "c76ca74d-7aea-4688-942e-8385c413826f",
+        "link": "c76ca74d-7aea-4688-942e-8385c413826f",
+        "providerType": "CA",
+        "paymentType": null,
+        "processingBank": null,
+        "resultMessage": null,
+        "currency": "RUB",
+        "processorTransactionNumber": null
+    },
+    "client": {
+        "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
+    },
+    "serverDate": "2026-04-27T11:16:09+0000",
+    "exchangeType": "SELL",
+    "operationType": "FIAT_TO_CRYPTO",
+    "orderType": "DEFAULT",
+    "completionDate": null,
+    "resultMessage": null,
+    "submitByResident": null,
+    "merchantName": "wb",
+    "merchantBonus": null,
+    "promoCodeDetails": null,
+    "fromSource": "EXT",
+    "toSource": "EXT",
+    "expiresAtDate": null
+}
+```
+### Step 8. Get current order (optional)
+**GET** {{URL}/api/v2/exchange/merchant/order/current?clientId={{clientId}}
+
+**Response**
+```json
+{
+  "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
+  "type": "BUY",
+  "status": "PROCESSING",
+  "creationDate": "2026-04-27T11:13:26.237357",
+  "modificationDate": "2026-04-27T11:13:27.727824",
+  "number": 831000003994
+}
+```
+### Step 9. Get order history (optional)
+**POST** {{URL}/api/v2/exchange/merchant/order/history
+
+**Request**
+```json
+{
+  "clientId": "{{clientId}}"
+}
+```
+**Response**
+```json
+{
+  "content": [
+    {
+      "id": "37a48ec9-150f-4c3f-88f8-7e8d48a2fd3b",
+      "status": "PROCESSING"
+    },
+    {
+      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
+      "status": "FAILED"
+    }
+  ],
+  "totalElements": 33,
+  "totalPages": 4,
+  "number": 0,
+  "size": 10
+}
+```
+
+## 3. OffRamp (crypto -> fiat) — Merchant API
+
+Below is a tested OffRamp flow with real request/response examples.
+
+> All requests are merchant backend-to-backend using `x-api-key`.
+
+### Headers
+- `x-api-key: {{apiKey}}`
+- `Content-Type: application/json`
+---
+### Step 1. Get available assets
+**POST** `{{URL}/api/v2/exchange/merchant/assets`
+
+**Response**
+```json
+{
+  "fiatAssets": [
+    { "id": "BYN", "code": "BYN" },
+    { "id": "EUR", "code": "EUR" },
+    { "id": "RUB", "code": "RUB" },
+    { "id": "USD", "code": "USD" }
+  ],
+  "cryptoAssets": [
+    { "id": "BNB", "code": "BNB", "network": "BNB" },
+    { "id": "USDC_BNB", "code": "USDC", "network": "BNB", "protocol": "BEP-20" },
+    { "id": "USDT_BNB", "code": "USDT", "network": "BNB", "protocol": "BEP-20" },
+    { "id": "BTC", "code": "BTC", "network": "Bitcoin" },
+    { "id": "AAVE", "code": "AAVE", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "ETH", "code": "ETH", "network": "Ethereum" },
+    { "id": "LINK", "code": "LINK", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "PAXG", "code": "PAXG", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "UNI", "code": "UNI", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "USDC_ERC", "code": "USDC", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "USDT_ERC", "code": "USDT", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "XAUT", "code": "XAUT", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "TON", "code": "TON", "network": "Ton" },
+    { "id": "USDT_TON", "code": "USDT", "network": "Ton", "protocol": "TON" },
+    { "id": "TRX", "code": "TRX", "network": "Tron" },
+    { "id": "USDT_TRC", "code": "USDT", "network": "Tron", "protocol": "TRC-20" }
+  ]
+}
+```
+### Step 2. Get payment providers
+**POST** {{URL}/api/v2/exchange/merchant/payment/provider
+
+**Request**
+```json
+{
+  "clientId": "{{clientId}}",
+  "fiatAsset": "RUB",
+  "orderType": "SELL"
+}
+```
+Response
+```json
+[
+  {
+    "id": "ASSIST",
+    "name": "ASSIST",
+    "addPaymentMethod": true,
+    "config": {
+      "paymentSystems": [
+        {
+          "paymentSystem": "VISA",
+          "type": "PSP",
+          "directions": [
+            {
+              "direction": "SELL",
+              "currencies": [
+                { "currency": "BYN" },
+                { "currency": "USD" },
+                { "currency": "EUR" },
+                { "currency": "RUB" }
+              ]
+            },
+            {
+              "direction": "BUY",
+              "currencies": [
+                { "currency": "BYN" },
+                { "currency": "USD" },
+                { "currency": "EUR" },
+                { "currency": "RUB" }
+              ]
+            }
+          ]
+        },
+        {
+          "paymentSystem": "BelCard",
+          "type": "PSP",
+          "directions": [
+            {
+              "direction": "SELL",
+              "currencies": [{ "currency": "BYN", "countries": ["Belarus"] }]
+            },
+            {
+              "direction": "BUY",
+              "currencies": [{ "currency": "BYN", "countries": ["Belarus"] }]
+            }
+          ]
+        }
+      ]
+    },
+    "commissions": [
+      { "bank": "OTHER", "buyCommission": "3,5-4,9", "sellCommission": "3,0-4,9" },
+      { "bank": "BELARUSBANK", "buyCommission": "3,0", "sellCommission": "2,5" }
+    ]
+  },
+  {
+    "id": "MTS",
+    "name": "MTS",
+    "addPaymentMethod": true,
+    "config": {
+      "paymentSystems": [
+        {
+          "paymentSystem": "MIR",
+          "type": "PSP",
+          "directions": [
+            {
+              "direction": "SELL",
+              "currencies": [{ "currency": "RUB", "countries": ["Russia"] }]
+            }
+          ]
+        }
+      ]
+    },
+    "commissions": [
+      { "buyCommission": "2,5", "sellCommission": "2,0" },
+      { "bank": "RF_CARDS", "destination": "EXCHANGE", "sellCommission": "2,0" }
+    ]
+  }
+]
+```
+### Step 3. Get payment methods
+**POST** {{URL}/api/v2/exchange/merchant/payment/method
+
+> Take paymentToken (id) for the selected provider with status=ENABLED and isRestricted=false.
+
+**Request**
+```json
+{
+  "clientId": "{{clientId}}",
+  "fiatAsset": "RUB",
+  "orderType": "SELL"
+}
+```
+**Response**
+```json
+[
+    {
+        "id": "8ff59a79-461a-4c6f-8f77-832cfa836c86",
+        "number": "**** **** **** 1111",
+        "brand": "VISA",
+        "providerId": "ASSIST",
+        "providerType": "ASSIST",
+        "status": "ENABLED",
+        "isRestricted": false,
+        "isCrypto": false,
+        "country": "Russia"
+    },
+    {
+        "providerId": "VTB",
+        "providerType": "VTB",
+        "status": "ENABLED",
+        "name": "VTB"
+    },
+    {
+        "providerId": "BRAZINO",
+        "providerType": "BRAZINO",
+        "status": "ENABLED",
+        "name": "BRAZINO"
+    }
+]
+```
+### Step 4. Calculate limits (v2)
+**POST** {{URL}/api/v2/exchange/merchant/limit
+
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "toAsset": {
+        "code": "RUB",
+        "network": null
+    },
+    "fromAsset": {
+        "code": "TRX",
+        "network": "Tron"
+        
+    },
+    "paymentMethod": "CA"
+}
+```
+**Response**
+```json
+{
+    "asset": {
+        "id": "TRX",
+        "code": "TRX",
+        "network": "Tron"
+    },
+    "min": 9.985536,
+    "max": 44884.20673
+}
+```
+### Step 5. Create quote (v2)
+**POST** {{URL}/api/v2/exchange/merchant/quote
+
+> From response take quoteId.
+> [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
+
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "fromAsset": {
+        "code": "TRX",
+        "network": "Tron",
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "RUB",
+        "network": null
+    },
+
+    "paymentMethod": "CA",
+    "paymentMethodToken": "{{payment_token}}"
+}
+```
+**Response**
+```json
+{
+    "quoteId": "f8274e38-7f36-4d39-97ad-fabf10274b92",
+    "fromAsset": {
+        "code": "TRX",
+        "network": "Tron",
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "RUB",
+        "amount": "3955.59"
+    },
+    "rate": 26.3706,
+    "plainRate": 26.7722,
+    "fee": {
+        "total": 60.24,
+        "service": null,
+        "network": 0,
+        "asset": "RUB"
+    },
+    "expirationDate": "2026-04-27T12:15:27+0000"
+}
+```
+### Step 6. Sell crypto (v2)
+**GET** {{URL}/api/v2/exchange/merchant/sell?failureDepositAddress={{walletAddress}}&quoteId={{quoteId}}&sourceAddress={{walletAddress1}}
+
+> From response take orderId (id).
+
+| Key | Value |
+|-----|-------|
+| (Optional) failureDepositAddress - where the crypto will return in case of an error | {{walletAddress}} |
+| (Optional) sourceAddress - the address from which the user will send the cryptocurrency | {{walletAddress1}} |
+| quoteId | {{quoteId}} |
+
+**Response**
+```json
+{
+    "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
+    "type": "SELL",
+    "status": "PROCESSING",
+    "creationDate": "2026-04-27T11:57:53.370917",
+    "modificationDate": "2026-04-27T11:57:53.756792",
+    "cryptoTransaction": null,
+    "expiresAtDate": "2026-04-27T12:27:52.605110",
+    "depositCryptoAddress": "TSaysSYUgBoKbtBgnXdxvNQPjkeXC1s9eM"
+}
+```
+### Step 7. Get order by ID
+**GET** {{URL}/api/v2/exchange/merchant/order?orderId={{Order_ID}}
+
+**Response**
+```json
+{
+    "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
+    "type": "SELL",
+    "status": "PROCESSING",
+    "creationDate": "2026-04-27T11:57:53.370917",
+    "modificationDate": "2026-04-27T11:57:53.756792",
+    "number": 551000004001,
+    "exchangeOperation": {
+        "inputCurrency": "TRX",
+        "inputAsset": 150,
+        "outputCurrency": "RUB",
+        "outputAsset": 3956.8,
+        "exchangeFeeAssetInFiat": 60.26,
+        "bonusOutputAsset": null,
+        "plainRatio": 26.7804,
+        "ratio": 26.3787,
+        "currencyPair": {
+            "fromCurrency": "TRX",
+            "toCurrency": "RUB"
+        }
+    },
+    "cryptoTransaction": {
+        "hash": null,
+        "externalCryptoAddress": null,
+        "internalCryptoAddress": "TSaysSYUgBoKbtBgnXdxvNQPjkeXC1s9eM",
+        "fromAddress": null,
+        "toAddress": "TSaysSYUgBoKbtBgnXdxvNQPjkeXC1s9eM",
+        "status": "NEW",
+        "currency": "TRX",
+        "fee": null,
+        "feePaymentEnabledByClient": false,
+        "type": "AUTO",
+        "comment": null
+    },
+    "fiatTransaction": {
+        "status": "NEW",
+        "paymentToken": "b6716f86-8d8c-45ff-8db0-2ae910d6f837",
+        "post": null,
+        "brand": null,
+        "internalToken": null,
+        "orderIdentity": "e7663e7f-f189-491a-877d-ec5fc0f6af4b",
+        "link": null,
+        "providerType": "CA",
+        "paymentType": null,
+        "processingBank": null,
+        "resultMessage": null,
+        "currency": "RUB",
+        "processorTransactionNumber": null
+    },
+    "client": {
+        "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
+    },
+    "serverDate": "2026-04-27T11:58:38+0000",
+    "exchangeType": "BUY",
+    "operationType": "CRYPTO_TO_FIAT",
+    "orderType": "DEFAULT",
+    "completionDate": null,
+    "resultMessage": null,
+    "submitByResident": null,
+    "merchantName": "wb",
+    "merchantBonus": null,
+    "promoCodeDetails": null,
+    "fromSource": "EXT",
+    "toSource": "EXT",
+    "expiresAtDate": "2026-04-27T12:27:52.605110"
+}
+```
+### Step 8. Get current order (optional)
+**GET** {{URL}/api/v2/exchange/merchant/order/current?clientId={{clientId}}
+
+**Response**
+```json
+{
+  "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
+  "status": "PROCESSING",
+  "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
+}
+```
+### Step 9. Get order history (optional)
+**POST** {{URL}/api/v2/exchange/merchant/order/history
+
+**Request**
+```json
+{
+  "clientId": "{{clientId}}"
+}
+```
+**Response**
+```json
+{
+  "content": [
+    {
+      "id": "8bdafd97-6e16-4146-89a5-750e09353584",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
+      "status": "FAILED"
+    }
+  ],
+  "totalElements": 33,
+  "totalPages": 4,
+  "number": 0,
+  "size": 10
+}
+```
+
+
+## Quote fields
+
+If you see response:
+
+```json
+{
+  "rate": 29.2528,
+  "plainRate": 27.13,
+  "fee": {
+    "total": 3.75,
+    "service": null,
+    "network": 0.263,
+    "asset": "RUB"
+  }
+}
+```
+
+### How these values are calculated:
+
+- `plainRate` = base market rate (bid/ask) before final quote adjustments.
+- `rate` (final client rate):
+  - for SELL: `rate = toAmount / fromGrossAmount`
+  - for BUY: `rate = fromGrossAmount / toAmount`
+- percentage fee for any step: `fee = amount * percent / 100`
+- reverse fee (when target amount is fixed): `fee = amount / (1 - percent) - amount`
+- total fee by side:
+  - `fromFeeAmount = fromPaymentFeeAmount + fromExchangeFeeAmount`
+  - `toFeeAmount = toPaymentFeeAmount + toExchangeFeeAmount`
+  - if input is FIAT: `fee.total = fromFeeAmount`
+  - if input is CRYPTO: `fee.total = toFeeAmount`
+- network fee in response:
+  - if input is CRYPTO: `fee.network = fromPaymentFeeAmount`
+  - if input is FIAT: `fee.network = toPaymentFeeAmount`
+- `fee.service = null` (service part is not returned as separate value in this response format).
+
+### Variables:
+
+- `fromGrossAmount`: how much the client gives before deductions.
+- `fromAmount`: amount left from input side after input-side fees.
+- `toAmount`: final amount the client receives after output-side fees.
+- `amount`: current amount used in fee formula on current calculation step.
+- `percent`: fee percent configured for this fee rule (for example `2.5` means `2.5%`).
+- `fromPaymentFeeAmount` / `toPaymentFeeAmount`: payment/transfer part of fee (card processor or blockchain/network).
+- `fromExchangeFeeAmount` / `toExchangeFeeAmount`: exchange service part of fee.

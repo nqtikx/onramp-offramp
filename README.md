@@ -1,15 +1,18 @@
-## 2. OnRamp (fiat -> crypto)
-Below is a tested OnRamp flow with real request/response examples.
+# ONRAMP | OFFRAMP
+
+OnRamp and OffRamp flows are used for external fiat-to-crypto and crypto-to-fiat operations.
+OnRamp is used when the client pays fiat through a provider and receives crypto to an external wallet.
+OffRamp is used when the client sends crypto and receives fiat through a provider.
 
 > BASE_URL https://api.dev.wbdevel.net
 
 ### Headers
-- `x-api-key: {{apiKey}}`
+- `x-api-key: {{x-api-key}}`
 
 ### Step 1. Get available assets
 Use this endpoint to retrieve available fiat and crypto assets for the merchant context. Use the response to build asset selectors and validate `code/network` pairs in downstream requests.
 
-**POST** `{{URL}/api/v2/exchange/merchant/assets`
+**POST** `/api/v2/exchange/merchant/assets`
 
 ### Headers
 - `x-api-key: {{x-api-key}}`
@@ -54,16 +57,16 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 
 | Name | Type | Required | Description |
 |---|---|---:|---|
-| `destination` | `string` | No | Merchant destination filter. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
 
 ### Response
 
 | Name | Type | Description |
 |---|---|---|
-| `fiatAssets` | `array<object>` | Available fiat assets list for merchant flow. |
+| `fiatAssets` | `array of objects` | List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows. |
 | `fiatAssets[].id` | `string` | Fiat asset identifier. |
 | `fiatAssets[].code` | `string` | Fiat asset code used in exchange requests. |
-| `cryptoAssets` | `array<object>` | Available crypto assets list for merchant flow. |
+| `cryptoAssets` | `array of objects` | List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows. |
 | `cryptoAssets[].id` | `string` | Crypto asset identifier. |
 | `cryptoAssets[].code` | `string` | Crypto asset code used in exchange requests. |
 | `cryptoAssets[].network` | `string` | Network name used for chain-specific assets. |
@@ -79,7 +82,7 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 ### Step 2. Get payment providers
 Use this endpoint to retrieve available fiat payment providers for the selected client and direction. Use the response to choose a provider route and validate supported currency/direction combinations.
 
-**POST** `{{URL}/api/v2/exchange/merchant/payment/provider`
+**POST** `/api/v2/exchange/merchant/payment/provider`
 
 ### Headers
 - `x-api-key: {{x-api-key}}`
@@ -92,7 +95,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
   "orderType": "BUY"
 }
 ```
-Response
+**Response**
 ```json
 [
   {
@@ -143,7 +146,7 @@ Response
 | `clientId` | `string` | No | Client identifier in WhiteBird system for merchant scope checks. |
 | `fiatAsset` | `string` | No | Fiat code filter for provider routes. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Merchant destination filter. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
 
 ### Response
 
@@ -153,13 +156,13 @@ Response
 | `[].name` | `string` | Provider display name. |
 | `[].addPaymentMethod` | `boolean` | Defines whether provider supports adding payment methods. |
 | `[].config` | `object` | Provider routing configuration. |
-| `[].config.paymentSystems` | `array<object>` | Payment systems list for provider. |
+| `[].config.paymentSystems` | `array of objects` | Payment systems list for provider. |
 | `[].config.paymentSystems[].paymentSystem` | `string` | Payment system name (for example `VISA`, `MIR`, `BelCard`). |
 | `[].config.paymentSystems[].type` | `string` | Provider channel type. |
 | `[].config.paymentSystems[].directions[].direction` | `string` | Direction for payment system route (`BUY`/`SELL`). |
 | `[].config.paymentSystems[].directions[].currencies[].currency` | `string` | Fiat currency for this route. |
 | `[].config.paymentSystems[].directions[].currencies[].countries` | `array<string>` | Optional country restrictions for this route. |
-| `[].commissions` | `array<object>` | Commission settings for provider. |
+| `[].commissions` | `array of objects` | Commission settings for provider. |
 | `[].commissions[].bank` | `string` | Bank group key for commission row. |
 | `[].commissions[].buyCommission` | `string` | Commission value/range for buy direction. |
 | `[].commissions[].sellCommission` | `string` | Commission value/range for sell direction. |
@@ -174,9 +177,9 @@ Response
 ### Step 3. Get payment methods
 Use this endpoint to retrieve payment methods/tokens available for the selected provider context. Use the response to select `paymentMethodToken` with valid status and pass it to quote creation.
 
-**POST** `{{URL}/api/v2/exchange/merchant/payment/method`
+**POST** `/api/v2/exchange/merchant/payment/method`
 
-> Take paymentToken (id) for the selected provider with `status=ENABLED` and `isRestricted=false`.
+> Take payment method `id` and pass it as `paymentMethodToken` in quote creation. Use records with `status=ENABLED` and `isRestricted=false`.
 
 ### Headers
 - `x-api-key: {{x-api-key}}`
@@ -220,7 +223,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `clientId` | `string` | Yes | Client identifier used to scope available payment methods. |
 | `fiatAsset` | `string` | No | Fiat code filter for payment methods. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Merchant destination filter. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
 | `providers` | `array<string>` | No | Provider filter list (for current examples: `ASSIST`). |
 | `isCrypto` | `boolean` | No | Filters crypto payment methods if supported by provider. |
 | `countryGroup` | `array<string>` | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
@@ -249,7 +252,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
 ### Step 4. Calculate limits (v2)
-**POST** {{URL}/api/v2/exchange/merchant/limit
+**POST** `/api/v2/exchange/merchant/limit`
 
 Use this endpoint to calculate min/max available amount for the selected pair and payment method.
 Use the response to validate user input before quote creation.
@@ -272,7 +275,7 @@ Use the response to validate user input before quote creation.
 | toAsset | object | Yes | Target asset object. |
 | toAsset.code | string | Yes | Target asset code. |
 | toAsset.network | string \| null | No | Target asset network for crypto assets. |
-| paymentMethod | enum string | Yes | Payment provider type used in this flow. Allowed values: `CA`, `ASSIST`. |
+| paymentMethod | string | Yes | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
 
 ### Response
 
@@ -290,7 +293,7 @@ Use the response to validate user input before quote creation.
 | --- | --- | --- |
 | CURRENCY_NOT_FOUND | 400 | Invalid `fromAsset`/`toAsset` pair. |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| BAD_REQUEST | 400 | Validation error in request fields. |
+| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
 ```json
@@ -320,7 +323,7 @@ Use the response to validate user input before quote creation.
 }
 ```
 ### Step 5. Create quote (v2)
-**POST** {{URL}/api/v2/exchange/merchant/quote
+**POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
@@ -348,7 +351,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | toAsset.code | string | Yes | Target asset code. |
 | toAsset.network | string \| null | No | Target asset network for crypto assets. |
 | toAsset.amount | number | No | Target amount when quote is output-side based. |
-| paymentMethod | enum string | No | Payment provider type used in this flow. Allowed values: `CA`, `ASSIST`. |
+| paymentMethod | string | No | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
 | paymentMethodToken | string | No | Selected payment method token/id. |
 | destinationCryptoAddress | string | No | Destination wallet for buy flow. |
 | comment | string | No | Optional merchant comment. |
@@ -367,7 +370,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | fee.service | number \| null | Service fee component. |
 | fee.network | number \| null | Network/payment component. |
 | fee.asset | string | Fee asset code. |
-| expirationDate | datetime string | Quote expiration timestamp. |
+| expirationDate | string | Quote expiration timestamp in server date-time format. |
 
 ### Errors
 
@@ -376,7 +379,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | INVALID_QUOTE | 400 | Quote cannot be calculated for provided values. |
 | CURRENCY_NOT_FOUND | 400 | Invalid asset or network. |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| BAD_REQUEST | 400 | Validation error in request fields. |
+| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
 ```json
@@ -420,7 +423,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 }
 ```
 ### Step 6. Buy Crypto (v2)
-**GET** {{URL}/api/v2/exchange/merchant/buy?destinationCryptoAddress={{walletAddress}}&quoteId={{quoteId}}
+**GET** `/api/v2/exchange/merchant/buy?destinationCryptoAddress={{walletAddress}}&quoteId={{quoteId}}`
 
 > From response take orderId.
 
@@ -455,21 +458,22 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 | Name | Type | Description |
 | --- | --- | --- |
 | id | string | Order identifier. |
-| type | enum string | Order type. Enum: `BUY`, `SELL`, `SWAP`. |
-| status | enum string | Order status: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| creationDate | datetime string | Creation timestamp. |
-| modificationDate | datetime string | Last update timestamp. |
+| type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| creationDate | string | Order creation timestamp in server date-time format. |
+| modificationDate | string | Last order update timestamp in server date-time format. |
 | fiatPaymentLink | string | Payment link/token for fiat step processing. |
-| expiresAtDate | datetime string \| null | Order expiration timestamp. |
+| expiresAtDate | string \| null | Order expiration timestamp in server date-time format. |
 
 ### Errors
 
 | Name | Code | Description |
 | --- | --- | --- |
-| QUOTE_NOT_FOUND | 400 | Quote does not exist or already expired. |
-| INVALID_QUOTE | 400 | Quote is invalid for order creation. |
-| AML_FRAUD_VALIDATION_ERROR | 400 | AML/fraud checks blocked order creation. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `400 QUOTE_NOT_FOUND` | BUSINESS | Quote does not exist or already expired. |
+| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated or cannot be used for order creation. |
+| `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -483,7 +487,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 }
 ```
 ### Step 7. Get order by ID
-**GET** {{URL}/api/v2/exchange/merchant/order?orderId={{Order_ID}}
+**GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
 Use this endpoint to fetch full order details by `orderId`.
 Use the response to track all order phases (exchange, fiat transaction, crypto transaction) and status transitions.
@@ -512,19 +516,19 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | Name | Type | Description |
 | --- | --- | --- |
 | id | string | Order identifier. |
-| type | enum string | Enum: `BUY`, `SELL`, `SWAP`. |
-| status | enum string | Enum: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
 | number | number | Internal order number. |
 | exchangeOperation | object | Exchange side details (input/output, rates, fees). |
 | cryptoTransaction | object | Crypto transfer details. |
-| cryptoTransaction.status | enum string | `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
+| cryptoTransaction.status | string | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
 | fiatTransaction | object | Fiat processing details. |
-| fiatTransaction.status | enum string | `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
-| operationType | enum string | `CRYPTO_TO_FIAT`, `FIAT_TO_CRYPTO`, `CRYPTOWALLET_TO_FIAT`, `FIAT_TO_CRYPTOWALLET`, `CRYPTOWALLET_DEPOSIT`, `CRYPTOWALLET_WITHDRAWAL`. |
+| fiatTransaction.status | string | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
+| operationType | string | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
 | exchangeType | string | Exchange direction as internal enum value. |
 | fromSource / toSource | string | Source side enum values (`EXT`/`INT`). |
-| serverDate | datetime string | Server time. |
-| completionDate | datetime string \| null | Completion time. |
+| serverDate | string | Server timestamp in server date-time format. |
+| completionDate | string \| null | Completion timestamp in server date-time format. |
 | resultMessage | string \| null | Processing message. |
 
 ### Errors
@@ -532,7 +536,8 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | Name | Code | Description |
 | --- | --- | --- |
 | ORDER_NOT_FOUND | 404 | Order not found or not accessible in merchant scope. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -604,7 +609,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 }
 ```
 ### Step 8. Get current order (optional)
-**GET** {{URL}/api/v2/exchange/merchant/order/current?clientId={{clientId}}
+**GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
 Use this endpoint to fetch the current active order for a specific client.
 Use the response for quick status restore when user returns to the flow.
@@ -633,10 +638,10 @@ Use the response for quick status restore when user returns to the flow.
 | Name | Type | Description |
 | --- | --- | --- |
 | id | string | Current active order id. |
-| type | enum string | `BUY`, `SELL`, `SWAP`. |
-| status | enum string | `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| creationDate | datetime string | Creation timestamp. |
-| modificationDate | datetime string | Last update timestamp. |
+| type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| creationDate | string | Order creation timestamp in server date-time format. |
+| modificationDate | string | Last order update timestamp in server date-time format. |
 | number | number | Internal order number. |
 
 ### Errors
@@ -644,7 +649,8 @@ Use the response for quick status restore when user returns to the flow.
 | Name | Code | Description |
 | --- | --- | --- |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -658,7 +664,7 @@ Use the response for quick status restore when user returns to the flow.
 }
 ```
 ### Step 9. Get order history (optional)
-**POST** {{URL}/api/v2/exchange/merchant/order/history
+**POST** `/api/v2/exchange/merchant/order/history`
 
 Use this endpoint to fetch paged order history for a client.
 Use the response to build transaction history screens and filtering/pagination UI.
@@ -688,7 +694,7 @@ Use the response to build transaction history screens and filtering/pagination U
 
 | Name | Type | Description |
 | --- | --- | --- |
-| content | array<object> | Orders page content. |
+| content | array of objects | Orders page content. |
 | content[].id | string | Order identifier. |
 | content[].status | string | Order status value. |
 | totalElements | number | Total matched items. |
@@ -701,8 +707,9 @@ Use the response to build transaction history screens and filtering/pagination U
 | Name | Code | Description |
 | --- | --- | --- |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| BAD_REQUEST | 400 | Invalid pageable/filter request. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `400 Bad Request` | HTTP | Invalid pageable/filter request. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Request**
 ```json
@@ -741,10 +748,10 @@ Below is a tested OffRamp flow with real request/response examples.
 > All requests are merchant backend-to-backend using `x-api-key`.
 
 ### Headers
-- `x-api-key: {{apiKey}}`
+- `x-api-key: {{x-api-key}}`
 ---
 ### Step 1. Get available assets
-**POST** `{{URL}/api/v2/exchange/merchant/assets`
+**POST** `/api/v2/exchange/merchant/assets`
 
 Use this endpoint to fetch available fiat and crypto assets for OffRamp flow in the current merchant context.
 Use the response to validate selected source crypto and target fiat assets before requesting limits/quotes.
@@ -759,16 +766,16 @@ Use the response to validate selected source crypto and target fiat assets befor
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| destination | enum string | No | Merchant destination filter. Enum: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| destination | string | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
 
 ### Response
 
 | Name | Type | Description |
 | --- | --- | --- |
-| fiatAssets | array<object> | List of available fiat assets. |
+| fiatAssets | array of objects | List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows. |
 | fiatAssets[].id | string | Asset identifier. |
 | fiatAssets[].code | string | Fiat currency code. |
-| cryptoAssets | array<object> | List of available crypto assets. |
+| cryptoAssets | array of objects | List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows. |
 | cryptoAssets[].id | string | Asset identifier. |
 | cryptoAssets[].code | string | Crypto currency code. |
 | cryptoAssets[].network | string | Blockchain network name. |
@@ -779,7 +786,8 @@ Use the response to validate selected source crypto and target fiat assets befor
 | Name | Code | Description |
 | --- | --- | --- |
 | CURRENCY_NOT_FOUND | 400 | Invalid/unknown asset mapping requested by merchant configuration. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -811,7 +819,7 @@ Use the response to validate selected source crypto and target fiat assets befor
 }
 ```
 ### Step 2. Get payment providers
-**POST** {{URL}/api/v2/exchange/merchant/payment/provider
+**POST** `/api/v2/exchange/merchant/payment/provider`
 
 Use this endpoint to get payout providers available for the selected OffRamp context.
 Use the response to select provider and payout corridor before requesting payment methods.
@@ -829,8 +837,8 @@ Use the response to select provider and payout corridor before requesting paymen
 | --- | --- | --- | --- |
 | clientId | string | No | WhiteBird client identifier in merchant context. |
 | fiatAsset | string | No | Fiat asset code used for filtering providers. |
-| orderType | enum string | No | Order direction. Enum: `BUY`, `SELL`, `SWAP`. |
-| destination | enum string | No | Merchant destination. Enum: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| orderType | string | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| destination | string | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
 
 ### Response
 
@@ -839,15 +847,16 @@ Use the response to select provider and payout corridor before requesting paymen
 | [].id | string | Provider identifier. |
 | [].name | string | Provider display name. |
 | [].addPaymentMethod | boolean | Indicates whether payment method binding/creation is available. |
-| [].config.paymentSystems | array<object> | Supported payment systems/directions/currencies. |
-| [].commissions | array<object> | Provider commission configuration. |
+| [].config.paymentSystems | array of objects | Supported payment systems/directions/currencies. |
+| [].commissions | array of objects | Provider commission configuration. |
 
 ### Errors
 
 | Name | Code | Description |
 | --- | --- | --- |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Request**
 ```json
@@ -857,7 +866,7 @@ Use the response to select provider and payout corridor before requesting paymen
   "orderType": "SELL"
 }
 ```
-Response
+**Response**
 ```json
 [
   {
@@ -937,9 +946,9 @@ Response
 ]
 ```
 ### Step 3. Get payment methods
-**POST** {{URL}/api/v2/exchange/merchant/payment/method
+**POST** `/api/v2/exchange/merchant/payment/method`
 
-> Take paymentToken (id) for the selected provider with status=ENABLED and isRestricted=false.
+> Take payment method `id` and pass it as `paymentMethodToken` in quote creation. Use records with status=`ENABLED` and `isRestricted=false`.
 
 Use this endpoint to get available payout methods for the selected OffRamp direction.
 Use the response to select `paymentMethodToken` for quote and sell order creation.
@@ -957,11 +966,11 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | --- | --- | --- | --- |
 | clientId | string | Yes | WhiteBird client identifier. |
 | fiatAsset | string | No | Fiat asset filter. |
-| orderType | enum string | No | Order direction. Enum: `BUY`, `SELL`, `SWAP`. |
-| destination | enum string | No | Merchant destination. Enum: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| orderType | string | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| destination | string | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
 | providers | array<string> | No | Provider filter list. |
 | isCrypto | boolean | No | Flag for crypto-only payment methods. |
-| countryGroup | array<enum string> | No | Country groups. Enum: `BELARUS`, `RUSSIA`, `FOREIGN`. |
+| countryGroup | array of strings | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
 
 ### Response
 
@@ -984,7 +993,8 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | Name | Code | Description |
 | --- | --- | --- |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Request**
 ```json
@@ -1023,7 +1033,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 ]
 ```
 ### Step 4. Calculate limits (v2)
-**POST** {{URL}/api/v2/exchange/merchant/limit
+**POST** `/api/v2/exchange/merchant/limit`
 
 Use this endpoint to calculate min/max available amount for the selected OffRamp pair and payout method.
 Use the response to validate the amount before quote creation.
@@ -1046,7 +1056,7 @@ Use the response to validate the amount before quote creation.
 | toAsset | object | Yes | Target asset object. |
 | toAsset.code | string | Yes | Target asset code. |
 | toAsset.network | string \| null | No | Target asset network for crypto assets. |
-| paymentMethod | enum string | Yes | Payment provider type used in this flow. Allowed values: `CA`, `ASSIST`. |
+| paymentMethod | string | Yes | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
 
 ### Response
 
@@ -1064,7 +1074,7 @@ Use the response to validate the amount before quote creation.
 | --- | --- | --- |
 | CURRENCY_NOT_FOUND | 400 | Invalid `fromAsset`/`toAsset` pair. |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| BAD_REQUEST | 400 | Validation error in request fields. |
+| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
 ```json
@@ -1095,7 +1105,7 @@ Use the response to validate the amount before quote creation.
 }
 ```
 ### Step 5. Create quote (v2)
-**POST** {{URL}/api/v2/exchange/merchant/quote
+**POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
@@ -1123,7 +1133,7 @@ Use the response `quoteId` to create the sell order.
 | toAsset.code | string | Yes | Target asset code. |
 | toAsset.network | string \| null | No | Target asset network for crypto assets. |
 | toAsset.amount | number | No | Target amount when quote is output-side based. |
-| paymentMethod | enum string | No | Payment provider type used in this flow. Allowed values: `CA`, `ASSIST`. |
+| paymentMethod | string | No | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
 | paymentMethodToken | string | No | Selected payment method token/id. |
 | destinationCryptoAddress | string | No | Optional destination wallet context. |
 | comment | string | No | Optional merchant comment. |
@@ -1142,7 +1152,7 @@ Use the response `quoteId` to create the sell order.
 | fee.service | number \| null | Service fee component. |
 | fee.network | number \| null | Network/payment component. |
 | fee.asset | string | Fee asset code. |
-| expirationDate | datetime string | Quote expiration timestamp. |
+| expirationDate | string | Quote expiration timestamp in server date-time format. |
 
 ### Errors
 
@@ -1151,7 +1161,7 @@ Use the response `quoteId` to create the sell order.
 | INVALID_QUOTE | 400 | Quote cannot be calculated for provided values. |
 | CURRENCY_NOT_FOUND | 400 | Invalid asset or network. |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| BAD_REQUEST | 400 | Validation error in request fields. |
+| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 **Request**
 ```json
@@ -1196,7 +1206,7 @@ Use the response `quoteId` to create the sell order.
 }
 ```
 ### Step 6. Sell crypto (v2)
-**GET** {{URL}/api/v2/exchange/merchant/sell?failureDepositAddress={{walletAddress}}&quoteId={{quoteId}}&sourceAddress={{walletAddress1}}
+**GET** `/api/v2/exchange/merchant/sell?failureDepositAddress={{walletAddress}}&quoteId={{quoteId}}&sourceAddress={{walletAddress1}}`
 
 > From response take orderId (id).
 
@@ -1230,12 +1240,12 @@ Use the response `id` as `orderId` for polling and status tracking.
 | Name | Type | Description |
 | --- | --- | --- |
 | id | string | Order identifier. |
-| type | enum string | `BUY`, `SELL`, `SWAP`. |
-| status | enum string | `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| creationDate | datetime string | Creation timestamp. |
-| modificationDate | datetime string | Last update timestamp. |
+| type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| creationDate | string | Order creation timestamp in server date-time format. |
+| modificationDate | string | Last order update timestamp in server date-time format. |
 | cryptoTransaction | object \| null | Crypto transaction summary (nullable at creation step). |
-| expiresAtDate | datetime string | Deposit/order expiration timestamp. |
+| expiresAtDate | string | Deposit/order expiration timestamp in server date-time format. |
 | depositCryptoAddress | string | Address where user must send crypto for sell flow. |
 
 ### Errors
@@ -1245,7 +1255,8 @@ Use the response `id` as `orderId` for polling and status tracking.
 | QUOTE_NOT_FOUND | 400 | Quote does not exist or already expired. |
 | INVALID_QUOTE | 400 | Quote is invalid for order creation. |
 | AML_FRAUD_VALIDATION_ERROR | 400 | AML/fraud checks blocked order creation. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -1261,7 +1272,7 @@ Use the response `id` as `orderId` for polling and status tracking.
 }
 ```
 ### Step 7. Get order by ID
-**GET** {{URL}/api/v2/exchange/merchant/order?orderId={{Order_ID}}
+**GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
 Use this endpoint to fetch complete OffRamp order details by `orderId`.
 Use the response to track payout processing, crypto deposit state, and final status.
@@ -1290,20 +1301,21 @@ Use the response to track payout processing, crypto deposit state, and final sta
 | Name | Type | Description |
 | --- | --- | --- |
 | id | string | Order identifier. |
-| type | enum string | Enum: `BUY`, `SELL`, `SWAP`. |
-| status | enum string | Enum: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
 | exchangeOperation | object | Exchange side details (input/output, rates, fees). |
-| cryptoTransaction.status | enum string | `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
-| fiatTransaction.status | enum string | `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
-| operationType | enum string | `CRYPTO_TO_FIAT`, `FIAT_TO_CRYPTO`, `CRYPTOWALLET_TO_FIAT`, `FIAT_TO_CRYPTOWALLET`, `CRYPTOWALLET_DEPOSIT`, `CRYPTOWALLET_WITHDRAWAL`. |
-| expiresAtDate | datetime string \| null | Order expiration timestamp. |
+| cryptoTransaction.status | string | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
+| fiatTransaction.status | string | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
+| operationType | string | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
+| expiresAtDate | string \| null | Order expiration timestamp in server date-time format. |
 
 ### Errors
 
 | Name | Code | Description |
 | --- | --- | --- |
 | ORDER_NOT_FOUND | 404 | Order not found or not accessible in merchant scope. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -1375,7 +1387,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
 }
 ```
 ### Step 8. Get current order (optional)
-**GET** {{URL}/api/v2/exchange/merchant/order/current?clientId={{clientId}}
+**GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
 Use this endpoint to fetch the current active OffRamp order for a client.
 Use the response to restore flow state when user comes back to the session.
@@ -1404,7 +1416,7 @@ Use the response to restore flow state when user comes back to the session.
 | Name | Type | Description |
 | --- | --- | --- |
 | id | string | Current active order id. |
-| status | enum string | `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
 | clientId | string | WhiteBird client identifier in the order payload. |
 
 ### Errors
@@ -1412,7 +1424,8 @@ Use the response to restore flow state when user comes back to the session.
 | Name | Code | Description |
 | --- | --- | --- |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -1423,7 +1436,7 @@ Use the response to restore flow state when user comes back to the session.
 }
 ```
 ### Step 9. Get order history (optional)
-**POST** {{URL}/api/v2/exchange/merchant/order/history
+**POST** `/api/v2/exchange/merchant/order/history`
 
 Use this endpoint to fetch paged OffRamp order history for a client.
 Use the response for history UI, status analytics, and reconciliation.
@@ -1453,7 +1466,7 @@ Use the response for history UI, status analytics, and reconciliation.
 
 | Name | Type | Description |
 | --- | --- | --- |
-| content | array<object> | Orders page content. |
+| content | array of objects | Orders page content. |
 | content[].id | string | Order identifier. |
 | content[].status | string | Order status value. |
 | totalElements | number | Total matched items. |
@@ -1466,8 +1479,9 @@ Use the response for history UI, status analytics, and reconciliation.
 | Name | Code | Description |
 | --- | --- | --- |
 | CLIENT_NOT_FOUND | 400 | `clientId` is invalid for the merchant. |
-| BAD_REQUEST | 400 | Invalid pageable/filter request. |
-| UNAUTHORIZED | 401/403 | Missing or invalid `x-api-key` or access restriction failure. |
+| `400 Bad Request` | HTTP | Invalid pageable/filter request. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Request**
 ```json

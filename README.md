@@ -149,6 +149,7 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 | `400 CURRENCY_NOT_FOUND` | BUSINESS | Asset configuration contains unsupported or unknown asset mapping. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
+
 ### Step 2. Get payment providers
 Use this endpoint to retrieve available fiat payment providers for the selected client and direction. Use the response to choose a provider route and validate supported currency/direction combinations.
 
@@ -246,6 +247,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Provided `clientId` is invalid or not linked to merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
+
 ### Step 3. Get payment methods
 Use this endpoint to retrieve payment methods/tokens available for the selected provider context. Use the response to select `paymentMethodToken` with valid status and pass it to quote creation.
 
@@ -323,7 +325,8 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Provided `clientId` is invalid or not linked to merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
-### Step 4. Calculate limits (v2)
+
+### Step 4. Calculate limits 
 **POST** `/api/v2/exchange/merchant/limit`
 
 Use this endpoint to calculate min/max available amount for the selected pair and payment method.
@@ -396,7 +399,7 @@ Use the response to validate user input before quote creation.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-### Step 5. Create quote (v2)
+### Step 5. Create quote 
 **POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
@@ -503,7 +506,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-### Step 6. Buy Crypto (v2)
+### Step 6. Buy Crypto 
 **GET** `/api/v2/exchange/merchant/buy?destinationCryptoAddress={{walletAddress}}&quoteId={{quoteId}}`
 
 > From response take orderId.
@@ -567,6 +570,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 | `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
 ### Step 7. Get order by ID
 **GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
@@ -733,6 +737,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | `404 ORDER_NOT_FOUND` | BUSINESS | Order not found or not accessible in merchant scope. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
 ### Step 8. Get current order (optional)
 **GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
@@ -869,18 +874,13 @@ Use the response to build transaction history screens and filtering/pagination U
 
 ## 3. OffRamp (crypto -> fiat) — Merchant API
 
-Below is a tested OffRamp flow with real request/response examples.
 
-> All requests are merchant backend-to-backend using `x-api-key`.
-
-### Headers
-- `x-api-key: {{x-api-key}}`
----
 ### Step 1. Get available assets
 **POST** `/api/v2/exchange/merchant/assets`
 
 Use this endpoint to fetch available fiat and crypto assets for OffRamp flow in the current merchant context.
 Use the response to validate selected source crypto and target fiat assets before requesting limits/quotes.
+
 
 **Response**
 ```json
@@ -1014,6 +1014,7 @@ Use the response to validate selected source crypto and target fiat assets befor
 | `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid/unknown asset mapping requested by merchant configuration. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
 ### Step 2. Get payment providers
 **POST** `/api/v2/exchange/merchant/payment/provider`
 
@@ -1088,6 +1089,7 @@ Use the response to select provider and payout corridor before requesting paymen
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
 ### Step 3. Get payment methods
 **POST** `/api/v2/exchange/merchant/payment/method`
 
@@ -1163,7 +1165,8 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
-### Step 4. Calculate limits (v2)
+
+### Step 4. Calculate limits 
 **POST** `/api/v2/exchange/merchant/limit`
 
 Use this endpoint to calculate min/max available amount for the selected OffRamp pair and payout method.
@@ -1237,7 +1240,7 @@ Use the response to validate the amount before quote creation.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-### Step 5. Create quote (v2)
+### Step 5. Create quote 
 **POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
@@ -1345,7 +1348,7 @@ Use the response `quoteId` to create the sell order.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-### Step 6. Sell crypto (v2)
+### Step 6. Sell crypto 
 **GET** `/api/v2/exchange/merchant/sell?failureDepositAddress={{walletAddress}}&quoteId={{quoteId}}&sourceAddress={{walletAddress1}}`
 
 > From response take orderId (id).
@@ -1411,6 +1414,7 @@ Use the response `id` as `orderId` for polling and status tracking.
 | `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
 ### Step 7. Get order by ID
 **GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
@@ -1636,6 +1640,7 @@ Use the response to restore flow state when user comes back to the session.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
 ### Step 9. Get order history (optional)
 **POST** `/api/v2/exchange/merchant/order/history`
 
@@ -1714,25 +1719,6 @@ Use the response for history UI, status analytics, and reconciliation.
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
-
-
-## Quote fields
-
-If you see response:
-
-```json
-{
-  "rate": 29.2528,
-  "plainRate": 27.13,
-  "fee": {
-    "total": 3.75,
-    "service": null,
-    "network": 0.263,
-    "asset": "RUB"
-  }
-}
-```
-
 ### How these values are calculated:
 
 - `plainRate` = base market rate (bid/ask) before final quote adjustments.
@@ -1750,13 +1736,3 @@ If you see response:
   - if input is CRYPTO: `fee.network = fromPaymentFeeAmount`
   - if input is FIAT: `fee.network = toPaymentFeeAmount`
 - `fee.service = null` (service part is not returned as separate value in this response format).
-
-### Variables:
-
-- `fromGrossAmount`: how much the client gives before deductions.
-- `fromAmount`: amount left from input side after input-side fees.
-- `toAmount`: final amount the client receives after output-side fees.
-- `amount`: current amount used in fee formula on current calculation step.
-- `percent`: fee percent configured for this fee rule (for example `2.5` means `2.5%`).
-- `fromPaymentFeeAmount` / `toPaymentFeeAmount`: payment/transfer part of fee (card processor or blockchain/network).
-- `fromExchangeFeeAmount` / `toExchangeFeeAmount`: exchange service part of fee.

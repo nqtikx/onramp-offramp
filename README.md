@@ -6,6 +6,10 @@ OffRamp is used when the client sends crypto and receives fiat through a provide
 
 > BASE_URL https://api.dev.wbdevel.net
 
+## 1. OnRamp (fiat -> crypto)
+
+OnRamp flow is used when the client pays fiat through a provider and receives crypto to an external wallet. The flow is quote first, then order creation.
+
 ### Step 1. Get available assets
 Use this endpoint to retrieve available fiat and crypto assets for the merchant context. Use the response to build asset selectors and validate `code/network` pairs in downstream requests.
 
@@ -888,7 +892,7 @@ Use the response to build transaction history screens and filtering/pagination U
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 
-## 3. OffRamp (crypto -> fiat) — Merchant API
+## 2. OffRamp (crypto -> fiat) — Merchant API
 
 ### Step 1. Get available assets
 Use this endpoint to fetch available fiat and crypto assets for OffRamp flow in the current merchant context.
@@ -1053,15 +1057,60 @@ Use the response to select provider and payout corridor before requesting paymen
 ```json
 [
   {
-    "id": "ASSIST",
-    "name": "ASSIST",
-    "addPaymentMethod": true
-  },
-  {
-    "id": "MTS",
-    "name": "MTS",
-    "addPaymentMethod": true
-  }
+        "id": "MTS",
+        "name": "MTS",
+        "addPaymentMethod": true,
+        "config": {
+            "paymentSystems": [
+                {
+                    "paymentSystem": "MIR",
+                    "type": "PSP",
+                    "directions": [
+                        {
+                            "direction": "SELL",
+                            "currencies": [
+                                {
+                                    "currency": "RUB",
+                                    "countries": [
+                                        "Russia"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "commissions": [
+            {
+                "buyCommission": "2,5",
+                "sellCommission": "2,0"
+            },
+            {
+                "destination": "EXCHANGE",
+                "buyCommission": "2,5"
+            },
+            {
+                "destination": "SDK_EXCHANGE",
+                "buyCommission": "2,5",
+                "sellCommission": "2,0"
+            },
+            {
+                "destination": "ACCOUNTING",
+                "buyCommission": "0"
+            },
+            {
+                "bank": "RF_CARDS",
+                "destination": "EXCHANGE",
+                "sellCommission": "2,0"
+            },
+            {
+                "bank": "RF_CARDS",
+                "destination": "ACCOUNTING",
+                "sellCommission": "1,5"
+            }
+        ]
+    },
 ]
 ```
 
@@ -1460,10 +1509,70 @@ Use the response to track payout processing, crypto deposit state, and final sta
 **Response**
 ```json
 {
-  "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
-  "type": "SELL",
-  "status": "PROCESSING",
-  "operationType": "CRYPTO_TO_FIAT"
+    "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
+    "type": "BUY",
+    "status": "PROCESSING",
+    "creationDate": "2026-04-27T11:13:26.237357",
+    "modificationDate": "2026-04-27T11:13:27.727824",
+    "number": 831000003994,
+    "exchangeOperation": {
+        "inputCurrency": "RUB",
+        "inputAsset": 270,
+        "outputCurrency": "TRX",
+        "outputAsset": 9.440281,
+        "exchangeFeeAssetInFiat": 6.75,
+        "bonusOutputAsset": null,
+        "plainRatio": 27.13,
+        "ratio": 28.6008,
+        "currencyPair": {
+            "fromCurrency": "RUB",
+            "toCurrency": "TRX"
+        }
+    },
+    "cryptoTransaction": {
+        "hash": null,
+        "externalCryptoAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+        "internalCryptoAddress": null,
+        "fromAddress": null,
+        "toAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+        "status": "NEW",
+        "currency": "TRX",
+        "fee": null,
+        "feePaymentEnabledByClient": false,
+        "type": "AUTO",
+        "comment": null
+    },
+    "fiatTransaction": {
+        "status": "PROCESSING",
+        "paymentToken": "59676b7a-da24-4916-8236-1efef6796009",
+        "post": null,
+        "brand": null,
+        "internalToken": null,
+        "orderIdentity": "c76ca74d-7aea-4688-942e-8385c413826f",
+        "link": "c76ca74d-7aea-4688-942e-8385c413826f",
+        "providerType": "CA",
+        "paymentType": null,
+        "processingBank": null,
+        "resultMessage": null,
+        "currency": "RUB",
+        "processorTransactionNumber": null
+    },
+    "client": {
+        "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
+    },
+    "serverDate": "2026-04-27T11:16:09+0000",
+    "exchangeType": "SELL",
+    "operationType": "FIAT_TO_CRYPTO",
+    "orderType": "DEFAULT",
+    "completionDate": null,
+    "resultMessage": null,
+    "submitByResident": null,
+    "merchantName": "wb",
+    "merchantBonus": null,
+    "promoCodeDetails": null,
+    "fromSource": "EXT",
+    "toSource": "EXT",
+    "expiresAtDate": null
 }
 ```
 
@@ -1691,6 +1800,10 @@ Use the response for history UI, status analytics, and reconciliation.
 | `400 Bad Request` | HTTP | Invalid pageable/filter request. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
+## 3. Quote fields
+
+This section explains quote response fields and fee calculation logic.
 
 ### How these values are calculated:
 

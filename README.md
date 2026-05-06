@@ -1,13 +1,11 @@
 ## 2. OnRamp (fiat -> crypto) — Merchant API
 Below is a tested OnRamp flow with real request/response examples.
-> All requests are merchant backend-to-backend using `x-api-key`.
 
-## [Errors and Status Routing (V2 OnRamp / OffRamp)](./Errors%20and%20Status%20Routing.md)
+> BASE_URL https://api.dev.wbdevel.net
 
 ### Headers
 - `x-api-key: {{apiKey}}`
-- `Content-Type: application/json`
----
+
 ### Step 1. Get available assets
 **POST** `{{URL}/api/v2/exchange/merchant/assets`
 
@@ -85,58 +83,6 @@ Response
       }
     ]
   },
-  {
-    "id": "MTS",
-    "name": "MTS",
-    "addPaymentMethod": true,
-    "config": {
-      "paymentSystems": [
-        {
-          "paymentSystem": "MIR",
-          "type": "PSP",
-          "directions": [
-            {
-              "direction": "SELL",
-              "currencies": [
-                { "currency": "RUB", "countries": ["Russia"] }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "commissions": [
-      { "buyCommission": "2,5", "sellCommission": "2,0" }
-    ]
-  },
-  {
-    "id": "CA",
-    "name": "CA",
-    "addPaymentMethod": false,
-    "config": {
-      "paymentSystems": [
-        {
-          "paymentSystem": "CA",
-          "type": "CA",
-          "directions": [
-            {
-              "direction": "BUY",
-              "currencies": [
-                { "currency": "RUB" },
-                { "currency": "BYN" },
-                { "currency": "USD" },
-                { "currency": "EUR" },
-                { "currency": "AED" }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "commissions": [
-      { "buyCommission": "2,5", "sellCommission": "1,5" }
-    ]
-  }
 ]
 ```
 ### Step 3. Get payment methods
@@ -166,19 +112,6 @@ Response
     "isCrypto": false,
     "country": "Russia"
   },
-  {
-    "providerId": "BRAZINO",
-    "providerType": "BRAZINO",
-    "status": "ENABLED",
-    "name": "BRAZINO"
-  },
-  {
-    "providerId": "CARUSELL",
-    "providerType": "CARUSELL",
-    "status": "CURRENCY_DISABLED",
-    "name": "CARUSELL",
-    "supportedCurrencies": ["RUB"]
-  }
 ]
 ```
 ### Step 4. Calculate limits (v2)

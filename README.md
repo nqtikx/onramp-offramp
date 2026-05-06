@@ -308,6 +308,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `brand` | `string` | Payment brand, if applicable. |
 | `providerId` | `string` | Provider identifier. |
 | `providerType` | `string` | Provider type, for example `ASSIST` or `CA`. |
+| `name` | `string` | Deprecated provider display field that may be returned by some integrations. |
 | `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
 | `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
 | `isCrypto` | `boolean` | Indicates crypto payment method record. |
@@ -324,10 +325,10 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
 
 ### Step 4. Calculate limits 
-**POST** `/api/v2/exchange/merchant/limit`
-
 Use this endpoint to calculate min/max available amount for the selected pair and payment method.
 Use the response to validate user input before quote creation.
+
+**POST** `/api/v2/exchange/merchant/limit`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -400,10 +401,10 @@ Use the response to validate user input before quote creation.
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 ### Step 5. Create quote 
-**POST** `/api/v2/exchange/merchant/quote`
-
 Use this endpoint to calculate executable quote values (amounts, rate, fees, expiration).
 Use the response `quoteId` as an input for buy/sell order creation.
+
+**POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
@@ -510,12 +511,12 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 ### Step 6. Buy Crypto 
+Use this endpoint to create a fiat-to-crypto order from a previously created quote.
+Use the response `id` as `orderId` for status polling and order details retrieval.
+
 **GET** `/api/v2/exchange/merchant/buy?destinationCryptoAddress={{walletAddress}}&quoteId={{quoteId}}`
 
 > From response take orderId.
-
-Use this endpoint to create a fiat-to-crypto order from a previously created quote.
-Use the response `id` as `orderId` for status polling and order details retrieval.
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -578,10 +579,10 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 7. Get order by ID
-**GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
-
 Use this endpoint to fetch full order details by `orderId`.
 Use the response to track all order phases (exchange, fiat transaction, crypto transaction) and status transitions.
+
+**GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -731,7 +732,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | submitByResident | boolean \| null | Resident submission flag, if applicable. |
 | merchantName | string | Merchant name associated with order. |
 | merchantBonus | number \| null | Merchant bonus amount, if applicable. |
-| promoCodeDetails | object \| null | Promo code details object, if applied. |
+| promoCodeDetails | string \| null | Promo code details payload, if applied. |
 | fromSource | string | Source side enum value (`EXT`/`INT`). |
 | toSource | string | Destination side enum value (`EXT`/`INT`). |
 | serverDate | string | Server timestamp in server date-time format. |
@@ -748,10 +749,10 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 8. Get current order (optional)
-**GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
-
 Use this endpoint to fetch the current active order for a specific client.
 Use the response for quick status restore when user returns to the flow.
+
+**GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -806,10 +807,10 @@ Use the response for quick status restore when user returns to the flow.
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 ### Step 9. Get order history (optional)
-**POST** `/api/v2/exchange/merchant/order/history`
-
 Use this endpoint to fetch paged order history for a client.
 Use the response to build transaction history screens and filtering/pagination UI.
+
+**POST** `/api/v2/exchange/merchant/order/history`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -890,10 +891,10 @@ Use the response to build transaction history screens and filtering/pagination U
 ## 3. OffRamp (crypto -> fiat) — Merchant API
 
 ### Step 1. Get available assets
-**POST** `/api/v2/exchange/merchant/assets`
-
 Use this endpoint to fetch available fiat and crypto assets for OffRamp flow in the current merchant context.
 Use the response to validate selected source crypto and target fiat assets before requesting limits/quotes.
+
+**POST** `/api/v2/exchange/merchant/assets`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -1032,10 +1033,10 @@ Use the response to validate selected source crypto and target fiat assets befor
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 2. Get payment providers
-**POST** `/api/v2/exchange/merchant/payment/provider`
-
 Use this endpoint to get payout providers available for the selected OffRamp context.
 Use the response to select provider and payout corridor before requesting payment methods.
+
+**POST** `/api/v2/exchange/merchant/payment/provider`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -1110,12 +1111,12 @@ Use the response to select provider and payout corridor before requesting paymen
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 3. Get payment methods
+Use this endpoint to get available payout methods for the selected OffRamp direction.
+Use the response to select `paymentMethodToken` for quote and sell order creation.
+
 **POST** `/api/v2/exchange/merchant/payment/method`
 
 > Take payment method `id` and pass it as `paymentMethodToken` in quote creation. Use records with status=`ENABLED` and `isRestricted=false`.
-
-Use this endpoint to get available payout methods for the selected OffRamp direction.
-Use the response to select `paymentMethodToken` for quote and sell order creation.
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -1173,6 +1174,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | brand | string | Payment method brand, for example `VISA`. |
 | providerId | string | Provider identifier. |
 | providerType | string | Provider type, for example `ASSIST` or `CA`. |
+| name | string | Deprecated provider display field that may be returned by some integrations. |
 | status | string | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
 | isRestricted | boolean | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
 | isCrypto | boolean | Indicates crypto payment method. |
@@ -1189,10 +1191,10 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 4. Calculate limits 
-**POST** `/api/v2/exchange/merchant/limit`
-
 Use this endpoint to calculate min/max available amount for the selected OffRamp pair and payout method.
 Use the response to validate the amount before quote creation.
+
+**POST** `/api/v2/exchange/merchant/limit`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -1266,10 +1268,10 @@ Use the response to validate the amount before quote creation.
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 ### Step 5. Create quote 
-**POST** `/api/v2/exchange/merchant/quote`
-
 Use this endpoint to calculate executable OffRamp quote values for crypto-to-fiat exchange.
 Use the response `quoteId` to create the sell order.
+
+**POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
@@ -1377,12 +1379,12 @@ Use the response `quoteId` to create the sell order.
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
 ### Step 6. Sell crypto 
+Use this endpoint to create a crypto-to-fiat order from an existing quote.
+Use the response `id` as `orderId` for polling and status tracking.
+
 **GET** `/api/v2/exchange/merchant/sell?failureDepositAddress={{walletAddress}}&quoteId={{quoteId}}&sourceAddress={{walletAddress1}}`
 
 > From response take orderId (id).
-
-Use this endpoint to create a crypto-to-fiat order from an existing quote.
-Use the response `id` as `orderId` for polling and status tracking.
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -1447,10 +1449,10 @@ Use the response `id` as `orderId` for polling and status tracking.
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 7. Get order by ID
-**GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
-
 Use this endpoint to fetch complete OffRamp order details by `orderId`.
 Use the response to track payout processing, crypto deposit state, and final status.
+
+**GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -1543,7 +1545,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
 | submitByResident | boolean \| null | Resident submission flag, if applicable. |
 | merchantName | string | Merchant name associated with order. |
 | merchantBonus | number \| null | Merchant bonus amount, if applicable. |
-| promoCodeDetails | object \| null | Promo code details object, if applied. |
+| promoCodeDetails | string \| null | Promo code details payload, if applied. |
 | fromSource | string | Source side enum value (`EXT`/`INT`). |
 | toSource | string | Destination side enum value (`EXT`/`INT`). |
 | expiresAtDate | string \| null | Order expiration timestamp in server date-time format. |
@@ -1557,10 +1559,10 @@ Use the response to track payout processing, crypto deposit state, and final sta
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 8. Get current order (optional)
-**GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
-
 Use this endpoint to fetch the current active OffRamp order for a client.
 Use the response to restore flow state when user comes back to the session.
+
+**GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -1610,10 +1612,10 @@ Use the response to restore flow state when user comes back to the session.
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 ### Step 9. Get order history (optional)
-**POST** `/api/v2/exchange/merchant/order/history`
-
 Use this endpoint to fetch paged OffRamp order history for a client.
 Use the response for history UI, status analytics, and reconciliation.
+
+**POST** `/api/v2/exchange/merchant/order/history`
 
 **Headers**
 - `x-api-key: {{x-api-key}}`

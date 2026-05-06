@@ -233,7 +233,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 | `config.paymentSystems[].directions[].direction` | `string` | Direction for payment system route (`BUY`/`SELL`). |
 | `config.paymentSystems[].directions[].currencies` | `array of objects` | Supported currencies for selected direction. |
 | `config.paymentSystems[].directions[].currencies[].currency` | `string` | Fiat currency for this route. |
-| `config.paymentSystems[].directions[].currencies[].countries` | `array<string>` | Optional country restrictions for this route. |
+| `config.paymentSystems[].directions[].currencies[].countries` | `array of string` | Optional country restrictions for this route. |
 | `commissions` | `array of objects` | Commission settings for provider. |
 | `commissions[].bank` | `string` | Bank group key for commission row. |
 | `commissions[].buyCommission` | `string` | Commission value/range for buy direction. |
@@ -296,9 +296,9 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `fiatAsset` | `string` | No | Fiat code filter for payment methods. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
-| `providers` | `array<string>` | No | Provider filter list (for current examples: `ASSIST`). |
+| `providers` | `array of string` | No | Provider filter list (for current examples: `ASSIST`). |
 | `isCrypto` | `boolean` | No | Filters crypto payment methods if supported by provider. |
-| `countryGroup` | `array<string>` | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
+| `countryGroup` | `array of string` | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
 
 ### Response
 
@@ -314,7 +314,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `isCrypto` | `boolean` | Indicates crypto payment method record. |
 | `country` | `string` | Country associated with the payment method. |
 | `currency` | `string` | Payment currency code, if returned. |
-| `supportedCurrencies` | `array<string>` | Supported fiat currencies for this method, if returned. |
+| `supportedCurrencies` | `array of string` | Supported fiat currencies for this method, if returned. |
 
 ### Errors
 
@@ -1136,7 +1136,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | fiatAsset | string | No | Fiat asset filter. |
 | orderType | string | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
 | destination | string | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
-| providers | array<string> | No | Provider filter list. |
+| providers | array of string | No | Provider filter list. |
 | isCrypto | boolean | No | Flag for crypto-only payment methods. |
 | countryGroup | array of strings | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
 

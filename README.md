@@ -152,20 +152,20 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 
 | Name | Type | Description |
 |---|---|---|
-| `[].id` | `string` | Provider identifier. |
-| `[].name` | `string` | Provider display name. |
-| `[].addPaymentMethod` | `boolean` | Defines whether provider supports adding payment methods. |
-| `[].config` | `object` | Provider routing configuration. |
-| `[].config.paymentSystems` | `array of objects` | Payment systems list for provider. |
-| `[].config.paymentSystems[].paymentSystem` | `string` | Payment system name (for example `VISA`, `MIR`, `BelCard`). |
-| `[].config.paymentSystems[].type` | `string` | Provider channel type. |
-| `[].config.paymentSystems[].directions[].direction` | `string` | Direction for payment system route (`BUY`/`SELL`). |
-| `[].config.paymentSystems[].directions[].currencies[].currency` | `string` | Fiat currency for this route. |
-| `[].config.paymentSystems[].directions[].currencies[].countries` | `array<string>` | Optional country restrictions for this route. |
-| `[].commissions` | `array of objects` | Commission settings for provider. |
-| `[].commissions[].bank` | `string` | Bank group key for commission row. |
-| `[].commissions[].buyCommission` | `string` | Commission value/range for buy direction. |
-| `[].commissions[].sellCommission` | `string` | Commission value/range for sell direction. |
+| `id` | `string` | Provider identifier. |
+| `name` | `string` | Provider display name. |
+| `addPaymentMethod` | `boolean` | Defines whether provider supports adding payment methods. |
+| `config` | `object` | Provider routing configuration. |
+| `config.paymentSystems` | `array of objects` | Payment systems list for provider. |
+| `config.paymentSystems[].paymentSystem` | `string` | Payment system name (for example `VISA`, `MIR`, `BelCard`). |
+| `config.paymentSystems[].type` | `string` | Provider channel type. |
+| `config.paymentSystems[].directions[].direction` | `string` | Direction for payment system route (`BUY`/`SELL`). |
+| `config.paymentSystems[].directions[].currencies[].currency` | `string` | Fiat currency for this route. |
+| `config.paymentSystems[].directions[].currencies[].countries` | `array<string>` | Optional country restrictions for this route. |
+| `commissions` | `array of objects` | Commission settings for provider. |
+| `commissions[].bank` | `string` | Bank group key for commission row. |
+| `commissions[].buyCommission` | `string` | Commission value/range for buy direction. |
+| `commissions[].sellCommission` | `string` | Commission value/range for sell direction. |
 
 ### Errors
 
@@ -432,6 +432,18 @@ Use the response `quoteId` as an input for buy/sell order creation.
 Use this endpoint to create a fiat-to-crypto order from a previously created quote.
 Use the response `id` as `orderId` for status polling and order details retrieval.
 
+**Response**
+```json
+{
+    "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
+    "type": "BUY",
+    "status": "PROCESSING",
+    "creationDate": "2026-04-27T11:13:26.237357",
+    "modificationDate": "2026-04-27T11:13:27.727824",
+    "fiatPaymentLink": "c76ca74d-7aea-4688-942e-8385c413826f"
+}
+```
+
 ### Headers
 
 | Name | Type | Required | Description |
@@ -476,70 +488,11 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 | `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
-
-**Response**
-```json
-{
-    "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
-    "type": "BUY",
-    "status": "PROCESSING",
-    "creationDate": "2026-04-27T11:13:26.237357",
-    "modificationDate": "2026-04-27T11:13:27.727824",
-    "fiatPaymentLink": "c76ca74d-7aea-4688-942e-8385c413826f"
-}
-```
 ### Step 7. Get order by ID
 **GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
 Use this endpoint to fetch full order details by `orderId`.
 Use the response to track all order phases (exchange, fiat transaction, crypto transaction) and status transitions.
-
-### Headers
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| externalClientId | string | No | External client mapping identifier. |
-
-### Params
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| orderId | string (UUID) | Yes | Order identifier returned by buy/sell API. |
-
-### Request
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| body | none | - | GET endpoint without request body. |
-
-### Response
-
-| Name | Type | Description |
-| --- | --- | --- |
-| id | string | Order identifier. |
-| type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| number | number | Internal order number. |
-| exchangeOperation | object | Exchange side details (input/output, rates, fees). |
-| cryptoTransaction | object | Crypto transfer details. |
-| cryptoTransaction.status | string | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
-| fiatTransaction | object | Fiat processing details. |
-| fiatTransaction.status | string | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
-| operationType | string | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
-| exchangeType | string | Exchange direction as internal enum value. |
-| fromSource / toSource | string | Source side enum values (`EXT`/`INT`). |
-| serverDate | string | Server timestamp in server date-time format. |
-| completionDate | string \| null | Completion timestamp in server date-time format. |
-| resultMessage | string \| null | Processing message. |
-
-### Errors
-
-| Name | Code | Description |
-| --- | --- | --- |
-| `404 ORDER_NOT_FOUND` | BUSINESS | Order not found or not accessible in merchant scope. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
 **Response**
 ```json
@@ -610,11 +563,70 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
     "expiresAtDate": null
 }
 ```
+
+### Headers
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
+| externalClientId | string | No | External client mapping identifier. |
+
+### Params
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| orderId | string (UUID) | Yes | Order identifier returned by buy/sell API. |
+
+### Request
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| body | none | - | GET endpoint without request body. |
+
+### Response
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | string | Order identifier. |
+| type | string | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
+| status | string | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
+| number | number | Internal order number. |
+| exchangeOperation | object | Exchange side details (input/output, rates, fees). |
+| cryptoTransaction | object | Crypto transfer details. |
+| cryptoTransaction.status | string | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
+| fiatTransaction | object | Fiat processing details. |
+| fiatTransaction.status | string | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
+| operationType | string | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
+| exchangeType | string | Exchange direction as internal enum value. |
+| fromSource / toSource | string | Source side enum values (`EXT`/`INT`). |
+| serverDate | string | Server timestamp in server date-time format. |
+| completionDate | string \| null | Completion timestamp in server date-time format. |
+| resultMessage | string \| null | Processing message. |
+
+### Errors
+
+| Name | Code | Description |
+| --- | --- | --- |
+| `404 ORDER_NOT_FOUND` | BUSINESS | Order not found or not accessible in merchant scope. |
+| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
+| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 ### Step 8. Get current order (optional)
 **GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
 Use this endpoint to fetch the current active order for a specific client.
 Use the response for quick status restore when user returns to the flow.
+
+**Response**
+```json
+{
+  "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
+  "type": "BUY",
+  "status": "PROCESSING",
+  "creationDate": "2026-04-27T11:13:26.237357",
+  "modificationDate": "2026-04-27T11:13:27.727824",
+  "number": 831000003994
+}
+```
 
 ### Headers
 
@@ -653,18 +665,6 @@ Use the response for quick status restore when user returns to the flow.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
-
-**Response**
-```json
-{
-  "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
-  "type": "BUY",
-  "status": "PROCESSING",
-  "creationDate": "2026-04-27T11:13:26.237357",
-  "modificationDate": "2026-04-27T11:13:27.727824",
-  "number": 831000003994
-}
-```
 ### Step 9. Get order history (optional)
 **POST** `/api/v2/exchange/merchant/order/history`
 
@@ -759,6 +759,36 @@ Below is a tested OffRamp flow with real request/response examples.
 Use this endpoint to fetch available fiat and crypto assets for OffRamp flow in the current merchant context.
 Use the response to validate selected source crypto and target fiat assets before requesting limits/quotes.
 
+**Response**
+```json
+{
+  "fiatAssets": [
+    { "id": "BYN", "code": "BYN" },
+    { "id": "EUR", "code": "EUR" },
+    { "id": "RUB", "code": "RUB" },
+    { "id": "USD", "code": "USD" }
+  ],
+  "cryptoAssets": [
+    { "id": "BNB", "code": "BNB", "network": "BNB" },
+    { "id": "USDC_BNB", "code": "USDC", "network": "BNB", "protocol": "BEP-20" },
+    { "id": "USDT_BNB", "code": "USDT", "network": "BNB", "protocol": "BEP-20" },
+    { "id": "BTC", "code": "BTC", "network": "Bitcoin" },
+    { "id": "AAVE", "code": "AAVE", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "ETH", "code": "ETH", "network": "Ethereum" },
+    { "id": "LINK", "code": "LINK", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "PAXG", "code": "PAXG", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "UNI", "code": "UNI", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "USDC_ERC", "code": "USDC", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "USDT_ERC", "code": "USDT", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "XAUT", "code": "XAUT", "network": "Ethereum", "protocol": "ERC-20" },
+    { "id": "TON", "code": "TON", "network": "Ton" },
+    { "id": "USDT_TON", "code": "USDT", "network": "Ton", "protocol": "TON" },
+    { "id": "TRX", "code": "TRX", "network": "Tron" },
+    { "id": "USDT_TRC", "code": "USDT", "network": "Tron", "protocol": "TRC-20" }
+  ]
+}
+```
+
 ### Headers
 
 | Name | Type | Required | Description |
@@ -791,41 +821,35 @@ Use the response to validate selected source crypto and target fiat assets befor
 | CURRENCY_NOT_FOUND | 400 | Invalid/unknown asset mapping requested by merchant configuration. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
-
-**Response**
-```json
-{
-  "fiatAssets": [
-    { "id": "BYN", "code": "BYN" },
-    { "id": "EUR", "code": "EUR" },
-    { "id": "RUB", "code": "RUB" },
-    { "id": "USD", "code": "USD" }
-  ],
-  "cryptoAssets": [
-    { "id": "BNB", "code": "BNB", "network": "BNB" },
-    { "id": "USDC_BNB", "code": "USDC", "network": "BNB", "protocol": "BEP-20" },
-    { "id": "USDT_BNB", "code": "USDT", "network": "BNB", "protocol": "BEP-20" },
-    { "id": "BTC", "code": "BTC", "network": "Bitcoin" },
-    { "id": "AAVE", "code": "AAVE", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "ETH", "code": "ETH", "network": "Ethereum" },
-    { "id": "LINK", "code": "LINK", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "PAXG", "code": "PAXG", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "UNI", "code": "UNI", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "USDC_ERC", "code": "USDC", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "USDT_ERC", "code": "USDT", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "XAUT", "code": "XAUT", "network": "Ethereum", "protocol": "ERC-20" },
-    { "id": "TON", "code": "TON", "network": "Ton" },
-    { "id": "USDT_TON", "code": "USDT", "network": "Ton", "protocol": "TON" },
-    { "id": "TRX", "code": "TRX", "network": "Tron" },
-    { "id": "USDT_TRC", "code": "USDT", "network": "Tron", "protocol": "TRC-20" }
-  ]
-}
-```
 ### Step 2. Get payment providers
 **POST** `/api/v2/exchange/merchant/payment/provider`
 
 Use this endpoint to get payout providers available for the selected OffRamp context.
 Use the response to select provider and payout corridor before requesting payment methods.
+
+**Request**
+```json
+{
+  "clientId": "{{clientId}}",
+  "fiatAsset": "RUB",
+  "orderType": "SELL"
+}
+```
+**Response**
+```json
+[
+  {
+    "id": "ASSIST",
+    "name": "ASSIST",
+    "addPaymentMethod": true
+  },
+  {
+    "id": "MTS",
+    "name": "MTS",
+    "addPaymentMethod": true
+  }
+]
+```
 
 ### Headers
 
@@ -860,6 +884,13 @@ Use the response to select provider and payout corridor before requesting paymen
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+### Step 3. Get payment methods
+**POST** `/api/v2/exchange/merchant/payment/method`
+
+> Take payment method `id` and pass it as `paymentMethodToken` in quote creation. Use records with status=`ENABLED` and `isRestricted=false`.
+
+Use this endpoint to get available payout methods for the selected OffRamp direction.
+Use the response to select `paymentMethodToken` for quote and sell order creation.
 
 **Request**
 ```json
@@ -872,89 +903,19 @@ Use the response to select provider and payout corridor before requesting paymen
 **Response**
 ```json
 [
-  {
-    "id": "ASSIST",
-    "name": "ASSIST",
-    "addPaymentMethod": true,
-    "config": {
-      "paymentSystems": [
-        {
-          "paymentSystem": "VISA",
-          "type": "PSP",
-          "directions": [
-            {
-              "direction": "SELL",
-              "currencies": [
-                { "currency": "BYN" },
-                { "currency": "USD" },
-                { "currency": "EUR" },
-                { "currency": "RUB" }
-              ]
-            },
-            {
-              "direction": "BUY",
-              "currencies": [
-                { "currency": "BYN" },
-                { "currency": "USD" },
-                { "currency": "EUR" },
-                { "currency": "RUB" }
-              ]
-            }
-          ]
-        },
-        {
-          "paymentSystem": "BelCard",
-          "type": "PSP",
-          "directions": [
-            {
-              "direction": "SELL",
-              "currencies": [{ "currency": "BYN", "countries": ["Belarus"] }]
-            },
-            {
-              "direction": "BUY",
-              "currencies": [{ "currency": "BYN", "countries": ["Belarus"] }]
-            }
-          ]
-        }
-      ]
-    },
-    "commissions": [
-      { "bank": "OTHER", "buyCommission": "3,5-4,9", "sellCommission": "3,0-4,9" },
-      { "bank": "BELARUSBANK", "buyCommission": "3,0", "sellCommission": "2,5" }
-    ]
-  },
-  {
-    "id": "MTS",
-    "name": "MTS",
-    "addPaymentMethod": true,
-    "config": {
-      "paymentSystems": [
-        {
-          "paymentSystem": "MIR",
-          "type": "PSP",
-          "directions": [
-            {
-              "direction": "SELL",
-              "currencies": [{ "currency": "RUB", "countries": ["Russia"] }]
-            }
-          ]
-        }
-      ]
-    },
-    "commissions": [
-      { "buyCommission": "2,5", "sellCommission": "2,0" },
-      { "bank": "RF_CARDS", "destination": "EXCHANGE", "sellCommission": "2,0" }
-    ]
-  }
+    {
+        "id": "8ff59a79-461a-4c6f-8f77-832cfa836c86",
+        "number": "**** **** **** 1111",
+        "brand": "VISA",
+        "providerId": "ASSIST",
+        "providerType": "ASSIST",
+        "status": "ENABLED",
+        "isRestricted": false,
+        "isCrypto": false,
+        "country": "Russia"
+    }
 ]
 ```
-### Step 3. Get payment methods
-**POST** `/api/v2/exchange/merchant/payment/method`
-
-> Take payment method `id` and pass it as `paymentMethodToken` in quote creation. Use records with status=`ENABLED` and `isRestricted=false`.
-
-Use this endpoint to get available payout methods for the selected OffRamp direction.
-Use the response to select `paymentMethodToken` for quote and sell order creation.
 
 ### Headers
 
@@ -998,43 +959,6 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
-
-**Request**
-```json
-{
-  "clientId": "{{clientId}}",
-  "fiatAsset": "RUB",
-  "orderType": "SELL"
-}
-```
-**Response**
-```json
-[
-    {
-        "id": "8ff59a79-461a-4c6f-8f77-832cfa836c86",
-        "number": "**** **** **** 1111",
-        "brand": "VISA",
-        "providerId": "ASSIST",
-        "providerType": "ASSIST",
-        "status": "ENABLED",
-        "isRestricted": false,
-        "isCrypto": false,
-        "country": "Russia"
-    },
-    {
-        "providerId": "VTB",
-        "providerType": "VTB",
-        "status": "ENABLED",
-        "name": "VTB"
-    },
-    {
-        "providerId": "BRAZINO",
-        "providerType": "BRAZINO",
-        "status": "ENABLED",
-        "name": "BRAZINO"
-    }
-]
-```
 ### Step 4. Calculate limits (v2)
 **POST** `/api/v2/exchange/merchant/limit`
 
@@ -1218,6 +1142,20 @@ Use the response `quoteId` to create the sell order.
 Use this endpoint to create a crypto-to-fiat order from an existing quote.
 Use the response `id` as `orderId` for polling and status tracking.
 
+**Response**
+```json
+{
+    "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
+    "type": "SELL",
+    "status": "PROCESSING",
+    "creationDate": "2026-04-27T11:57:53.370917",
+    "modificationDate": "2026-04-27T11:57:53.756792",
+    "cryptoTransaction": null,
+    "expiresAtDate": "2026-04-27T12:27:52.605110",
+    "depositCryptoAddress": "TSaysSYUgBoKbtBgnXdxvNQPjkeXC1s9eM"
+}
+```
+
 ### Headers
 
 | Name | Type | Required | Description |
@@ -1262,25 +1200,21 @@ Use the response `id` as `orderId` for polling and status tracking.
 | `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
-
-**Response**
-```json
-{
-    "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
-    "type": "SELL",
-    "status": "PROCESSING",
-    "creationDate": "2026-04-27T11:57:53.370917",
-    "modificationDate": "2026-04-27T11:57:53.756792",
-    "cryptoTransaction": null,
-    "expiresAtDate": "2026-04-27T12:27:52.605110",
-    "depositCryptoAddress": "TSaysSYUgBoKbtBgnXdxvNQPjkeXC1s9eM"
-}
-```
 ### Step 7. Get order by ID
 **GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
 Use this endpoint to fetch complete OffRamp order details by `orderId`.
 Use the response to track payout processing, crypto deposit state, and final status.
+
+**Response**
+```json
+{
+  "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
+  "type": "SELL",
+  "status": "PROCESSING",
+  "operationType": "CRYPTO_TO_FIAT"
+}
+```
 
 ### Headers
 
@@ -1397,6 +1331,15 @@ Use the response to track payout processing, crypto deposit state, and final sta
 Use this endpoint to fetch the current active OffRamp order for a client.
 Use the response to restore flow state when user comes back to the session.
 
+**Response**
+```json
+{
+  "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
+  "status": "PROCESSING",
+  "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
+}
+```
+
 ### Headers
 
 | Name | Type | Required | Description |
@@ -1431,15 +1374,6 @@ Use the response to restore flow state when user comes back to the session.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
-
-**Response**
-```json
-{
-  "id": "da078a7a-b700-44f1-88f5-ec754baab3f3",
-  "status": "PROCESSING",
-  "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
-}
-```
 ### Step 9. Get order history (optional)
 **POST** `/api/v2/exchange/merchant/order/history`
 

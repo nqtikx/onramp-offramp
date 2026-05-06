@@ -6,18 +6,12 @@ OffRamp is used when the client sends crypto and receives fiat through a provide
 
 > BASE_URL https://api.dev.wbdevel.net
 
-### Headers
-- `x-api-key: {{x-api-key}}`
-
 ### Step 1. Get available assets
 Use this endpoint to retrieve available fiat and crypto assets for the merchant context. Use the response to build asset selectors and validate `code/network` pairs in downstream requests.
 
 **POST** `/api/v2/exchange/merchant/assets`
 
 **Headers**
-- `x-api-key: {{x-api-key}}`
-
-### Headers
 - `x-api-key: {{x-api-key}}`
 
 **Response**
@@ -161,9 +155,6 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 **Headers**
 - `x-api-key: {{x-api-key}}`
 
-### Headers
-- `x-api-key: {{x-api-key}}`
-
 **Request**
 ```json
 {
@@ -259,12 +250,9 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 
 **POST** `/api/v2/exchange/merchant/payment/method`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 > Take payment method `id` and pass it as `paymentMethodToken` in quote creation. Use records with `status=ENABLED` and `isRestricted=false`.
 
-### Headers
+**Headers**
 - `x-api-key: {{x-api-key}}`
 
 **Request**
@@ -338,11 +326,11 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 ### Step 4. Calculate limits 
 **POST** `/api/v2/exchange/merchant/limit`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to calculate min/max available amount for the selected pair and payment method.
 Use the response to validate user input before quote creation.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json
@@ -414,11 +402,14 @@ Use the response to validate user input before quote creation.
 ### Step 5. Create quote 
 **POST** `/api/v2/exchange/merchant/quote`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
+Use this endpoint to calculate executable quote values (amounts, rate, fees, expiration).
+Use the response `quoteId` as an input for buy/sell order creation.
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json
@@ -461,9 +452,6 @@ Use the response to validate user input before quote creation.
     "expirationDate": "2026-04-27T11:11:11+0000"
 }
 ```
-
-Use this endpoint to calculate executable quote values (amounts, rate, fees, expiration).
-Use the response `quoteId` as an input for buy/sell order creation.
 
 ### Headers
 
@@ -524,13 +512,13 @@ Use the response `quoteId` as an input for buy/sell order creation.
 ### Step 6. Buy Crypto 
 **GET** `/api/v2/exchange/merchant/buy?destinationCryptoAddress={{walletAddress}}&quoteId={{quoteId}}`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 > From response take orderId.
 
 Use this endpoint to create a fiat-to-crypto order from a previously created quote.
 Use the response `id` as `orderId` for status polling and order details retrieval.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Response**
 ```json
@@ -592,11 +580,11 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 ### Step 7. Get order by ID
 **GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to fetch full order details by `orderId`.
 Use the response to track all order phases (exchange, fiat transaction, crypto transaction) and status transitions.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Response**
 ```json
@@ -762,11 +750,11 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 ### Step 8. Get current order (optional)
 **GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to fetch the current active order for a specific client.
 Use the response for quick status restore when user returns to the flow.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Response**
 ```json
@@ -820,11 +808,11 @@ Use the response for quick status restore when user returns to the flow.
 ### Step 9. Get order history (optional)
 **POST** `/api/v2/exchange/merchant/order/history`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to fetch paged order history for a client.
 Use the response to build transaction history screens and filtering/pagination UI.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json
@@ -901,16 +889,14 @@ Use the response to build transaction history screens and filtering/pagination U
 
 ## 3. OffRamp (crypto -> fiat) — Merchant API
 
-
 ### Step 1. Get available assets
 **POST** `/api/v2/exchange/merchant/assets`
-
-**Headers**
-- `x-api-key: {{x-api-key}}`
 
 Use this endpoint to fetch available fiat and crypto assets for OffRamp flow in the current merchant context.
 Use the response to validate selected source crypto and target fiat assets before requesting limits/quotes.
 
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Response**
 ```json
@@ -1048,11 +1034,11 @@ Use the response to validate selected source crypto and target fiat assets befor
 ### Step 2. Get payment providers
 **POST** `/api/v2/exchange/merchant/payment/provider`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to get payout providers available for the selected OffRamp context.
 Use the response to select provider and payout corridor before requesting payment methods.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json
@@ -1126,13 +1112,13 @@ Use the response to select provider and payout corridor before requesting paymen
 ### Step 3. Get payment methods
 **POST** `/api/v2/exchange/merchant/payment/method`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 > Take payment method `id` and pass it as `paymentMethodToken` in quote creation. Use records with status=`ENABLED` and `isRestricted=false`.
 
 Use this endpoint to get available payout methods for the selected OffRamp direction.
 Use the response to select `paymentMethodToken` for quote and sell order creation.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json
@@ -1205,11 +1191,11 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 ### Step 4. Calculate limits 
 **POST** `/api/v2/exchange/merchant/limit`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to calculate min/max available amount for the selected OffRamp pair and payout method.
 Use the response to validate the amount before quote creation.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json
@@ -1282,11 +1268,14 @@ Use the response to validate the amount before quote creation.
 ### Step 5. Create quote 
 **POST** `/api/v2/exchange/merchant/quote`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
+Use this endpoint to calculate executable OffRamp quote values for crypto-to-fiat exchange.
+Use the response `quoteId` to create the sell order.
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json
@@ -1330,9 +1319,6 @@ Use the response to validate the amount before quote creation.
     "expirationDate": "2026-04-27T12:15:27+0000"
 }
 ```
-
-Use this endpoint to calculate executable OffRamp quote values for crypto-to-fiat exchange.
-Use the response `quoteId` to create the sell order.
 
 ### Headers
 
@@ -1393,13 +1379,13 @@ Use the response `quoteId` to create the sell order.
 ### Step 6. Sell crypto 
 **GET** `/api/v2/exchange/merchant/sell?failureDepositAddress={{walletAddress}}&quoteId={{quoteId}}&sourceAddress={{walletAddress1}}`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 > From response take orderId (id).
 
 Use this endpoint to create a crypto-to-fiat order from an existing quote.
 Use the response `id` as `orderId` for polling and status tracking.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Response**
 ```json
@@ -1463,11 +1449,11 @@ Use the response `id` as `orderId` for polling and status tracking.
 ### Step 7. Get order by ID
 **GET** `/api/v2/exchange/merchant/order?orderId={{Order_ID}}`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to fetch complete OffRamp order details by `orderId`.
 Use the response to track payout processing, crypto deposit state, and final status.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Response**
 ```json
@@ -1573,11 +1559,11 @@ Use the response to track payout processing, crypto deposit state, and final sta
 ### Step 8. Get current order (optional)
 **GET** `/api/v2/exchange/merchant/order/current?clientId={{clientId}}`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to fetch the current active OffRamp order for a client.
 Use the response to restore flow state when user comes back to the session.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Response**
 ```json

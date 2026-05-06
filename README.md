@@ -1612,11 +1612,11 @@ Use the response to restore flow state when user comes back to the session.
 ### Step 9. Get order history (optional)
 **POST** `/api/v2/exchange/merchant/order/history`
 
-**Headers**
-- `x-api-key: {{x-api-key}}`
-
 Use this endpoint to fetch paged OffRamp order history for a client.
 Use the response for history UI, status analytics, and reconciliation.
+
+**Headers**
+- `x-api-key: {{x-api-key}}`
 
 **Request**
 ```json

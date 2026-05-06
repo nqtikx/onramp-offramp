@@ -232,17 +232,17 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 
 | Name | Type | Description |
 |---|---|---|
-| `[].id` | `string` | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
-| `[].number` | `string` | Masked payment method number shown to client. |
-| `[].brand` | `string` | Payment brand, if applicable. |
-| `[].providerId` | `string` | Provider identifier. |
-| `[].providerType` | `string` | Provider type, for example `ASSIST` or `CA`. |
-| `[].status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
-| `[].isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
-| `[].isCrypto` | `boolean` | Indicates crypto payment method record. |
-| `[].country` | `string` | Country associated with the payment method. |
-| `[].currency` | `string` | Payment currency code, if returned. |
-| `[].supportedCurrencies` | `array<string>` | Supported fiat currencies for this method, if returned. |
+| `id` | `string` | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
+| `number` | `string` | Masked payment method number shown to client. |
+| `brand` | `string` | Payment brand, if applicable. |
+| `providerId` | `string` | Provider identifier. |
+| `providerType` | `string` | Provider type, for example `ASSIST` or `CA`. |
+| `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
+| `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
+| `isCrypto` | `boolean` | Indicates crypto payment method record. |
+| `country` | `string` | Country associated with the payment method. |
+| `currency` | `string` | Payment currency code, if returned. |
+| `supportedCurrencies` | `array<string>` | Supported fiat currencies for this method, if returned. |
 
 ### Errors
 
@@ -256,6 +256,34 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 
 Use this endpoint to calculate min/max available amount for the selected pair and payment method.
 Use the response to validate user input before quote creation.
+
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "toAsset": {
+        "code": "TRX",
+        "network": "Tron"
+    },
+    "fromAsset": {
+        "code": "RUB",
+        "network": null
+        
+    },
+    "paymentMethod": "CA"
+}
+```
+**Response**
+```json
+{
+    "asset": {
+        "id": "RUB",
+        "code": "RUB"
+    },
+    "min": 263.16,
+    "max": 1182894.74
+}
+```
 
 ### Headers
 
@@ -295,38 +323,53 @@ Use the response to validate user input before quote creation.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-**Request**
-```json
-{
-    "clientId": "{{clientId}}",
-    "toAsset": {
-        "code": "TRX",
-        "network": "Tron"
-    },
-    "fromAsset": {
-        "code": "RUB",
-        "network": null
-        
-    },
-    "paymentMethod": "CA"
-}
-```
-**Response**
-```json
-{
-    "asset": {
-        "id": "RUB",
-        "code": "RUB"
-    },
-    "min": 263.16,
-    "max": 1182894.74
-}
-```
 ### Step 5. Create quote (v2)
 **POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
+
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "fromAsset": {
+        "code": "RUB",
+        "network": null,
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "TRX",
+        "network": "Tron"
+    },
+    "paymentMethod": "CA",
+    "paymentMethodToken": "{{payment_token}}"
+}
+```
+**Response**
+```json
+{
+    "quoteId": "8bed6c08-90bc-4521-81d7-68bb0176ebae",
+    "fromAsset": {
+        "code": "RUB",
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "TRX",
+        "network": "Tron",
+        "amount": "5.127711"
+    },
+    "rate": 29.2528,
+    "plainRate": 27.13,
+    "fee": {
+        "total": 3.75,
+        "service": null,
+        "network": 0.263,
+        "asset": "RUB"
+    },
+    "expirationDate": "2026-04-27T11:11:11+0000"
+}
+```
 
 Use this endpoint to calculate executable quote values (amounts, rate, fees, expiration).
 Use the response `quoteId` as an input for buy/sell order creation.
@@ -376,52 +419,11 @@ Use the response `quoteId` as an input for buy/sell order creation.
 
 | Name | Code | Description |
 | --- | --- | --- |
-| INVALID_QUOTE | 400 | Quote cannot be calculated for provided values. |
+| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated for provided values. |
 | CURRENCY_NOT_FOUND | 400 | Invalid asset or network. |
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-**Request**
-```json
-{
-    "clientId": "{{clientId}}",
-    "fromAsset": {
-        "code": "RUB",
-        "network": null,
-        "amount": "150"
-    },
-    "toAsset": {
-        "code": "TRX",
-        "network": "Tron"
-    },
-    "paymentMethod": "CA",
-    "paymentMethodToken": "{{payment_token}}"
-}
-```
-**Response**
-```json
-{
-    "quoteId": "8bed6c08-90bc-4521-81d7-68bb0176ebae",
-    "fromAsset": {
-        "code": "RUB",
-        "amount": "150"
-    },
-    "toAsset": {
-        "code": "TRX",
-        "network": "Tron",
-        "amount": "5.127711"
-    },
-    "rate": 29.2528,
-    "plainRate": 27.13,
-    "fee": {
-        "total": 3.75,
-        "service": null,
-        "network": 0.263,
-        "asset": "RUB"
-    },
-    "expirationDate": "2026-04-27T11:11:11+0000"
-}
-```
 ### Step 6. Buy Crypto (v2)
 **GET** `/api/v2/exchange/merchant/buy?destinationCryptoAddress={{walletAddress}}&quoteId={{quoteId}}`
 
@@ -669,6 +671,36 @@ Use the response for quick status restore when user returns to the flow.
 Use this endpoint to fetch paged order history for a client.
 Use the response to build transaction history screens and filtering/pagination UI.
 
+**Request**
+```json
+{
+  "clientId": "{{clientId}}"
+}
+```
+**Response**
+```json
+{
+  "content": [
+    {
+      "id": "37a48ec9-150f-4c3f-88f8-7e8d48a2fd3b",
+      "status": "PROCESSING"
+    },
+    {
+      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
+      "status": "FAILED"
+    }
+  ],
+  "totalElements": 33,
+  "totalPages": 4,
+  "number": 0,
+  "size": 10
+}
+```
+
 ### Headers
 
 | Name | Type | Required | Description |
@@ -711,35 +743,6 @@ Use the response to build transaction history screens and filtering/pagination U
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
-**Request**
-```json
-{
-  "clientId": "{{clientId}}"
-}
-```
-**Response**
-```json
-{
-  "content": [
-    {
-      "id": "37a48ec9-150f-4c3f-88f8-7e8d48a2fd3b",
-      "status": "PROCESSING"
-    },
-    {
-      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
-      "status": "COMPLETED"
-    },
-    {
-      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
-      "status": "FAILED"
-    }
-  ],
-  "totalElements": 33,
-  "totalPages": 4,
-  "number": 0,
-  "size": 10
-}
-```
 
 ## 3. OffRamp (crypto -> fiat) — Merchant API
 
@@ -844,11 +847,11 @@ Use the response to select provider and payout corridor before requesting paymen
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [].id | string | Provider identifier. |
-| [].name | string | Provider display name. |
-| [].addPaymentMethod | boolean | Indicates whether payment method binding/creation is available. |
-| [].config.paymentSystems | array of objects | Supported payment systems/directions/currencies. |
-| [].commissions | array of objects | Provider commission configuration. |
+| id | string | Provider identifier. |
+| name | string | Provider display name. |
+| addPaymentMethod | boolean | Indicates whether payment method binding/creation is available. |
+| config.paymentSystems | array of objects | Supported payment systems/directions/currencies. |
+| commissions | array of objects | Provider commission configuration. |
 
 ### Errors
 
@@ -976,17 +979,17 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 
 | Name | Type | Description |
 | --- | --- | --- |
-| [].id | string | Payment method token/id. |
-| [].number | string | Masked card/account number. |
-| [].brand | string | Payment brand. |
-| [].providerId | string | Provider identifier. |
-| [].providerType | string | Legacy provider type field. |
-| [].status | string | Payment method status. |
-| [].isRestricted | boolean | Restriction flag. |
-| [].isCrypto | boolean | Indicates crypto payment method. |
-| [].country | string | Country label. |
-| [].currency | string | Payment currency code. |
-| [].supportedCurrencies | array<string> | Supported fiat currencies for the method. |
+| id | string | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
+| number | string | Masked payment method number shown to client. |
+| brand | string | Payment method brand, for example `VISA`. |
+| providerId | string | Provider identifier. |
+| providerType | string | Provider type, for example `ASSIST` or `CA`. |
+| status | string | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
+| isRestricted | boolean | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
+| isCrypto | boolean | Indicates crypto payment method. |
+| country | string | Payment method country. |
+| currency | string | Primary fiat currency. |
+| supportedCurrencies | array of strings | Fiat currencies supported by this payment method. |
 
 ### Errors
 
@@ -1038,6 +1041,35 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 Use this endpoint to calculate min/max available amount for the selected OffRamp pair and payout method.
 Use the response to validate the amount before quote creation.
 
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "toAsset": {
+        "code": "RUB",
+        "network": null
+    },
+    "fromAsset": {
+        "code": "TRX",
+        "network": "Tron"
+        
+    },
+    "paymentMethod": "CA"
+}
+```
+**Response**
+```json
+{
+    "asset": {
+        "id": "TRX",
+        "code": "TRX",
+        "network": "Tron"
+    },
+    "min": 9.985536,
+    "max": 44884.20673
+}
+```
+
 ### Headers
 
 | Name | Type | Required | Description |
@@ -1076,39 +1108,54 @@ Use the response to validate the amount before quote creation.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-**Request**
-```json
-{
-    "clientId": "{{clientId}}",
-    "toAsset": {
-        "code": "RUB",
-        "network": null
-    },
-    "fromAsset": {
-        "code": "TRX",
-        "network": "Tron"
-        
-    },
-    "paymentMethod": "CA"
-}
-```
-**Response**
-```json
-{
-    "asset": {
-        "id": "TRX",
-        "code": "TRX",
-        "network": "Tron"
-    },
-    "min": 9.985536,
-    "max": 44884.20673
-}
-```
 ### Step 5. Create quote (v2)
 **POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
 > [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
+
+**Request**
+```json
+{
+    "clientId": "{{clientId}}",
+    "fromAsset": {
+        "code": "TRX",
+        "network": "Tron",
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "RUB",
+        "network": null
+    },
+
+    "paymentMethod": "CA",
+    "paymentMethodToken": "{{payment_token}}"
+}
+```
+**Response**
+```json
+{
+    "quoteId": "f8274e38-7f36-4d39-97ad-fabf10274b92",
+    "fromAsset": {
+        "code": "TRX",
+        "network": "Tron",
+        "amount": "150"
+    },
+    "toAsset": {
+        "code": "RUB",
+        "amount": "3955.59"
+    },
+    "rate": 26.3706,
+    "plainRate": 26.7722,
+    "fee": {
+        "total": 60.24,
+        "service": null,
+        "network": 0,
+        "asset": "RUB"
+    },
+    "expirationDate": "2026-04-27T12:15:27+0000"
+}
+```
 
 Use this endpoint to calculate executable OffRamp quote values for crypto-to-fiat exchange.
 Use the response `quoteId` to create the sell order.
@@ -1158,53 +1205,11 @@ Use the response `quoteId` to create the sell order.
 
 | Name | Code | Description |
 | --- | --- | --- |
-| INVALID_QUOTE | 400 | Quote cannot be calculated for provided values. |
+| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated for provided values. |
 | `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid asset or network. |
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
 
-**Request**
-```json
-{
-    "clientId": "{{clientId}}",
-    "fromAsset": {
-        "code": "TRX",
-        "network": "Tron",
-        "amount": "150"
-    },
-    "toAsset": {
-        "code": "RUB",
-        "network": null
-    },
-
-    "paymentMethod": "CA",
-    "paymentMethodToken": "{{payment_token}}"
-}
-```
-**Response**
-```json
-{
-    "quoteId": "f8274e38-7f36-4d39-97ad-fabf10274b92",
-    "fromAsset": {
-        "code": "TRX",
-        "network": "Tron",
-        "amount": "150"
-    },
-    "toAsset": {
-        "code": "RUB",
-        "amount": "3955.59"
-    },
-    "rate": 26.3706,
-    "plainRate": 26.7722,
-    "fee": {
-        "total": 60.24,
-        "service": null,
-        "network": 0,
-        "asset": "RUB"
-    },
-    "expirationDate": "2026-04-27T12:15:27+0000"
-}
-```
 ### Step 6. Sell crypto (v2)
 **GET** `/api/v2/exchange/merchant/sell?failureDepositAddress={{walletAddress}}&quoteId={{quoteId}}&sourceAddress={{walletAddress1}}`
 
@@ -1252,9 +1257,9 @@ Use the response `id` as `orderId` for polling and status tracking.
 
 | Name | Code | Description |
 | --- | --- | --- |
-| QUOTE_NOT_FOUND | 400 | Quote does not exist or already expired. |
-| INVALID_QUOTE | 400 | Quote is invalid for order creation. |
-| AML_FRAUD_VALIDATION_ERROR | 400 | AML/fraud checks blocked order creation. |
+| `400 QUOTE_NOT_FOUND` | BUSINESS | Quote does not exist or already expired. |
+| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated or cannot be used for order creation. |
+| `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -1441,6 +1446,36 @@ Use the response to restore flow state when user comes back to the session.
 Use this endpoint to fetch paged OffRamp order history for a client.
 Use the response for history UI, status analytics, and reconciliation.
 
+**Request**
+```json
+{
+  "clientId": "{{clientId}}"
+}
+```
+**Response**
+```json
+{
+  "content": [
+    {
+      "id": "8bdafd97-6e16-4146-89a5-750e09353584",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
+      "status": "FAILED"
+    }
+  ],
+  "totalElements": 33,
+  "totalPages": 4,
+  "number": 0,
+  "size": 10
+}
+```
+
 ### Headers
 
 | Name | Type | Required | Description |
@@ -1483,35 +1518,6 @@ Use the response for history UI, status analytics, and reconciliation.
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
-**Request**
-```json
-{
-  "clientId": "{{clientId}}"
-}
-```
-**Response**
-```json
-{
-  "content": [
-    {
-      "id": "8bdafd97-6e16-4146-89a5-750e09353584",
-      "status": "COMPLETED"
-    },
-    {
-      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
-      "status": "COMPLETED"
-    },
-    {
-      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
-      "status": "FAILED"
-    }
-  ],
-  "totalElements": 33,
-  "totalPages": 4,
-  "number": 0,
-  "size": 10
-}
-```
 
 
 ## Quote fields

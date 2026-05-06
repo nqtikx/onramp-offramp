@@ -1,4 +1,4 @@
-# ONRAMP | OFFRAMP
+# OnRAMP | OffRAMP
 
 OnRamp and OffRamp flows are used for external fiat-to-crypto and crypto-to-fiat operations.
 OnRamp is used when the client pays fiat through a provider and receives crypto to an external wallet.

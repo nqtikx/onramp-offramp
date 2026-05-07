@@ -6,29 +6,6 @@ OffRamp is used when the client sends crypto and receives fiat through a provide
 
 > BASE_URL https://api.dev.wbdevel.net
 
-## Navigation
-
-- **OnRamp**
-- [Step 1. Get available assets](#step-1-get-available-assets)
-- [Step 2. Get payment providers](#step-2-get-payment-providers)
-- [Step 3. Get payment methods](#step-3-get-payment-methods)
-- [Step 4. Calculate limits](#step-4-calculate-limits)
-- [Step 5. Create quote](#step-5-create-quote)
-- [Step 6. Buy Crypto](#step-6-buy-crypto)
-- [Step 7. Get order by ID](#step-7-get-order-by-id)
-- [Step 8. Get current order (optional)](#step-8-get-current-order-optional)
-- [Step 9. Get order history (optional)](#step-9-get-order-history-optional)
-- **OffRamp**
-- [Step 1. Get available assets](#step-1-get-available-assets-1)
-- [Step 2. Get payment providers](#step-2-get-payment-providers-1)
-- [Step 3. Get payment methods](#step-3-get-payment-methods-1)
-- [Step 4. Calculate limits](#step-4-calculate-limits-1)
-- [Step 5. Create quote](#step-5-create-quote-1)
-- [Step 6. Sell Crypto](#step-6-sell-crypto)
-- [Step 7. Get order by ID](#step-7-get-order-by-id-1)
-- [Step 8. Get current order (optional)](#step-8-get-current-order-optional-1)
-- [Step 9. Get order history (optional)](#step-9-get-order-history-optional-1)
-
 ## 1. OnRamp (fiat -> crypto)
 
 OnRamp flow is used when the client pays fiat through a provider and receives crypto to an external wallet. The flow is quote first, then order creation.

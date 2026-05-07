@@ -417,7 +417,6 @@ Use the response `quoteId` as an input for buy/sell order creation.
 **POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
-> [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
 
 **Headers**
 - `x-api-key: {{x-api-key}}`
@@ -820,6 +819,7 @@ Use the response for quick status restore when user returns to the flow.
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+
 ### Step 9. Get order history (optional)
 Use this endpoint to fetch paged order history for a client.
 Use the response to build transaction history screens and filtering/pagination UI.
@@ -1340,7 +1340,6 @@ Use the response `quoteId` to create the sell order.
 **POST** `/api/v2/exchange/merchant/quote`
 
 > From response take quoteId.
-> [You can Check the request fields to understand how the calculation is performed.](./V2.md#quote-fields)
 
 **Headers**
 - `x-api-key: {{x-api-key}}`

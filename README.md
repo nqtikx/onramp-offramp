@@ -128,7 +128,7 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 
 | Name | Type | Required | Description |
 |---|---|---:|---|
-| `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
 
 ### Response
 
@@ -218,7 +218,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 | `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | `fiatAsset` | `string` | No | Fiat code filter for provider routes. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
 | `providers` | `array of string` | No | Explicit provider filter list. |
 | `isCrypto` | `boolean` | No | Crypto-method filter. |
 | `countryGroup` | `array of string` | No | Country-group filter. |
@@ -302,7 +302,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 | `fiatAsset` | `string` | No | Fiat code filter for payment methods. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Flow destination filter. Use it to scope available routes to the required integration context. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
 | `providers` | `array of string` | No | Provider filter list (for current examples: `ASSIST`). |
 | `isCrypto` | `boolean` | No | Filters crypto payment methods if supported by provider. |
 | `countryGroup` | `array of string` | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
@@ -314,8 +314,8 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `id` | `string` | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
 | `number` | `string` | Masked payment method number shown to client. |
 | `brand` | `string` | Payment brand, if applicable. |
-| `providerId` | `string` | Provider identifier. |
-| `providerType` | `string` | Provider type, for example `ASSIST` or `CA`. |
+| `providerId` | `string` | Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS). |
+| `providerType` | `string` | Provider category/type returned by provider integration. Usually matches providerId for standard routes. |
 | `name` | `string` | Deprecated provider display field that may be returned by some integrations. |
 | `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
 | `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
@@ -501,13 +501,13 @@ Use the response `quoteId` as an input for buy/sell order creation.
 | `toAsset.code` | `string` | Target asset code. |
 | `toAsset.network` | `string \| null` | Target asset network if returned. |
 | `toAsset.amount` | `string` | Target amount resolved by quote calculation. |
-| `rate` | `number` | Final client rate. |
-| `plainRate` | `number` | Market/base rate before final quote adjustments. |
+| `rate` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
+| `plainRate` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
 | `fee` | `object` | Fee breakdown object. |
-| `fee.total` | `number` | Total fee amount. |
-| `fee.service` | `number \| null` | Service fee component. |
-| `fee.network` | `number \| null` | Network/payment component. |
-| `fee.asset` | `string` | Fee asset code. |
+| `fee.total` | `number` | Total fee amount in `fee.asset` currency. |
+| `fee.service` | `number \| null` | Service fee component in `fee.asset` currency. |
+| `fee.network` | `number \| null` | Network/payment component in `fee.asset` currency. |
+| `fee.asset` | `string` | Asset code in which `fee.total`, `fee.service`, and `fee.network` are expressed. |
 | `expirationDate` | `string` | Quote expiration timestamp in server date-time format. |
 
 ### Errors
@@ -702,10 +702,10 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | `exchangeOperation.inputAsset` | `number` | Source amount. |
 | `exchangeOperation.outputCurrency` | `string` | Destination asset/currency code. |
 | `exchangeOperation.outputAsset` | `number` | Destination amount. |
-| `exchangeOperation.exchangeFeeAssetInFiat` | `number` | Exchange fee represented in fiat asset. |
+| `exchangeOperation.exchangeFeeAssetInFiat` | `number` | Exchange fee represented in fiat asset currency (`exchangeOperation.inputCurrency` / fiat leg currency). |
 | `exchangeOperation.bonusOutputAsset` | `number \| null` | Bonus amount, if promo bonus is applied. |
-| `exchangeOperation.plainRatio` | `number` | Base rate before final adjustments. |
-| `exchangeOperation.ratio` | `number` | Final client-facing rate. |
+| `exchangeOperation.plainRatio` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
+| `exchangeOperation.ratio` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
 | `exchangeOperation.currencyPair` | `object` | Currency pair metadata. |
 | `exchangeOperation.currencyPair.fromCurrency` | `string` | Pair source currency code. |
 | `exchangeOperation.currencyPair.toCurrency` | `string` | Pair destination currency code. |
@@ -717,7 +717,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 | `cryptoTransaction.toAddress` | `string \| null` | Destination blockchain address. |
 | `cryptoTransaction.status` | `string` | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
 | `cryptoTransaction.currency` | `string` | Crypto asset code used in transaction. |
-| `cryptoTransaction.fee` | `number \| null` | Blockchain/network fee amount. |
+| `cryptoTransaction.fee` | `number \| null` | Blockchain/network fee amount in `cryptoTransaction.currency`. |
 | `cryptoTransaction.feePaymentEnabledByClient` | `boolean` | Whether client-paid network fee mode is enabled. |
 | `cryptoTransaction.type` | `string` | Crypto transfer processing type. |
 | `cryptoTransaction.comment` | `string \| null` | Transaction comment, if provided. |
@@ -838,24 +838,54 @@ Use the response to build transaction history screens and filtering/pagination U
 **Response**
 ```json
 {
-  "content": [
-    {
-      "id": "37a48ec9-150f-4c3f-88f8-7e8d48a2fd3b",
-      "status": "PROCESSING"
+    "content": [
+        {
+            "id": "dd6a9d8a-805d-42e1-a55c-fb8b129f3475",
+            "transactionId": "bdc30aff-17a7-42ed-93ec-55aebfcf46af",
+            "number": "4046",
+            "type": "WITHDRAWAL",
+            "status": "DECLINED",
+            "post": "**** **** **** 1111",
+            "providerType": "ASSIST",
+            "paymentSystem": "VISA",
+            "transactionHash": null,
+            "externalCryptoAddress": null,
+            "asset": "BYN",
+            "amount": "44",
+            "requestedAmount": "44",
+            "grossAmount": "44",
+            "netAmount": "43.34",
+            "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562",
+            "userId": "86c2b12b-a332-49ad-a447-d02c0b621dc4",
+            "creationDate": "2026-05-06T08:10:03+0000",
+            "completionDate": "2026-05-06T08:10:27+0000"
+        }
+    ],
+    "pageable": {
+        "sort": {
+            "unsorted": false,
+            "sorted": true,
+            "empty": false
+        },
+        "pageNumber": 0,
+        "pageSize": 20,
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
     },
-    {
-      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
-      "status": "COMPLETED"
+    "totalElements": 52,
+    "totalPages": 3,
+    "last": false,
+    "numberOfElements": 20,
+    "size": 20,
+    "number": 0,
+    "sort": {
+        "unsorted": false,
+        "sorted": true,
+        "empty": false
     },
-    {
-      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
-      "status": "FAILED"
-    }
-  ],
-  "totalElements": 33,
-  "totalPages": 4,
-  "number": 0,
-  "size": 10
+    "first": true,
+    "empty": false
 }
 ```
 
@@ -879,18 +909,70 @@ Use the response to build transaction history screens and filtering/pagination U
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
 | `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
+| `statuses` | `array of string` | No | Filter by order status values. |
+| `types` | `array of string` | No | Filter by order type values (`BUY`, `SELL`, `SWAP`). |
+| `orderTypes` | `array of string` | No | Filter by exchange direction types. |
+| `operationTypes` | `array of string` | No | Filter by operation direction (`FIAT_TO_CRYPTO`, `CRYPTO_TO_FIAT`). |
+| `providerTypes` | `array of string` | No | Filter by fiat provider ids (`ASSIST`, `CA`, `MTS`). |
+| `fiatStatuses` | `array of string` | No | Filter by fiat transaction statuses. |
+| `cryptoStatuses` | `array of string` | No | Filter by crypto transaction statuses. |
+| `creationDateFrame` | `object` | No | Creation date range filter object `{from, to}`. |
+| `completionDateFrame` | `object` | No | Completion date range filter object `{from, to}`. |
+| `orderId` | `string` | No | Filter by specific order id (UUID). |
+| `number` | `number` | No | Filter by numeric order number. |
+| `inputAssets` | `array of string` | No | Filter by source asset codes. |
+| `outputAssets` | `array of string` | No | Filter by destination asset codes. |
+| `assets` | `array of string` | No | Filter by asset code on either side of operation. |
+| `cryptoAddress` | `string` | No | Filter by crypto address involved in transaction. |
+| `fromSource` | `string` | No | Filter by source type (`EXT`/`INT`). |
+| `toSource` | `string` | No | Filter by destination type (`EXT`/`INT`). |
 
 ### Response
 
 | Name | Type | Description |
 | --- | --- | --- |
 | `content` | `array of objects` | Orders page content. |
-| `content[].id` | `string` | Order identifier. |
-| `content[].status` | `string` | Order status value. |
+| `content[].id` | `string` | Entry identifier. |
+| `content[].transactionId` | `string` | Related transaction identifier. |
+| `content[].number` | `string` | Operation number. |
+| `content[].type` | `string` | Operation type value (for example `WITHDRAWAL`). |
+| `content[].status` | `string` | Operation status value. |
+| `content[].post` | `string \| null` | Masked payment method or provider post field. |
+| `content[].providerType` | `string \| null` | Provider type value. |
+| `content[].paymentSystem` | `string \| null` | Payment system/brand value. |
+| `content[].transactionHash` | `string \| null` | Blockchain transaction hash. |
+| `content[].externalCryptoAddress` | `string \| null` | External crypto address in operation context. |
+| `content[].asset` | `string` | Asset/currency code. |
+| `content[].amount` | `string` | Operation amount. |
+| `content[].requestedAmount` | `string` | Requested amount. |
+| `content[].grossAmount` | `string` | Gross amount before net adjustments. |
+| `content[].netAmount` | `string` | Net amount after commissions/fees. |
+| `content[].clientId` | `string` | Client identifier. |
+| `content[].userId` | `string \| null` | User identifier. |
+| `content[].creationDate` | `string` | Creation timestamp. |
+| `content[].completionDate` | `string \| null` | Completion timestamp. |
+| `pageable` | `object` | Spring pageable metadata object. |
+| `pageable.pageNumber` | `number` | Current page number. |
+| `pageable.pageSize` | `number` | Current page size. |
+| `pageable.offset` | `number` | Current page offset. |
+| `pageable.paged` | `boolean` | Whether pageable mode is enabled. |
+| `pageable.unpaged` | `boolean` | Whether unpaged mode is enabled. |
+| `pageable.sort` | `object` | Pageable sort metadata. |
+| `pageable.sort.unsorted` | `boolean` | True when pageable sort is not set. |
+| `pageable.sort.sorted` | `boolean` | True when pageable sort is set. |
+| `pageable.sort.empty` | `boolean` | True when pageable sort metadata is empty. |
 | `totalElements` | `number` | Total matched items. |
 | `totalPages` | `number` | Total page count. |
+| `last` | `boolean` | True when this page is the last page. |
+| `numberOfElements` | `number` | Number of elements in current page. |
 | `number` | `number` | Current page number. |
 | `size` | `number` | Current page size. |
+| `sort` | `object` | Top-level sort metadata. |
+| `sort.unsorted` | `boolean` | True when top-level sort is not set. |
+| `sort.sorted` | `boolean` | True when top-level sort is set. |
+| `sort.empty` | `boolean` | True when top-level sort metadata is empty. |
+| `first` | `boolean` | True when this page is the first page. |
+| `empty` | `boolean` | True when page content is empty. |
 
 ### Errors
 
@@ -1023,7 +1105,7 @@ Use the response to validate selected source crypto and target fiat assets befor
 
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
-| `destination` | `string` | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
 
 ### Response
 
@@ -1138,7 +1220,7 @@ Use the response to select provider and payout corridor before requesting paymen
 | `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
 | `fiatAsset` | `string` | No | Fiat asset code used for filtering providers. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
 | `providers` | `array of string` | No | Explicit provider filter list. |
 | `isCrypto` | `boolean` | No | Crypto-method filter. |
 | `countryGroup` | `array of string` | No | Country-group filter. |
@@ -1224,7 +1306,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
 | `fiatAsset` | `string` | No | Fiat asset filter. |
 | `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Flow destination filter. Use `SDK_EXCHANGE` for SDK OnRamp/OffRamp operations or `EXCHANGE` for direct merchant exchange operations, depending on merchant configuration. Allowed values: `EXCHANGE`, `SDK_EXCHANGE`, `ACCOUNTING`, `SDK_ACCOUNTING`, `SDK_CROSS`. |
+| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
 | `providers` | `array of string` | No | Provider filter list. |
 | `isCrypto` | `boolean` | No | Flag for crypto-only payment methods. |
 | `countryGroup` | `array of strings` | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
@@ -1236,8 +1318,8 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | `id` | `string` | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
 | `number` | `string` | Masked payment method number shown to client. |
 | `brand` | `string` | Payment method brand, for example `VISA`. |
-| `providerId` | `string` | Provider identifier. |
-| `providerType` | `string` | Provider type, for example `ASSIST` or `CA`. |
+| `providerId` | `string` | Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS). |
+| `providerType` | `string` | Provider category/type returned by provider integration. Usually matches providerId for standard routes. |
 | `name` | `string` | Deprecated provider display field that may be returned by some integrations. |
 | `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
 | `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
@@ -1425,13 +1507,13 @@ Use the response `quoteId` to create the sell order.
 | `toAsset.code` | `string` | Target asset code. |
 | `toAsset.network` | `string \| null` | Target asset network if returned. |
 | `toAsset.amount` | `string` | Target amount resolved by quote calculation. |
-| `rate` | `number` | Final client rate. |
-| `plainRate` | `number` | Market/base rate before final quote adjustments. |
+| `rate` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
+| `plainRate` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
 | `fee` | `object` | Fee breakdown object. |
-| `fee.total` | `number` | Total fee amount. |
-| `fee.service` | `number \| null` | Service fee component. |
-| `fee.network` | `number \| null` | Network/payment component. |
-| `fee.asset` | `string` | Fee asset code. |
+| `fee.total` | `number` | Total fee amount in `fee.asset` currency. |
+| `fee.service` | `number \| null` | Service fee component in `fee.asset` currency. |
+| `fee.network` | `number \| null` | Network/payment component in `fee.asset` currency. |
+| `fee.asset` | `string` | Asset code in which `fee.total`, `fee.service`, and `fee.network` are expressed. |
 | `expirationDate` | `string` | Quote expiration timestamp in server date-time format. |
 
 ### Errors
@@ -1628,10 +1710,10 @@ Use the response to track payout processing, crypto deposit state, and final sta
 | `exchangeOperation.inputAsset` | `number` | Source amount. |
 | `exchangeOperation.outputCurrency` | `string` | Destination asset/currency code. |
 | `exchangeOperation.outputAsset` | `number` | Destination amount. |
-| `exchangeOperation.exchangeFeeAssetInFiat` | `number` | Exchange fee represented in fiat asset. |
+| `exchangeOperation.exchangeFeeAssetInFiat` | `number` | Exchange fee represented in fiat asset currency (`exchangeOperation.inputCurrency` / fiat leg currency). |
 | `exchangeOperation.bonusOutputAsset` | `number \| null` | Bonus amount, if promo bonus is applied. |
-| `exchangeOperation.plainRatio` | `number` | Base rate before final adjustments. |
-| `exchangeOperation.ratio` | `number` | Final client-facing rate. |
+| `exchangeOperation.plainRatio` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
+| `exchangeOperation.ratio` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
 | `exchangeOperation.currencyPair` | `object` | Currency pair metadata. |
 | `exchangeOperation.currencyPair.fromCurrency` | `string` | Pair source currency code. |
 | `exchangeOperation.currencyPair.toCurrency` | `string` | Pair destination currency code. |
@@ -1643,7 +1725,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
 | `cryptoTransaction.toAddress` | `string \| null` | Destination blockchain address. |
 | `cryptoTransaction.status` | `string` | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
 | `cryptoTransaction.currency` | `string` | Crypto asset code used in transaction. |
-| `cryptoTransaction.fee` | `number \| null` | Blockchain/network fee amount. |
+| `cryptoTransaction.fee` | `number \| null` | Blockchain/network fee amount in `cryptoTransaction.currency`. |
 | `cryptoTransaction.feePaymentEnabledByClient` | `boolean` | Whether client-paid network fee mode is enabled. |
 | `cryptoTransaction.type` | `string` | Crypto transfer processing type. |
 | `cryptoTransaction.comment` | `string \| null` | Transaction comment, if provided. |
@@ -1766,24 +1848,54 @@ Use the response for history UI, status analytics, and reconciliation.
 **Response**
 ```json
 {
-  "content": [
-    {
-      "id": "8bdafd97-6e16-4146-89a5-750e09353584",
-      "status": "COMPLETED"
+    "content": [
+        {
+            "id": "dd6a9d8a-805d-42e1-a55c-fb8b129f3475",
+            "transactionId": "bdc30aff-17a7-42ed-93ec-55aebfcf46af",
+            "number": "4046",
+            "type": "WITHDRAWAL",
+            "status": "DECLINED",
+            "post": "**** **** **** 1111",
+            "providerType": "ASSIST",
+            "paymentSystem": "VISA",
+            "transactionHash": null,
+            "externalCryptoAddress": null,
+            "asset": "BYN",
+            "amount": "44",
+            "requestedAmount": "44",
+            "grossAmount": "44",
+            "netAmount": "43.34",
+            "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562",
+            "userId": "86c2b12b-a332-49ad-a447-d02c0b621dc4",
+            "creationDate": "2026-05-06T08:10:03+0000",
+            "completionDate": "2026-05-06T08:10:27+0000"
+        }
+    ],
+    "pageable": {
+        "sort": {
+            "unsorted": false,
+            "sorted": true,
+            "empty": false
+        },
+        "pageNumber": 0,
+        "pageSize": 20,
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
     },
-    {
-      "id": "2cac7fd6-83e0-4d81-9532-85fb1bc14ca2",
-      "status": "COMPLETED"
+    "totalElements": 52,
+    "totalPages": 3,
+    "last": false,
+    "numberOfElements": 20,
+    "size": 20,
+    "number": 0,
+    "sort": {
+        "unsorted": false,
+        "sorted": true,
+        "empty": false
     },
-    {
-      "id": "7d8d3767-f403-4727-a9a0-9be71c563ac5",
-      "status": "FAILED"
-    }
-  ],
-  "totalElements": 33,
-  "totalPages": 4,
-  "number": 0,
-  "size": 10
+    "first": true,
+    "empty": false
 }
 ```
 
@@ -1807,18 +1919,70 @@ Use the response for history UI, status analytics, and reconciliation.
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
 | `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
+| `statuses` | `array of string` | No | Filter by order status values. |
+| `types` | `array of string` | No | Filter by order type values (`BUY`, `SELL`, `SWAP`). |
+| `orderTypes` | `array of string` | No | Filter by exchange direction types. |
+| `operationTypes` | `array of string` | No | Filter by operation direction (`FIAT_TO_CRYPTO`, `CRYPTO_TO_FIAT`). |
+| `providerTypes` | `array of string` | No | Filter by fiat provider ids (`ASSIST`, `CA`, `MTS`). |
+| `fiatStatuses` | `array of string` | No | Filter by fiat transaction statuses. |
+| `cryptoStatuses` | `array of string` | No | Filter by crypto transaction statuses. |
+| `creationDateFrame` | `object` | No | Creation date range filter object `{from, to}`. |
+| `completionDateFrame` | `object` | No | Completion date range filter object `{from, to}`. |
+| `orderId` | `string` | No | Filter by specific order id (UUID). |
+| `number` | `number` | No | Filter by numeric order number. |
+| `inputAssets` | `array of string` | No | Filter by source asset codes. |
+| `outputAssets` | `array of string` | No | Filter by destination asset codes. |
+| `assets` | `array of string` | No | Filter by asset code on either side of operation. |
+| `cryptoAddress` | `string` | No | Filter by crypto address involved in transaction. |
+| `fromSource` | `string` | No | Filter by source type (`EXT`/`INT`). |
+| `toSource` | `string` | No | Filter by destination type (`EXT`/`INT`). |
 
 ### Response
 
 | Name | Type | Description |
 | --- | --- | --- |
 | `content` | `array of objects` | Orders page content. |
-| `content[].id` | `string` | Order identifier. |
-| `content[].status` | `string` | Order status value. |
+| `content[].id` | `string` | Entry identifier. |
+| `content[].transactionId` | `string` | Related transaction identifier. |
+| `content[].number` | `string` | Operation number. |
+| `content[].type` | `string` | Operation type value (for example `WITHDRAWAL`). |
+| `content[].status` | `string` | Operation status value. |
+| `content[].post` | `string \| null` | Masked payment method or provider post field. |
+| `content[].providerType` | `string \| null` | Provider type value. |
+| `content[].paymentSystem` | `string \| null` | Payment system/brand value. |
+| `content[].transactionHash` | `string \| null` | Blockchain transaction hash. |
+| `content[].externalCryptoAddress` | `string \| null` | External crypto address in operation context. |
+| `content[].asset` | `string` | Asset/currency code. |
+| `content[].amount` | `string` | Operation amount. |
+| `content[].requestedAmount` | `string` | Requested amount. |
+| `content[].grossAmount` | `string` | Gross amount before net adjustments. |
+| `content[].netAmount` | `string` | Net amount after commissions/fees. |
+| `content[].clientId` | `string` | Client identifier. |
+| `content[].userId` | `string \| null` | User identifier. |
+| `content[].creationDate` | `string` | Creation timestamp. |
+| `content[].completionDate` | `string \| null` | Completion timestamp. |
+| `pageable` | `object` | Spring pageable metadata object. |
+| `pageable.pageNumber` | `number` | Current page number. |
+| `pageable.pageSize` | `number` | Current page size. |
+| `pageable.offset` | `number` | Current page offset. |
+| `pageable.paged` | `boolean` | Whether pageable mode is enabled. |
+| `pageable.unpaged` | `boolean` | Whether unpaged mode is enabled. |
+| `pageable.sort` | `object` | Pageable sort metadata. |
+| `pageable.sort.unsorted` | `boolean` | True when pageable sort is not set. |
+| `pageable.sort.sorted` | `boolean` | True when pageable sort is set. |
+| `pageable.sort.empty` | `boolean` | True when pageable sort metadata is empty. |
 | `totalElements` | `number` | Total matched items. |
 | `totalPages` | `number` | Total page count. |
+| `last` | `boolean` | True when this page is the last page. |
+| `numberOfElements` | `number` | Number of elements in current page. |
 | `number` | `number` | Current page number. |
 | `size` | `number` | Current page size. |
+| `sort` | `object` | Top-level sort metadata. |
+| `sort.unsorted` | `boolean` | True when top-level sort is not set. |
+| `sort.sorted` | `boolean` | True when top-level sort is set. |
+| `sort.empty` | `boolean` | True when top-level sort metadata is empty. |
+| `first` | `boolean` | True when this page is the first page. |
+| `empty` | `boolean` | True when page content is empty. |
 
 ### Errors
 

@@ -363,7 +363,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
       <td style="word-break: break-word; white-space: normal;">providers</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Explicit provider filter list.</td>
+      <td>Optional list of allowed fiat providers.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">isCrypto</td>
@@ -375,7 +375,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
       <td style="word-break: break-word; white-space: normal;">countryGroup</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Country-group filter.</td>
+      <td>Optional country group filter.</td>
     </tr>
   </tbody>
 </table>
@@ -610,7 +610,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
       <td style="word-break: break-word; white-space: normal;">providers</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Provider filter list (for current examples: ASSIST).</td>
+      <td>Optional list of allowed fiat providers.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">isCrypto</td>
@@ -622,7 +622,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
       <td style="word-break: break-word; white-space: normal;">countryGroup</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Country group filter. Allowed values: BELARUS, RUSSIA, FOREIGN.</td>
+      <td>Optional country group filter.</td>
     </tr>
   </tbody>
 </table>
@@ -1166,13 +1166,13 @@ Use the response `quoteId` as an input for buy/sell order creation.
       <td style="word-break: break-word; white-space: normal;">destinationCryptoAddress</td>
       <td>string</td>
       <td>No</td>
-      <td>Destination wallet for buy flow.</td>
+      <td>Destination wallet address for crypto-out flows (used when output.type is CRYPTO_TRANSFER).</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">comment</td>
       <td>string</td>
       <td>No</td>
-      <td>Optional merchant comment.</td>
+      <td>Used only for the TON network as a transfer memo for the recipient. For other networks the value is ignored.</td>
     </tr>
   </tbody>
 </table>
@@ -1195,8 +1195,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset</td>
-      <td>object</td>
-      <td>Resolved source asset and amount.</td>
+      <td>Quote identifier returned by quote creation; required to create an order before quote expiration.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
@@ -1251,8 +1250,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">plainRate</td>
-      <td>number</td>
-      <td>Base system rate at the moment of quote calculation. Used as a reference value.</td>
+      <td>Rate pair for the operation. Display this value to the client as the final pair label.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fee</td>
@@ -1397,31 +1395,31 @@ Use the response `id` as `orderId` for status polling and order details retrieva
       <td style="word-break: break-word; white-space: normal;">quoteId</td>
       <td>string (UUID)</td>
       <td>Yes</td>
-      <td>Quote identifier returned by quote API.</td>
+      <td>Quote identifier returned by quote creation; required to create an order before quote expiration.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">destinationCryptoAddress</td>
       <td>string</td>
       <td>No</td>
-      <td>Destination wallet address for crypto payout. The address must belong to the network selected in toAsset.network.</td>
+      <td>Destination wallet address for crypto-out flows (used when output.type is CRYPTO_TRANSFER).</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">comment</td>
       <td>string</td>
       <td>No</td>
-      <td>Optional order comment.</td>
+      <td>Used only for the TON network as a transfer memo for the recipient. For other networks the value is ignored.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">returnUrl</td>
       <td>string</td>
       <td>No</td>
-      <td>URL for success return flow.</td>
+      <td>URL the client should be redirected to on successful payment flow.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">failUrl</td>
       <td>string</td>
       <td>No</td>
-      <td>URL for fail return flow.</td>
+      <td>URL the client should be redirected to on failed payment flow.</td>
     </tr>
   </tbody>
 </table>
@@ -2359,7 +2357,7 @@ Use the response to build transaction history screens and filtering/pagination U
       <td style="word-break: break-word; white-space: normal;">statuses</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Filter by order status values.</td>
+      <td>Filter by order status. Allowed values: PROCESSING, EXPIRED, COMPLETED, FAILED.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">types</td>
@@ -2401,13 +2399,13 @@ Use the response to build transaction history screens and filtering/pagination U
       <td style="word-break: break-word; white-space: normal;">creationDateFrame</td>
       <td>object</td>
       <td>No</td>
-      <td>Creation date range filter object {from, to}.</td>
+      <td>Creation date range filter.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">completionDateFrame</td>
       <td>object</td>
       <td>No</td>
-      <td>Completion date range filter object {from, to}.</td>
+      <td>Completion date range filter.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">orderId</td>
@@ -2437,7 +2435,7 @@ Use the response to build transaction history screens and filtering/pagination U
       <td style="word-break: break-word; white-space: normal;">assets</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Filter by asset code on either side of operation.</td>
+      <td>Asset filter applied to either source or destination leg.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">cryptoAddress</td>
@@ -2635,12 +2633,12 @@ Use the response to build transaction history screens and filtering/pagination U
     <tr>
       <td style="word-break: break-word; white-space: normal;">totalElements</td>
       <td>number</td>
-      <td>Total matched items.</td>
+      <td>Total number of matching orders.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">totalPages</td>
       <td>number</td>
-      <td>Total page count.</td>
+      <td>Total number of pages.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">last</td>
@@ -3111,7 +3109,7 @@ Use the response to select provider and payout corridor before requesting paymen
       <td style="word-break: break-word; white-space: normal;">providers</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Explicit provider filter list.</td>
+      <td>Optional list of allowed fiat providers.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">isCrypto</td>
@@ -3123,7 +3121,7 @@ Use the response to select provider and payout corridor before requesting paymen
       <td style="word-break: break-word; white-space: normal;">countryGroup</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Country-group filter.</td>
+      <td>Optional country group filter.</td>
     </tr>
   </tbody>
 </table>
@@ -3364,7 +3362,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
       <td style="word-break: break-word; white-space: normal;">providers</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Provider filter list.</td>
+      <td>Optional list of allowed fiat providers.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">isCrypto</td>
@@ -3376,7 +3374,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
       <td style="word-break: break-word; white-space: normal;">countryGroup</td>
       <td>array of strings</td>
       <td>No</td>
-      <td>Country group filter. Allowed values: BELARUS, RUSSIA, FOREIGN.</td>
+      <td>Optional country group filter.</td>
     </tr>
   </tbody>
 </table>
@@ -3922,13 +3920,13 @@ Use the response `quoteId` to create the sell order.
       <td style="word-break: break-word; white-space: normal;">destinationCryptoAddress</td>
       <td>string</td>
       <td>No</td>
-      <td>Optional destination wallet context.</td>
+      <td>Destination wallet address for crypto-out flows (used when output.type is CRYPTO_TRANSFER).</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">comment</td>
       <td>string</td>
       <td>No</td>
-      <td>Optional merchant comment.</td>
+      <td>Optional. Used only for the TON network as a transfer memo for the recipient. For other networks the value is ignored. Format: free-form string provided by the receiving party (exchange/wallet).</td>
     </tr>
   </tbody>
 </table>
@@ -3951,8 +3949,7 @@ Use the response `quoteId` to create the sell order.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset</td>
-      <td>object</td>
-      <td>Resolved source asset and amount.</td>
+      <td>Quote identifier returned by quote creation; required to create an order before quote expiration.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
@@ -4007,8 +4004,7 @@ Use the response `quoteId` to create the sell order.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">plainRate</td>
-      <td>number</td>
-      <td>Base system rate at the moment of quote calculation. Used as a reference value.</td>
+      <td>Rate pair for the operation. Display this value to the client as the final pair label.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fee</td>
@@ -4155,7 +4151,7 @@ Use the response `id` as `orderId` for polling and status tracking.
       <td style="word-break: break-word; white-space: normal;">quoteId</td>
       <td>string (UUID)</td>
       <td>Yes</td>
-      <td>Quote identifier returned by quote API.</td>
+      <td>Quote identifier returned by quote creation; required to create an order before quote expiration.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">failureDepositAddress</td>
@@ -4277,8 +4273,7 @@ Use the response `id` as `orderId` for polling and status tracking.
   <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">400 QUOTE_NOT_FOUND</td>
-      <td>BUSINESS</td>
-      <td>Quote does not exist or already expired.</td>
+      <td>Blockchain address that must be shown to the client as the destination for crypto deposit.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">400 INVALID_QUOTE</td>
@@ -4970,8 +4965,7 @@ Use the response to restore flow state when user comes back to the session.
   <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
-      <td>BUSINESS</td>
-      <td>Client id is invalid or not linked to the merchant.</td>
+      <td>Blockchain address that must be shown to the client as the destination for crypto deposit.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
@@ -5137,7 +5131,7 @@ Use the response for history UI, status analytics, and reconciliation.
       <td style="word-break: break-word; white-space: normal;">statuses</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Filter by order status values.</td>
+      <td>Filter by order status. Allowed values: PROCESSING, EXPIRED, COMPLETED, FAILED.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">types</td>
@@ -5179,13 +5173,13 @@ Use the response for history UI, status analytics, and reconciliation.
       <td style="word-break: break-word; white-space: normal;">creationDateFrame</td>
       <td>object</td>
       <td>No</td>
-      <td>Creation date range filter object {from, to}.</td>
+      <td>Creation date range filter.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">completionDateFrame</td>
       <td>object</td>
       <td>No</td>
-      <td>Completion date range filter object {from, to}.</td>
+      <td>Completion date range filter.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">orderId</td>
@@ -5215,7 +5209,7 @@ Use the response for history UI, status analytics, and reconciliation.
       <td style="word-break: break-word; white-space: normal;">assets</td>
       <td>array of string</td>
       <td>No</td>
-      <td>Filter by asset code on either side of operation.</td>
+      <td>Asset filter applied to either source or destination leg.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">cryptoAddress</td>
@@ -5413,12 +5407,12 @@ Use the response for history UI, status analytics, and reconciliation.
     <tr>
       <td style="word-break: break-word; white-space: normal;">totalElements</td>
       <td>number</td>
-      <td>Total matched items.</td>
+      <td>Total number of matching orders.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">totalPages</td>
       <td>number</td>
-      <td>Total page count.</td>
+      <td>Total number of pages.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">last</td>

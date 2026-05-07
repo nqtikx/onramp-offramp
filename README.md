@@ -317,12 +317,21 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 | `providerId` | `string` | Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS). |
 | `providerType` | `string` | Provider category/type returned by provider integration. Usually matches providerId for standard routes. |
 | `name` | `string` | Deprecated provider display field that may be returned by some integrations. |
-| `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
+| `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`, `UNKNOWN`. |
 | `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
 | `isCrypto` | `boolean` | Indicates crypto payment method record. |
 | `country` | `string` | Country associated with the payment method. |
 | `currency` | `string` | Payment currency code, if returned. |
 | `supportedCurrencies` | `array of string` | Supported fiat currencies for this method, if returned. |
+
+#### Payment method status values
+
+| Status | Description |
+|---|---|
+| `ENABLED` | Payment method can be used for the selected flow, direction, and currency. |
+| `DIRECTION_DISABLED` | Payment method exists, but is not available for selected `orderType`. |
+| `CURRENCY_DISABLED` | Payment method exists, but does not support selected `fiatAsset`. |
+| `UNKNOWN` | Status cannot be resolved because required filters were not provided. |
 
 ### Errors
 
@@ -556,7 +565,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
 | `quoteId` | `string (UUID)` | Yes | Quote identifier returned by quote API. |
-| `destinationCryptoAddress` | `string` | No | Destination wallet address for payout. |
+| `destinationCryptoAddress` | `string` | No | Destination wallet address for crypto payout. The address must belong to the network selected in `toAsset.network`. |
 | `comment` | `string` | No | Optional order comment. |
 | `returnUrl` | `string` | No | URL for success return flow. |
 | `failUrl` | `string` | No | URL for fail return flow. |
@@ -1321,12 +1330,21 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 | `providerId` | `string` | Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS). |
 | `providerType` | `string` | Provider category/type returned by provider integration. Usually matches providerId for standard routes. |
 | `name` | `string` | Deprecated provider display field that may be returned by some integrations. |
-| `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`. |
+| `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`, `UNKNOWN`. |
 | `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
 | `isCrypto` | `boolean` | Indicates crypto payment method. |
 | `country` | `string` | Payment method country. |
 | `currency` | `string` | Primary fiat currency. |
 | `supportedCurrencies` | `array of strings` | Fiat currencies supported by this payment method. |
+
+#### Payment method status values
+
+| Status | Description |
+|---|---|
+| `ENABLED` | Payment method can be used for the selected flow, direction, and currency. |
+| `DIRECTION_DISABLED` | Payment method exists, but is not available for selected `orderType`. |
+| `CURRENCY_DISABLED` | Payment method exists, but does not support selected `fiatAsset`. |
+| `UNKNOWN` | Status cannot be resolved because required filters were not provided. |
 
 ### Errors
 
@@ -1527,7 +1545,7 @@ Use the response `quoteId` to create the sell order.
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
-### Step 6. Sell crypto 
+### Step 6. Sell Crypto 
 Use this endpoint to create a crypto-to-fiat order from an existing quote.
 Use the response `id` as `orderId` for polling and status tracking.
 
@@ -1564,8 +1582,8 @@ Use the response `id` as `orderId` for polling and status tracking.
 | Name | Type | Required | Description |
 | --- | --- | --- | --- |
 | `quoteId` | `string (UUID)` | Yes | Quote identifier returned by quote API. |
-| `failureDepositAddress` | `string` | No | Refund wallet if order fails before completion. |
-| `sourceAddress` | `string` | No | Sender wallet address for compliance checks. |
+| `failureDepositAddress` | `string` | No | Refund wallet address used if the order fails before completion. The address must belong to the network selected in `fromAsset.network`. |
+| `sourceAddress` | `string` | No | Sender wallet address for compliance checks. The address must belong to the network selected in `fromAsset.network`. |
 | `bankIdentifier` | `string` | No | Optional bank identifier used by selected payment provider. |
 
 ### Request

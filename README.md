@@ -394,6 +394,7 @@ Use the response to validate user input before quote creation.
 | Name | Type | Description |
 | --- | --- | --- |
 | `asset` | `object` | Asset used for limit values. |
+| `asset.id` | `string` | Internal asset identifier. |
 | `asset.code` | `string` | Asset code. |
 | `asset.network` | `string \| null` | Asset network if applicable. |
 | `min` | `number` | Minimum allowed amount. |
@@ -406,8 +407,6 @@ Use the response to validate user input before quote creation.
 | `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid `fromAsset`/`toAsset` pair. |
 | `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
 | `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 | `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
 | `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
 
@@ -773,12 +772,14 @@ Use the response for quick status restore when user returns to the flow.
 **Response**
 ```json
 {
-  "id": "4dffdc69-7821-4007-94ad-522ad6a46117",
-  "type": "BUY",
-  "status": "PROCESSING",
-  "creationDate": "2026-04-27T11:13:26.237357",
-  "modificationDate": "2026-04-27T11:13:27.727824",
-  "number": 831000003994
+    "id": "a1fcd0f0-8286-4015-914d-04db79921435",
+    "type": "BUY",
+    "status": "PROCESSING",
+    "creationDate": "2026-05-06T17:48:38.699568",
+    "modificationDate": "2026-05-06T17:48:42.242808",
+    "cryptoTransaction": null,
+    "expiresAtDate": "2026-05-06T18:18:37.181180",
+    "depositCryptoAddress": "TVEwq1PiFDfJKYvWiDFhVXQkzDwqWCyPXV"
 }
 ```
 

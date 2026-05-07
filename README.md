@@ -113,6 +113,40 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
             "code": "USDT",
             "network": "Tron",
             "protocol": "TRC-20"
+        },
+        {
+            "id": "BNB",
+            "code": "BNB",
+            "network": "BNB"
+        },
+        {
+            "id": "USDT_BNB",
+            "code": "USDT",
+            "network": "BNB",
+            "protocol": "BEP-20"
+        },
+        {
+            "id": "USDC_BNB",
+            "code": "USDC",
+            "network": "BNB",
+            "protocol": "BEP-20"
+        },
+        {
+            "id": "SOL",
+            "code": "SOL",
+            "network": "SOLANA"
+        },
+        {
+            "id": "USDT_SPL",
+            "code": "USDT",
+            "network": "SOLANA",
+            "protocol": "SPL"
+        },
+        {
+            "id": "USDC_SPL",
+            "code": "USDC",
+            "network": "SOLANA",
+            "protocol": "SPL"
         }
     ]
 }
@@ -2834,6 +2868,40 @@ Use the response to validate selected source crypto and target fiat assets befor
             "code": "USDT",
             "network": "Tron",
             "protocol": "TRC-20"
+        },
+        {
+            "id": "BNB",
+            "code": "BNB",
+            "network": "BNB"
+        },
+        {
+            "id": "USDT_BNB",
+            "code": "USDT",
+            "network": "BNB",
+            "protocol": "BEP-20"
+        },
+        {
+            "id": "USDC_BNB",
+            "code": "USDC",
+            "network": "BNB",
+            "protocol": "BEP-20"
+        },
+        {
+            "id": "SOL",
+            "code": "SOL",
+            "network": "SOLANA"
+        },
+        {
+            "id": "USDT_SPL",
+            "code": "USDT",
+            "network": "SOLANA",
+            "protocol": "SPL"
+        },
+        {
+            "id": "USDC_SPL",
+            "code": "USDC",
+            "network": "SOLANA",
+            "protocol": "SPL"
         }
     ]
 }

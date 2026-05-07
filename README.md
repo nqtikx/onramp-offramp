@@ -735,7 +735,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
   </tbody>
 </table>
 
-#### Payment method status values
+#**Payment method status values**
 
 <table width="100%">
   <thead>
@@ -1413,7 +1413,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -1684,7 +1684,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -2125,7 +2125,7 @@ Use the response for quick status restore when user returns to the flow.
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -2336,7 +2336,7 @@ Use the response to build transaction history screens and filtering/pagination U
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -3521,7 +3521,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
   </tbody>
 </table>
 
-#### Payment method status values
+#**Payment method status values**
 
 <table width="100%">
   <thead>
@@ -4203,7 +4203,7 @@ Use the response `id` as `orderId` for polling and status tracking.
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -4472,7 +4472,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -4913,7 +4913,7 @@ Use the response to restore flow state when user comes back to the session.
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>
@@ -5144,7 +5144,7 @@ Use the response for history UI, status analytics, and reconciliation.
   </tbody>
 </table>
 
-### Params
+**Params**
 
 <table width="100%">
   <thead>

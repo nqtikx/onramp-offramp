@@ -120,36 +120,128 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 
 ### Headers
 
-| Name | Type | Required | Description |
-|---|---|---:|---|
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-|---|---|---:|---|
-| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destination</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional flow destination filter. Recommended value: EXCHANGE.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-|---|---|---|
-| `fiatAssets` | `array of objects` | List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows. |
-| `fiatAssets[].id` | `string` | Internal fiat asset identifier used in API requests and routing logic. |
-| `fiatAssets[].code` | `string` | Currency code that can be displayed to the client in UI. |
-| `cryptoAssets` | `array of objects` | List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows. |
-| `cryptoAssets[].id` | `string` | Internal crypto asset identifier used in API requests; may include network-specific suffixes such as `USDT_TRC`. |
-| `cryptoAssets[].code` | `string` | Asset ticker displayed to the client; can differ from `id` when asset is network-specific. |
-| `cryptoAssets[].network` | `string` | Blockchain network that must be used for sending or receiving this crypto asset. |
-| `cryptoAssets[].protocol` | `string` | Token protocol shown to prevent sending funds through the wrong network. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAssets</td>
+      <td>array of objects</td>
+      <td>List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAssets[].id</td>
+      <td>string</td>
+      <td>Internal fiat asset identifier used in API requests and routing logic.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAssets[].code</td>
+      <td>string</td>
+      <td>Currency code that can be displayed to the client in UI.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets</td>
+      <td>array of objects</td>
+      <td>List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].id</td>
+      <td>string</td>
+      <td>Internal crypto asset identifier used in API requests; may include network-specific suffixes such as USDT_TRC.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].code</td>
+      <td>string</td>
+      <td>Asset ticker displayed to the client; can differ from id when asset is network-specific.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].network</td>
+      <td>string</td>
+      <td>Blockchain network that must be used for sending or receiving this crypto asset.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].protocol</td>
+      <td>string</td>
+      <td>Token protocol shown to prevent sending funds through the wrong network.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-|---|---|---|
-| `400 CURRENCY_NOT_FOUND` | BUSINESS | Asset configuration contains unsupported or unknown asset mapping. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CURRENCY_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Asset configuration contains unsupported or unknown asset mapping.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 2. Get payment providers
 Use this endpoint to retrieve available fiat payment providers for the selected client and direction. Use the response to choose a provider route and validate supported currency/direction combinations.
@@ -206,52 +298,215 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 
 ### Headers
 
-| Name | Type | Required | Description |
-|---|---|---:|---|
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | Optional external client identifier used for merchant/client mapping validation. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional external client identifier used for merchant/client mapping validation.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-|---|---|---:|---|
-| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
-| `fiatAsset` | `string` | No | Fiat code filter for provider routes. |
-| `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
-| `providers` | `array of string` | No | Explicit provider filter list. |
-| `isCrypto` | `boolean` | No | Crypto-method filter. |
-| `countryGroup` | `array of string` | No | Country-group filter. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAsset</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Fiat code filter for provider routes.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderType</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Order direction. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destination</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional flow destination filter. Recommended value: EXCHANGE.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providers</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Explicit provider filter list.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isCrypto</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Crypto-method filter.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">countryGroup</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Country-group filter.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-|---|---|---|
-| `id` | `string` | Provider identifier. |
-| `name` | `string` | Provider display name. |
-| `addPaymentMethod` | `boolean` | Defines whether provider supports adding payment methods. |
-| `config` | `object` | Provider routing configuration. |
-| `config.paymentSystems` | `array of objects` | Payment systems list for provider. |
-| `config.paymentSystems[].paymentSystem` | `string` | Payment system name (for example `VISA`, `MIR`, `BelCard`). |
-| `config.paymentSystems[].type` | `string` | Provider channel type. |
-| `config.paymentSystems[].directions` | `array of objects` | Supported operation directions for this payment system. |
-| `config.paymentSystems[].directions[].direction` | `string` | Direction for payment system route (`BUY`/`SELL`). |
-| `config.paymentSystems[].directions[].currencies` | `array of objects` | Supported currencies for selected direction. |
-| `config.paymentSystems[].directions[].currencies[].currency` | `string` | Fiat currency for this route. |
-| `config.paymentSystems[].directions[].currencies[].banks` | `array of string` | Optional bank restrictions for this route. |
-| `config.paymentSystems[].directions[].currencies[].countries` | `array of string` | Optional country restrictions for this route. |
-| `commissions` | `array of objects` | Commission settings for provider. |
-| `commissions[].bank` | `string` | Bank group key for commission row. |
-| `commissions[].buyCommission` | `string` | Commission value/range for buy direction. |
-| `commissions[].sellCommission` | `string` | Commission value/range for sell direction. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Provider identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">name</td>
+      <td>string</td>
+      <td>Provider display name.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">addPaymentMethod</td>
+      <td>boolean</td>
+      <td>Defines whether provider supports adding payment methods.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config</td>
+      <td>object</td>
+      <td>Provider routing configuration.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems</td>
+      <td>array of objects</td>
+      <td>Payment systems list for provider.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].paymentSystem</td>
+      <td>string</td>
+      <td>Payment system name (for example VISA, MIR, BelCard).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].type</td>
+      <td>string</td>
+      <td>Provider channel type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions</td>
+      <td>array of objects</td>
+      <td>Supported operation directions for this payment system.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].direction</td>
+      <td>string</td>
+      <td>Direction for payment system route (BUY/SELL).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies</td>
+      <td>array of objects</td>
+      <td>Supported currencies for selected direction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies[].currency</td>
+      <td>string</td>
+      <td>Fiat currency for this route.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies[].banks</td>
+      <td>array of string</td>
+      <td>Optional bank restrictions for this route.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies[].countries</td>
+      <td>array of string</td>
+      <td>Optional country restrictions for this route.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions</td>
+      <td>array of objects</td>
+      <td>Commission settings for provider.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions[].bank</td>
+      <td>string</td>
+      <td>Bank group key for commission row.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions[].buyCommission</td>
+      <td>string</td>
+      <td>Commission value/range for buy direction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions[].sellCommission</td>
+      <td>string</td>
+      <td>Commission value/range for sell direction.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-|---|---|---|
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Provided `clientId` is invalid or not linked to merchant. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Provided clientId is invalid or not linked to merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 3. Get payment methods
 Use this endpoint to retrieve payment methods/tokens available for the selected provider context. Use the response to select `paymentMethodToken` with valid status and pass it to quote creation.
@@ -290,56 +545,219 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 
 ### Headers
 
-| Name | Type | Required | Description |
-|---|---|---:|---|
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | Optional external client identifier used for merchant/client mapping validation. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional external client identifier used for merchant/client mapping validation.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-|---|---|---:|---|
-| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
-| `fiatAsset` | `string` | No | Fiat code filter for payment methods. |
-| `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
-| `providers` | `array of string` | No | Provider filter list (for current examples: `ASSIST`). |
-| `isCrypto` | `boolean` | No | Filters crypto payment methods if supported by provider. |
-| `countryGroup` | `array of string` | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAsset</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Fiat code filter for payment methods.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderType</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Order direction. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destination</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional flow destination filter. Recommended value: EXCHANGE.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providers</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Provider filter list (for current examples: ASSIST).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isCrypto</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Filters crypto payment methods if supported by provider.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">countryGroup</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Country group filter. Allowed values: BELARUS, RUSSIA, FOREIGN.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-|---|---|---|
-| `id` | `string` | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
-| `number` | `string` | Masked payment method number shown to client. |
-| `brand` | `string` | Payment brand, if applicable. |
-| `providerId` | `string` | Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS). |
-| `providerType` | `string` | Provider category/type returned by provider integration. Usually matches providerId for standard routes. |
-| `name` | `string` | Deprecated provider display field that may be returned by some integrations. |
-| `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`, `UNKNOWN`. |
-| `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
-| `isCrypto` | `boolean` | Indicates crypto payment method record. |
-| `country` | `string` | Country associated with the payment method. |
-| `currency` | `string` | Payment currency code, if returned. |
-| `supportedCurrencies` | `array of string` | Supported fiat currencies for this method, if returned. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Payment method token. Pass this value as paymentMethodToken in OnRamp/OffRamp quote requests.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>string</td>
+      <td>Masked payment method number shown to client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">brand</td>
+      <td>string</td>
+      <td>Payment brand, if applicable.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providerId</td>
+      <td>string</td>
+      <td>Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providerType</td>
+      <td>string</td>
+      <td>Provider category/type returned by provider integration. Usually matches providerId for standard routes.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">name</td>
+      <td>string</td>
+      <td>Deprecated provider display field that may be returned by some integrations.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Payment method status. Allowed values: ENABLED, DIRECTION_DISABLED, CURRENCY_DISABLED, UNKNOWN.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isRestricted</td>
+      <td>boolean</td>
+      <td>Shows whether this payment method is restricted. Use only methods with isRestricted=false.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isCrypto</td>
+      <td>boolean</td>
+      <td>Indicates crypto payment method record.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">country</td>
+      <td>string</td>
+      <td>Country associated with the payment method.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">currency</td>
+      <td>string</td>
+      <td>Payment currency code, if returned.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">supportedCurrencies</td>
+      <td>array of string</td>
+      <td>Supported fiat currencies for this method, if returned.</td>
+    </tr>
+  </tbody>
+</table>
 
 #### Payment method status values
 
-| Status | Description |
-|---|---|
-| `ENABLED` | Payment method can be used for the selected flow, direction, and currency. |
-| `DIRECTION_DISABLED` | Payment method exists, but is not available for selected `orderType`. |
-| `CURRENCY_DISABLED` | Payment method exists, but does not support selected `fiatAsset`. |
-| `UNKNOWN` | Status cannot be resolved because required filters were not provided. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="220" style="word-break: break-word; white-space: normal;">Status</th>
+      <th width="680">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">ENABLED</td>
+      <td>Payment method can be used for the selected flow, direction, and currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">DIRECTION_DISABLED</td>
+      <td>Payment method exists, but is not available for selected orderType.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">CURRENCY_DISABLED</td>
+      <td>Payment method exists, but does not support selected fiatAsset.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">UNKNOWN</td>
+      <td>Status cannot be resolved because required filters were not provided.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-|---|---|---|
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Provided `clientId` is invalid or not linked to merchant. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Provided clientId is invalid or not linked to merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 4. Calculate limits 
 Use this endpoint to calculate min/max available amount for the selected pair and payment method.
@@ -380,44 +798,199 @@ Use the response to validate user input before quote creation.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
-| `fromAsset` | `object` | Yes | Source asset object. |
-| `fromAsset.code` | `string` | Yes | Source asset code. |
-| `fromAsset.network` | `string \| null` | No | Source asset network for crypto assets. |
-| `toAsset` | `object` | Yes | Target asset object. |
-| `toAsset.code` | `string` | Yes | Target asset code. |
-| `toAsset.network` | `string \| null` | No | Target asset network for crypto assets. |
-| `paymentMethod` | `string` | Yes | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Source asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Source asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Source asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Target asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Target asset code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Target asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">paymentMethod</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Payment provider type used for the operation, for example CA or ASSIST.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `asset` | `object` | Asset used for limit values. |
-| `asset.id` | `string` | Internal asset identifier. |
-| `asset.code` | `string` | Asset code. |
-| `asset.network` | `string \| null` | Asset network if applicable. |
-| `min` | `number` | Minimum allowed amount. |
-| `max` | `number` | Maximum allowed amount. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset</td>
+      <td>object</td>
+      <td>Asset used for limit values.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset.id</td>
+      <td>string</td>
+      <td>Internal asset identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset.code</td>
+      <td>string</td>
+      <td>Asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset.network</td>
+      <td>string | null</td>
+      <td>Asset network if applicable.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">min</td>
+      <td>number</td>
+      <td>Minimum allowed amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">max</td>
+      <td>number</td>
+      <td>Maximum allowed amount.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid `fromAsset`/`toAsset` pair. |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CURRENCY_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Invalid fromAsset/toAsset pair.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 Bad Request</td>
+      <td>HTTP</td>
+      <td>Request validation failed for one or more fields.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 5. Create quote 
 Use this endpoint to calculate executable quote values (amounts, rate, fees, expiration).
@@ -474,61 +1047,289 @@ Use the response `quoteId` as an input for buy/sell order creation.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
-| `fromAsset` | `object` | Yes | Source asset object. |
-| `fromAsset.code` | `string` | Yes | Source asset code. |
-| `fromAsset.network` | `string \| null` | No | Source asset network for crypto assets. |
-| `fromAsset.amount` | `number` | No | Source amount when quote is input-side based. |
-| `toAsset` | `object` | Yes | Target asset object. |
-| `toAsset.code` | `string` | Yes | Target asset code. |
-| `toAsset.network` | `string \| null` | No | Target asset network for crypto assets. |
-| `toAsset.amount` | `number` | No | Target amount when quote is output-side based. |
-| `paymentMethod` | `string` | No | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
-| `paymentMethodToken` | `string` | No | Selected payment method token/id. |
-| `destinationCryptoAddress` | `string` | No | Destination wallet for buy flow. |
-| `comment` | `string` | No | Optional merchant comment. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Source asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Source asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Source asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.amount</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Source amount when quote is input-side based.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Target asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Target asset code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Target asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.amount</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Target amount when quote is output-side based.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">paymentMethod</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Payment provider type used for the operation, for example CA or ASSIST.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">paymentMethodToken</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Selected payment method token/id.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destinationCryptoAddress</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Destination wallet for buy flow.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">comment</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional merchant comment.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `quoteId` | `string` | Quote identifier used for order creation. |
-| `fromAsset` | `object` | Resolved source asset and amount. |
-| `fromAsset.code` | `string` | Source asset code. |
-| `fromAsset.network` | `string \| null` | Source asset network if returned. |
-| `fromAsset.amount` | `string` | Source amount used in quote calculation. |
-| `toAsset` | `object` | Resolved target asset and amount. |
-| `toAsset.code` | `string` | Target asset code. |
-| `toAsset.network` | `string \| null` | Target asset network if returned. |
-| `toAsset.amount` | `string` | Target amount resolved by quote calculation. |
-| `rate` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
-| `plainRate` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
-| `fee` | `object` | Fee breakdown object. |
-| `fee.total` | `number` | Total fee amount in `fee.asset` currency. |
-| `fee.service` | `number \| null` | Service fee component in `fee.asset` currency. |
-| `fee.network` | `number \| null` | Network/payment component in `fee.asset` currency. |
-| `fee.asset` | `string` | Asset code in which `fee.total`, `fee.service`, and `fee.network` are expressed. |
-| `expirationDate` | `string` | Quote expiration timestamp in server date-time format. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">quoteId</td>
+      <td>string</td>
+      <td>Quote identifier used for order creation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
+      <td>Resolved source asset and amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
+      <td>string</td>
+      <td>Source asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
+      <td>string | null</td>
+      <td>Source asset network if returned.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.amount</td>
+      <td>string</td>
+      <td>Source amount used in quote calculation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset</td>
+      <td>object</td>
+      <td>Resolved target asset and amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.code</td>
+      <td>string</td>
+      <td>Target asset code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.network</td>
+      <td>string | null</td>
+      <td>Target asset network if returned.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.amount</td>
+      <td>string</td>
+      <td>Target amount resolved by quote calculation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">rate</td>
+      <td>number</td>
+      <td>Final client-facing rate applied to the quote/order. Show this value to the client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">plainRate</td>
+      <td>number</td>
+      <td>Base system rate at the moment of quote calculation. Used as a reference value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee</td>
+      <td>object</td>
+      <td>Fee breakdown object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.total</td>
+      <td>number</td>
+      <td>Total fee amount in fee.asset currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.service</td>
+      <td>number | null</td>
+      <td>Service fee component in fee.asset currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.network</td>
+      <td>number | null</td>
+      <td>Network/payment component in fee.asset currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.asset</td>
+      <td>string</td>
+      <td>Asset code in which fee.total, fee.service, and fee.network are expressed.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">expirationDate</td>
+      <td>string</td>
+      <td>Quote expiration timestamp in server date-time format.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated for provided values. |
-| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid asset or network. |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 INVALID_QUOTE</td>
+      <td>BUSINESS</td>
+      <td>Quote cannot be calculated for provided values.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CURRENCY_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Invalid asset or network.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 Bad Request</td>
+      <td>HTTP</td>
+      <td>Request validation failed for one or more fields.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 6. Buy Crypto 
 Use this endpoint to create a fiat-to-crypto order from a previously created quote.
@@ -555,48 +1356,195 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `quoteId` | `string (UUID)` | Yes | Quote identifier returned by quote API. |
-| `destinationCryptoAddress` | `string` | No | Destination wallet address for crypto payout. The address must belong to the network selected in `toAsset.network`. |
-| `comment` | `string` | No | Optional order comment. |
-| `returnUrl` | `string` | No | URL for success return flow. |
-| `failUrl` | `string` | No | URL for fail return flow. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">quoteId</td>
+      <td>string (UUID)</td>
+      <td>Yes</td>
+      <td>Quote identifier returned by quote API.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destinationCryptoAddress</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Destination wallet address for crypto payout. The address must belong to the network selected in toAsset.network.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">comment</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional order comment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">returnUrl</td>
+      <td>string</td>
+      <td>No</td>
+      <td>URL for success return flow.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">failUrl</td>
+      <td>string</td>
+      <td>No</td>
+      <td>URL for fail return flow.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `body` | `none` | - | GET endpoint without request body. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">body</td>
+      <td>none</td>
+      <td>-</td>
+      <td>GET endpoint without request body.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Order identifier. |
-| `type` | `string` | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `status` | `string` | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| `creationDate` | `string` | Order creation timestamp in server date-time format. |
-| `modificationDate` | `string` | Last order update timestamp in server date-time format. |
-| `fiatPaymentLink` | `string` | Payment link/token for fiat step processing. |
-| `expiresAtDate` | `string \| null` | Order expiration timestamp in server date-time format. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Order identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">type</td>
+      <td>string</td>
+      <td>Order type. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Current order lifecycle state. Allowed values: NEW, PROCESSING, COMPLETED, EXPIRED, ERROR.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">modificationDate</td>
+      <td>string</td>
+      <td>Last order update timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatPaymentLink</td>
+      <td>string</td>
+      <td>Payment link/token for fiat step processing.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">expiresAtDate</td>
+      <td>string | null</td>
+      <td>Order expiration timestamp in server date-time format.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 QUOTE_NOT_FOUND` | BUSINESS | Quote does not exist or already expired. |
-| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated or cannot be used for order creation. |
-| `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 QUOTE_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Quote does not exist or already expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 INVALID_QUOTE</td>
+      <td>BUSINESS</td>
+      <td>Quote cannot be calculated or cannot be used for order creation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 AML_FRAUD_VALIDATION_ERROR</td>
+      <td>BUSINESS</td>
+      <td>AML/fraud checks blocked order creation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 7. Get order by ID
 Use this endpoint to fetch full order details by `orderId`.
@@ -679,94 +1627,421 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `orderId` | `string (UUID)` | Yes | Order identifier returned by buy/sell API. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderId</td>
+      <td>string (UUID)</td>
+      <td>Yes</td>
+      <td>Order identifier returned by buy/sell API.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `body` | `none` | - | GET endpoint without request body. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">body</td>
+      <td>none</td>
+      <td>-</td>
+      <td>GET endpoint without request body.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Order identifier. |
-| `type` | `string` | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `status` | `string` | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| `creationDate` | `string` | Order creation timestamp in server date-time format. |
-| `modificationDate` | `string` | Last order update timestamp in server date-time format. |
-| `number` | `number` | Internal order number. |
-| `exchangeOperation` | `object` | Exchange side details (input/output, rates, fees). |
-| `exchangeOperation.inputCurrency` | `string` | Source asset/currency code. |
-| `exchangeOperation.inputAsset` | `number` | Source amount. |
-| `exchangeOperation.outputCurrency` | `string` | Destination asset/currency code. |
-| `exchangeOperation.outputAsset` | `number` | Destination amount. |
-| `exchangeOperation.exchangeFeeAssetInFiat` | `number` | Exchange fee represented in fiat asset currency (`exchangeOperation.inputCurrency` / fiat leg currency). |
-| `exchangeOperation.bonusOutputAsset` | `number \| null` | Bonus amount, if promo bonus is applied. |
-| `exchangeOperation.plainRatio` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
-| `exchangeOperation.ratio` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
-| `exchangeOperation.currencyPair` | `object` | Currency pair metadata. |
-| `exchangeOperation.currencyPair.fromCurrency` | `string` | Pair source currency code. |
-| `exchangeOperation.currencyPair.toCurrency` | `string` | Pair destination currency code. |
-| `cryptoTransaction` | `object` | Crypto transfer details. |
-| `cryptoTransaction.hash` | `string \| null` | Blockchain transaction hash when available. |
-| `cryptoTransaction.externalCryptoAddress` | `string \| null` | External wallet address used in operation. |
-| `cryptoTransaction.internalCryptoAddress` | `string \| null` | Internal wallet/deposit address used in operation. |
-| `cryptoTransaction.fromAddress` | `string \| null` | Source blockchain address. |
-| `cryptoTransaction.toAddress` | `string \| null` | Destination blockchain address. |
-| `cryptoTransaction.status` | `string` | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
-| `cryptoTransaction.currency` | `string` | Crypto asset code used in transaction. |
-| `cryptoTransaction.fee` | `number \| null` | Blockchain/network fee amount in `cryptoTransaction.currency`. |
-| `cryptoTransaction.feePaymentEnabledByClient` | `boolean` | Whether client-paid network fee mode is enabled. |
-| `cryptoTransaction.type` | `string` | Crypto transfer processing type. |
-| `cryptoTransaction.comment` | `string \| null` | Transaction comment, if provided. |
-| `fiatTransaction` | `object` | Fiat processing details. |
-| `fiatTransaction.status` | `string` | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
-| `fiatTransaction.paymentToken` | `string \| null` | Payment method token used by provider leg. |
-| `fiatTransaction.post` | `string \| null` | Provider postback payload/reference, if returned. |
-| `fiatTransaction.brand` | `string \| null` | Card/payment brand returned by provider. |
-| `fiatTransaction.internalToken` | `string \| null` | Internal provider token/reference. |
-| `fiatTransaction.orderIdentity` | `string \| null` | Provider-side order reference used for reconciliation. |
-| `fiatTransaction.link` | `string \| null` | Provider payment link/reference. |
-| `fiatTransaction.providerType` | `string \| null` | Fiat provider type. |
-| `fiatTransaction.paymentType` | `string \| null` | Provider payment channel/type. |
-| `fiatTransaction.processingBank` | `string \| null` | Processing bank, if returned by provider. |
-| `fiatTransaction.resultMessage` | `string \| null` | Provider processing message. |
-| `fiatTransaction.currency` | `string \| null` | Fiat currency used by provider transaction. |
-| `fiatTransaction.processorTransactionNumber` | `string \| null` | Provider processor transaction identifier. |
-| `client` | `object` | Client scope details. |
-| `client.clientId` | `string` | Client identifier used for request scoping. |
-| `operationType` | `string` | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
-| `exchangeType` | `string` | Exchange direction as internal enum value. |
-| `orderType` | `string` | Internal order subtype. |
-| `submitByResident` | `boolean \| null` | Resident submission flag, if applicable. |
-| `merchantName` | `string` | Merchant name associated with order. |
-| `merchantBonus` | `number \| null` | Merchant bonus amount, if applicable. |
-| `promoCodeDetails` | `string \| null` | Promo code details payload, if applied. |
-| `fromSource` | `string` | Source side enum value (`EXT`/`INT`). |
-| `toSource` | `string` | Destination side enum value (`EXT`/`INT`). |
-| `serverDate` | `string` | Server timestamp in server date-time format. |
-| `completionDate` | `string \| null` | Completion timestamp in server date-time format. |
-| `resultMessage` | `string \| null` | Processing message. |
-| `expiresAtDate` | `string \| null` | Order expiration timestamp in server date-time format. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Order identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">type</td>
+      <td>string</td>
+      <td>Order type. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Current order lifecycle state. Allowed values: NEW, PROCESSING, COMPLETED, EXPIRED, ERROR.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">modificationDate</td>
+      <td>string</td>
+      <td>Last order update timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>number</td>
+      <td>Internal order number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation</td>
+      <td>object</td>
+      <td>Exchange side details (input/output, rates, fees).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.inputCurrency</td>
+      <td>string</td>
+      <td>Source asset/currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.inputAsset</td>
+      <td>number</td>
+      <td>Source amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.outputCurrency</td>
+      <td>string</td>
+      <td>Destination asset/currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.outputAsset</td>
+      <td>number</td>
+      <td>Destination amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.exchangeFeeAssetInFiat</td>
+      <td>number</td>
+      <td>Exchange fee represented in fiat asset currency (exchangeOperation.inputCurrency / fiat leg currency).</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.bonusOutputAsset</td>
+      <td>number | null</td>
+      <td>Bonus amount, if promo bonus is applied.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.plainRatio</td>
+      <td>number</td>
+      <td>Base system rate at the moment of quote calculation. Used as a reference value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.ratio</td>
+      <td>number</td>
+      <td>Final client-facing rate applied to the quote/order. Show this value to the client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.currencyPair</td>
+      <td>object</td>
+      <td>Currency pair metadata.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.currencyPair.fromCurrency</td>
+      <td>string</td>
+      <td>Pair source currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.currencyPair.toCurrency</td>
+      <td>string</td>
+      <td>Pair destination currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction</td>
+      <td>object</td>
+      <td>Crypto transfer details.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.hash</td>
+      <td>string | null</td>
+      <td>Blockchain transaction hash when available.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.externalCryptoAddress</td>
+      <td>string | null</td>
+      <td>External wallet address used in operation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.internalCryptoAddress</td>
+      <td>string | null</td>
+      <td>Internal wallet/deposit address used in operation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.fromAddress</td>
+      <td>string | null</td>
+      <td>Source blockchain address.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.toAddress</td>
+      <td>string | null</td>
+      <td>Destination blockchain address.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.status</td>
+      <td>string</td>
+      <td>Crypto transaction status. Allowed values: NEW, PENDING_REVIEW, NOT_FOUND, REJECTED, TIMEOUT, INVALID_AMOUNT, ERROR, AML_ERROR, AML_BLOCKED, ARREST, SUBMITTING, SUBMITTED, PENDING, SELECTED, CONFIRMED, PENDING_RESOLVE.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.currency</td>
+      <td>string</td>
+      <td>Crypto asset code used in transaction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.fee</td>
+      <td>number | null</td>
+      <td>Blockchain/network fee amount in cryptoTransaction.currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.feePaymentEnabledByClient</td>
+      <td>boolean</td>
+      <td>Whether client-paid network fee mode is enabled.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.type</td>
+      <td>string</td>
+      <td>Crypto transfer processing type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.comment</td>
+      <td>string | null</td>
+      <td>Transaction comment, if provided.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction</td>
+      <td>object</td>
+      <td>Fiat processing details.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.status</td>
+      <td>string</td>
+      <td>Fiat transaction status. Allowed values: NEW, PENDING_REVIEW, REJECTED, TIMEOUT, DECLINED, INVALID_AMOUNT, ERROR, AML_BLOCKED, PENDING, PROCESSING, APPROVED.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.paymentToken</td>
+      <td>string | null</td>
+      <td>Payment method token used by provider leg.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.post</td>
+      <td>string | null</td>
+      <td>Provider postback payload/reference, if returned.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.brand</td>
+      <td>string | null</td>
+      <td>Card/payment brand returned by provider.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.internalToken</td>
+      <td>string | null</td>
+      <td>Internal provider token/reference.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.orderIdentity</td>
+      <td>string | null</td>
+      <td>Provider-side order reference used for reconciliation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.link</td>
+      <td>string | null</td>
+      <td>Provider payment link/reference.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.providerType</td>
+      <td>string | null</td>
+      <td>Fiat provider type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.paymentType</td>
+      <td>string | null</td>
+      <td>Provider payment channel/type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.processingBank</td>
+      <td>string | null</td>
+      <td>Processing bank, if returned by provider.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.resultMessage</td>
+      <td>string | null</td>
+      <td>Provider processing message.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.currency</td>
+      <td>string | null</td>
+      <td>Fiat currency used by provider transaction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.processorTransactionNumber</td>
+      <td>string | null</td>
+      <td>Provider processor transaction identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">client</td>
+      <td>object</td>
+      <td>Client scope details.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">client.clientId</td>
+      <td>string</td>
+      <td>Client identifier used for request scoping.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">operationType</td>
+      <td>string</td>
+      <td>Internal operation type, for example FIAT_TO_CRYPTO or CRYPTO_TO_FIAT.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeType</td>
+      <td>string</td>
+      <td>Exchange direction as internal enum value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderType</td>
+      <td>string</td>
+      <td>Internal order subtype.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">submitByResident</td>
+      <td>boolean | null</td>
+      <td>Resident submission flag, if applicable.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">merchantName</td>
+      <td>string</td>
+      <td>Merchant name associated with order.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">merchantBonus</td>
+      <td>number | null</td>
+      <td>Merchant bonus amount, if applicable.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">promoCodeDetails</td>
+      <td>string | null</td>
+      <td>Promo code details payload, if applied.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromSource</td>
+      <td>string</td>
+      <td>Source side enum value (EXT/INT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toSource</td>
+      <td>string</td>
+      <td>Destination side enum value (EXT/INT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">serverDate</td>
+      <td>string</td>
+      <td>Server timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">completionDate</td>
+      <td>string | null</td>
+      <td>Completion timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">resultMessage</td>
+      <td>string | null</td>
+      <td>Processing message.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">expiresAtDate</td>
+      <td>string | null</td>
+      <td>Order expiration timestamp in server date-time format.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `404 ORDER_NOT_FOUND` | BUSINESS | Order not found or not accessible in merchant scope. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">404 ORDER_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Order not found or not accessible in merchant scope.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 8. Get current order (optional)
 Use this endpoint to fetch the current active order for a specific client.
@@ -793,41 +2068,145 @@ Use the response for quick status restore when user returns to the flow.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `body` | `none` | - | GET endpoint without request body. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">body</td>
+      <td>none</td>
+      <td>-</td>
+      <td>GET endpoint without request body.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Current active order id. |
-| `type` | `string` | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `status` | `string` | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| `creationDate` | `string` | Order creation timestamp in server date-time format. |
-| `modificationDate` | `string` | Last order update timestamp in server date-time format. |
-| `number` | `number` | Internal order number. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Current active order id.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">type</td>
+      <td>string</td>
+      <td>Order type. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Current order lifecycle state. Allowed values: NEW, PROCESSING, COMPLETED, EXPIRED, ERROR.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">modificationDate</td>
+      <td>string</td>
+      <td>Last order update timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>number</td>
+      <td>Internal order number.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 9. Get order history (optional)
 Use this endpoint to fetch paged order history for a client.
@@ -900,97 +2279,455 @@ Use the response to build transaction history screens and filtering/pagination U
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `page` | `number` | No | Page number (Spring pageable). |
-| `size` | `number` | No | Page size. |
-| `sort` | `string` | No | Sort format (default by `creationDate,DESC`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">page</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Page number (Spring pageable).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">size</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Page size.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Sort format (default by creationDate,DESC).</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
-| `statuses` | `array of string` | No | Filter by order status values. |
-| `types` | `array of string` | No | Filter by order type values (`BUY`, `SELL`, `SWAP`). |
-| `orderTypes` | `array of string` | No | Filter by exchange direction types. |
-| `operationTypes` | `array of string` | No | Filter by operation direction (`FIAT_TO_CRYPTO`, `CRYPTO_TO_FIAT`). |
-| `providerTypes` | `array of string` | No | Filter by fiat provider ids (`ASSIST`, `CA`, `MTS`). |
-| `fiatStatuses` | `array of string` | No | Filter by fiat transaction statuses. |
-| `cryptoStatuses` | `array of string` | No | Filter by crypto transaction statuses. |
-| `creationDateFrame` | `object` | No | Creation date range filter object `{from, to}`. |
-| `completionDateFrame` | `object` | No | Completion date range filter object `{from, to}`. |
-| `orderId` | `string` | No | Filter by specific order id (UUID). |
-| `number` | `number` | No | Filter by numeric order number. |
-| `inputAssets` | `array of string` | No | Filter by source asset codes. |
-| `outputAssets` | `array of string` | No | Filter by destination asset codes. |
-| `assets` | `array of string` | No | Filter by asset code on either side of operation. |
-| `cryptoAddress` | `string` | No | Filter by crypto address involved in transaction. |
-| `fromSource` | `string` | No | Filter by source type (`EXT`/`INT`). |
-| `toSource` | `string` | No | Filter by destination type (`EXT`/`INT`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">statuses</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by order status values.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">types</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by order type values (BUY, SELL, SWAP).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderTypes</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by exchange direction types.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">operationTypes</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by operation direction (FIAT_TO_CRYPTO, CRYPTO_TO_FIAT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providerTypes</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by fiat provider ids (ASSIST, CA, MTS).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatStatuses</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by fiat transaction statuses.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoStatuses</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by crypto transaction statuses.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDateFrame</td>
+      <td>object</td>
+      <td>No</td>
+      <td>Creation date range filter object {from, to}.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">completionDateFrame</td>
+      <td>object</td>
+      <td>No</td>
+      <td>Completion date range filter object {from, to}.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by specific order id (UUID).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Filter by numeric order number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">inputAssets</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by source asset codes.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">outputAssets</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by destination asset codes.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">assets</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by asset code on either side of operation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAddress</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by crypto address involved in transaction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromSource</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by source type (EXT/INT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toSource</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by destination type (EXT/INT).</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `content` | `array of objects` | Orders page content. |
-| `content[].id` | `string` | Entry identifier. |
-| `content[].transactionId` | `string` | Related transaction identifier. |
-| `content[].number` | `string` | Operation number. |
-| `content[].type` | `string` | Operation type value (for example `WITHDRAWAL`). |
-| `content[].status` | `string` | Operation status value. |
-| `content[].post` | `string \| null` | Masked payment method or provider post field. |
-| `content[].providerType` | `string \| null` | Provider type value. |
-| `content[].paymentSystem` | `string \| null` | Payment system/brand value. |
-| `content[].transactionHash` | `string \| null` | Blockchain transaction hash. |
-| `content[].externalCryptoAddress` | `string \| null` | External crypto address in operation context. |
-| `content[].asset` | `string` | Asset/currency code. |
-| `content[].amount` | `string` | Operation amount. |
-| `content[].requestedAmount` | `string` | Requested amount. |
-| `content[].grossAmount` | `string` | Gross amount before net adjustments. |
-| `content[].netAmount` | `string` | Net amount after commissions/fees. |
-| `content[].clientId` | `string` | Client identifier. |
-| `content[].userId` | `string \| null` | User identifier. |
-| `content[].creationDate` | `string` | Creation timestamp. |
-| `content[].completionDate` | `string \| null` | Completion timestamp. |
-| `pageable` | `object` | Spring pageable metadata object. |
-| `pageable.pageNumber` | `number` | Current page number. |
-| `pageable.pageSize` | `number` | Current page size. |
-| `pageable.offset` | `number` | Current page offset. |
-| `pageable.paged` | `boolean` | Whether pageable mode is enabled. |
-| `pageable.unpaged` | `boolean` | Whether unpaged mode is enabled. |
-| `pageable.sort` | `object` | Pageable sort metadata. |
-| `pageable.sort.unsorted` | `boolean` | True when pageable sort is not set. |
-| `pageable.sort.sorted` | `boolean` | True when pageable sort is set. |
-| `pageable.sort.empty` | `boolean` | True when pageable sort metadata is empty. |
-| `totalElements` | `number` | Total matched items. |
-| `totalPages` | `number` | Total page count. |
-| `last` | `boolean` | True when this page is the last page. |
-| `numberOfElements` | `number` | Number of elements in current page. |
-| `number` | `number` | Current page number. |
-| `size` | `number` | Current page size. |
-| `sort` | `object` | Top-level sort metadata. |
-| `sort.unsorted` | `boolean` | True when top-level sort is not set. |
-| `sort.sorted` | `boolean` | True when top-level sort is set. |
-| `sort.empty` | `boolean` | True when top-level sort metadata is empty. |
-| `first` | `boolean` | True when this page is the first page. |
-| `empty` | `boolean` | True when page content is empty. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content</td>
+      <td>array of objects</td>
+      <td>Orders page content.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].id</td>
+      <td>string</td>
+      <td>Entry identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].transactionId</td>
+      <td>string</td>
+      <td>Related transaction identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].number</td>
+      <td>string</td>
+      <td>Operation number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].type</td>
+      <td>string</td>
+      <td>Operation type value (for example WITHDRAWAL).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].status</td>
+      <td>string</td>
+      <td>Operation status value.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].post</td>
+      <td>string | null</td>
+      <td>Masked payment method or provider post field.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].providerType</td>
+      <td>string | null</td>
+      <td>Provider type value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].paymentSystem</td>
+      <td>string | null</td>
+      <td>Payment system/brand value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].transactionHash</td>
+      <td>string | null</td>
+      <td>Blockchain transaction hash.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].externalCryptoAddress</td>
+      <td>string | null</td>
+      <td>External crypto address in operation context.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].asset</td>
+      <td>string</td>
+      <td>Asset/currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].amount</td>
+      <td>string</td>
+      <td>Operation amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].requestedAmount</td>
+      <td>string</td>
+      <td>Requested amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].grossAmount</td>
+      <td>string</td>
+      <td>Gross amount before net adjustments.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].netAmount</td>
+      <td>string</td>
+      <td>Net amount after commissions/fees.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].clientId</td>
+      <td>string</td>
+      <td>Client identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].userId</td>
+      <td>string | null</td>
+      <td>User identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].creationDate</td>
+      <td>string</td>
+      <td>Creation timestamp.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].completionDate</td>
+      <td>string | null</td>
+      <td>Completion timestamp.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable</td>
+      <td>object</td>
+      <td>Spring pageable metadata object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.pageNumber</td>
+      <td>number</td>
+      <td>Current page number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.pageSize</td>
+      <td>number</td>
+      <td>Current page size.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.offset</td>
+      <td>number</td>
+      <td>Current page offset.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.paged</td>
+      <td>boolean</td>
+      <td>Whether pageable mode is enabled.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.unpaged</td>
+      <td>boolean</td>
+      <td>Whether unpaged mode is enabled.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort</td>
+      <td>object</td>
+      <td>Pageable sort metadata.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort.unsorted</td>
+      <td>boolean</td>
+      <td>True when pageable sort is not set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort.sorted</td>
+      <td>boolean</td>
+      <td>True when pageable sort is set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort.empty</td>
+      <td>boolean</td>
+      <td>True when pageable sort metadata is empty.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">totalElements</td>
+      <td>number</td>
+      <td>Total matched items.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">totalPages</td>
+      <td>number</td>
+      <td>Total page count.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">last</td>
+      <td>boolean</td>
+      <td>True when this page is the last page.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">numberOfElements</td>
+      <td>number</td>
+      <td>Number of elements in current page.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>number</td>
+      <td>Current page number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">size</td>
+      <td>number</td>
+      <td>Current page size.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort</td>
+      <td>object</td>
+      <td>Top-level sort metadata.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort.unsorted</td>
+      <td>boolean</td>
+      <td>True when top-level sort is not set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort.sorted</td>
+      <td>boolean</td>
+      <td>True when top-level sort is set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort.empty</td>
+      <td>boolean</td>
+      <td>True when top-level sort metadata is empty.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">first</td>
+      <td>boolean</td>
+      <td>True when this page is the first page.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">empty</td>
+      <td>boolean</td>
+      <td>True when page content is empty.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `400 Bad Request` | HTTP | Invalid pageable/filter request. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 Bad Request</td>
+      <td>HTTP</td>
+      <td>Invalid pageable/filter request.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 
 ## 2. OffRamp (crypto -> fiat) — Merchant API
@@ -1106,36 +2843,128 @@ Use the response to validate selected source crypto and target fiat assets befor
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destination</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional flow destination filter. Recommended value: EXCHANGE.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `fiatAssets` | `array of objects` | List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows. |
-| `fiatAssets[].id` | `string` | Internal fiat asset identifier used in API requests and routing logic. |
-| `fiatAssets[].code` | `string` | Currency code that can be displayed to the client in UI. |
-| `cryptoAssets` | `array of objects` | List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows. |
-| `cryptoAssets[].id` | `string` | Internal crypto asset identifier used in API requests; may include network-specific suffixes such as `USDT_TRC`. |
-| `cryptoAssets[].code` | `string` | Asset ticker displayed to the client; can differ from `id` when asset is network-specific. |
-| `cryptoAssets[].network` | `string` | Blockchain network that must be used for sending or receiving this crypto asset. |
-| `cryptoAssets[].protocol` | `string` | Token protocol shown to prevent sending funds through the wrong network. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAssets</td>
+      <td>array of objects</td>
+      <td>List of fiat assets that can be shown to the client as available payment or payout currencies for OnRamp/OffRamp flows.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAssets[].id</td>
+      <td>string</td>
+      <td>Internal fiat asset identifier used in API requests and routing logic.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAssets[].code</td>
+      <td>string</td>
+      <td>Currency code that can be displayed to the client in UI.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets</td>
+      <td>array of objects</td>
+      <td>List of crypto assets/networks that can be used in deposit, withdrawal, buy, sell, or conversion flows.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].id</td>
+      <td>string</td>
+      <td>Internal crypto asset identifier used in API requests; may include network-specific suffixes such as USDT_TRC.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].code</td>
+      <td>string</td>
+      <td>Asset ticker displayed to the client; can differ from id when asset is network-specific.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].network</td>
+      <td>string</td>
+      <td>Blockchain network that must be used for sending or receiving this crypto asset.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAssets[].protocol</td>
+      <td>string</td>
+      <td>Token protocol shown to prevent sending funds through the wrong network.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid/unknown asset mapping requested by merchant configuration. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CURRENCY_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Invalid/unknown asset mapping requested by merchant configuration.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 2. Get payment providers
 Use this endpoint to get payout providers available for the selected OffRamp context.
@@ -1217,53 +3046,220 @@ Use the response to select provider and payout corridor before requesting paymen
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
-| `fiatAsset` | `string` | No | Fiat asset code used for filtering providers. |
-| `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
-| `providers` | `array of string` | No | Explicit provider filter list. |
-| `isCrypto` | `boolean` | No | Crypto-method filter. |
-| `countryGroup` | `array of string` | No | Country-group filter. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAsset</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Fiat asset code used for filtering providers.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderType</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Order direction. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destination</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional flow destination filter. Recommended value: EXCHANGE.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providers</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Explicit provider filter list.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isCrypto</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Crypto-method filter.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">countryGroup</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Country-group filter.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Provider identifier. |
-| `name` | `string` | Provider display name. |
-| `addPaymentMethod` | `boolean` | Indicates whether payment method binding/creation is available. |
-| `config` | `object` | Provider routing configuration. |
-| `config.paymentSystems` | `array of objects` | Supported payment systems/directions/currencies. |
-| `config.paymentSystems[].paymentSystem` | `string` | Payment system name (for example `VISA`, `MIR`, `BelCard`). |
-| `config.paymentSystems[].type` | `string` | Provider channel type. |
-| `config.paymentSystems[].directions` | `array of objects` | Supported operation directions for this payment system. |
-| `config.paymentSystems[].directions[].direction` | `string` | Direction for payment system route (`BUY`/`SELL`). |
-| `config.paymentSystems[].directions[].currencies` | `array of objects` | Supported currencies for selected direction. |
-| `config.paymentSystems[].directions[].currencies[].currency` | `string` | Fiat currency for this route. |
-| `config.paymentSystems[].directions[].currencies[].banks` | `array of strings` | Optional bank restrictions for this route. |
-| `config.paymentSystems[].directions[].currencies[].countries` | `array of strings` | Optional country restrictions for this route. |
-| `commissions` | `array of objects` | Provider commission configuration. |
-| `commissions[].bank` | `string` | Bank group key for commission row. |
-| `commissions[].destination` | `string` | Optional destination scope for commission row. |
-| `commissions[].buyCommission` | `string` | Commission value/range for buy direction. |
-| `commissions[].sellCommission` | `string` | Commission value/range for sell direction. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Provider identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">name</td>
+      <td>string</td>
+      <td>Provider display name.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">addPaymentMethod</td>
+      <td>boolean</td>
+      <td>Indicates whether payment method binding/creation is available.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config</td>
+      <td>object</td>
+      <td>Provider routing configuration.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems</td>
+      <td>array of objects</td>
+      <td>Supported payment systems/directions/currencies.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].paymentSystem</td>
+      <td>string</td>
+      <td>Payment system name (for example VISA, MIR, BelCard).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].type</td>
+      <td>string</td>
+      <td>Provider channel type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions</td>
+      <td>array of objects</td>
+      <td>Supported operation directions for this payment system.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].direction</td>
+      <td>string</td>
+      <td>Direction for payment system route (BUY/SELL).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies</td>
+      <td>array of objects</td>
+      <td>Supported currencies for selected direction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies[].currency</td>
+      <td>string</td>
+      <td>Fiat currency for this route.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies[].banks</td>
+      <td>array of strings</td>
+      <td>Optional bank restrictions for this route.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">config.paymentSystems[].directions[].currencies[].countries</td>
+      <td>array of strings</td>
+      <td>Optional country restrictions for this route.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions</td>
+      <td>array of objects</td>
+      <td>Provider commission configuration.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions[].bank</td>
+      <td>string</td>
+      <td>Bank group key for commission row.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions[].destination</td>
+      <td>string</td>
+      <td>Optional destination scope for commission row.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions[].buyCommission</td>
+      <td>string</td>
+      <td>Commission value/range for buy direction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">commissions[].sellCommission</td>
+      <td>string</td>
+      <td>Commission value/range for sell direction.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 3. Get payment methods
 Use this endpoint to get available payout methods for the selected OffRamp direction.
@@ -1303,56 +3299,219 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
-| `fiatAsset` | `string` | No | Fiat asset filter. |
-| `orderType` | `string` | No | Order direction. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `destination` | `string` | No | Optional flow destination filter. Recommended value: `EXCHANGE`. |
-| `providers` | `array of string` | No | Provider filter list. |
-| `isCrypto` | `boolean` | No | Flag for crypto-only payment methods. |
-| `countryGroup` | `array of strings` | No | Country group filter. Allowed values: `BELARUS`, `RUSSIA`, `FOREIGN`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatAsset</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Fiat asset filter.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderType</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Order direction. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destination</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional flow destination filter. Recommended value: EXCHANGE.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providers</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Provider filter list.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isCrypto</td>
+      <td>boolean</td>
+      <td>No</td>
+      <td>Flag for crypto-only payment methods.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">countryGroup</td>
+      <td>array of strings</td>
+      <td>No</td>
+      <td>Country group filter. Allowed values: BELARUS, RUSSIA, FOREIGN.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Payment method token. Pass this value as `paymentMethodToken` in OnRamp/OffRamp quote requests. |
-| `number` | `string` | Masked payment method number shown to client. |
-| `brand` | `string` | Payment method brand, for example `VISA`. |
-| `providerId` | `string` | Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS). |
-| `providerType` | `string` | Provider category/type returned by provider integration. Usually matches providerId for standard routes. |
-| `name` | `string` | Deprecated provider display field that may be returned by some integrations. |
-| `status` | `string` | Payment method status. Allowed values: `ENABLED`, `DIRECTION_DISABLED`, `CURRENCY_DISABLED`, `UNKNOWN`. |
-| `isRestricted` | `boolean` | Shows whether this payment method is restricted. Use only methods with `isRestricted=false`. |
-| `isCrypto` | `boolean` | Indicates crypto payment method. |
-| `country` | `string` | Payment method country. |
-| `currency` | `string` | Primary fiat currency. |
-| `supportedCurrencies` | `array of strings` | Fiat currencies supported by this payment method. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Payment method token. Pass this value as paymentMethodToken in OnRamp/OffRamp quote requests.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>string</td>
+      <td>Masked payment method number shown to client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">brand</td>
+      <td>string</td>
+      <td>Payment method brand, for example VISA.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providerId</td>
+      <td>string</td>
+      <td>Payment provider identifier used in integrations and filters (for example ASSIST, CA, MTS).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providerType</td>
+      <td>string</td>
+      <td>Provider category/type returned by provider integration. Usually matches providerId for standard routes.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">name</td>
+      <td>string</td>
+      <td>Deprecated provider display field that may be returned by some integrations.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Payment method status. Allowed values: ENABLED, DIRECTION_DISABLED, CURRENCY_DISABLED, UNKNOWN.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isRestricted</td>
+      <td>boolean</td>
+      <td>Shows whether this payment method is restricted. Use only methods with isRestricted=false.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">isCrypto</td>
+      <td>boolean</td>
+      <td>Indicates crypto payment method.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">country</td>
+      <td>string</td>
+      <td>Payment method country.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">currency</td>
+      <td>string</td>
+      <td>Primary fiat currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">supportedCurrencies</td>
+      <td>array of strings</td>
+      <td>Fiat currencies supported by this payment method.</td>
+    </tr>
+  </tbody>
+</table>
 
 #### Payment method status values
 
-| Status | Description |
-|---|---|
-| `ENABLED` | Payment method can be used for the selected flow, direction, and currency. |
-| `DIRECTION_DISABLED` | Payment method exists, but is not available for selected `orderType`. |
-| `CURRENCY_DISABLED` | Payment method exists, but does not support selected `fiatAsset`. |
-| `UNKNOWN` | Status cannot be resolved because required filters were not provided. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="220" style="word-break: break-word; white-space: normal;">Status</th>
+      <th width="680">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">ENABLED</td>
+      <td>Payment method can be used for the selected flow, direction, and currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">DIRECTION_DISABLED</td>
+      <td>Payment method exists, but is not available for selected orderType.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">CURRENCY_DISABLED</td>
+      <td>Payment method exists, but does not support selected fiatAsset.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">UNKNOWN</td>
+      <td>Status cannot be resolved because required filters were not provided.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 4. Calculate limits 
 Use this endpoint to calculate min/max available amount for the selected OffRamp pair and payout method.
@@ -1394,44 +3553,199 @@ Use the response to validate the amount before quote creation.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
-| `fromAsset` | `object` | Yes | Source asset object. |
-| `fromAsset.code` | `string` | Yes | Source asset code. |
-| `fromAsset.network` | `string \| null` | No | Source asset network for crypto assets. |
-| `toAsset` | `object` | Yes | Target asset object. |
-| `toAsset.code` | `string` | Yes | Target asset code. |
-| `toAsset.network` | `string \| null` | No | Target asset network for crypto assets. |
-| `paymentMethod` | `string` | Yes | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Source asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Source asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Source asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Target asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Target asset code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Target asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">paymentMethod</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Payment provider type used for the operation, for example CA or ASSIST.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `asset` | `object` | Asset used for limit values. |
-| `asset.id` | `string` | Internal asset identifier. |
-| `asset.code` | `string` | Asset code. |
-| `asset.network` | `string \| null` | Asset network if applicable. |
-| `min` | `number` | Minimum allowed amount. |
-| `max` | `number` | Maximum allowed amount. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset</td>
+      <td>object</td>
+      <td>Asset used for limit values.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset.id</td>
+      <td>string</td>
+      <td>Internal asset identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset.code</td>
+      <td>string</td>
+      <td>Asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">asset.network</td>
+      <td>string | null</td>
+      <td>Asset network if applicable.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">min</td>
+      <td>number</td>
+      <td>Minimum allowed amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">max</td>
+      <td>number</td>
+      <td>Maximum allowed amount.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid `fromAsset`/`toAsset` pair. |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CURRENCY_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Invalid fromAsset/toAsset pair.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 Bad Request</td>
+      <td>HTTP</td>
+      <td>Request validation failed for one or more fields.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 5. Create quote 
 Use this endpoint to calculate executable OffRamp quote values for crypto-to-fiat exchange.
@@ -1489,61 +3803,289 @@ Use the response `quoteId` to create the sell order.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | No | Client identifier used to scope the request to a specific client. |
-| `fromAsset` | `object` | Yes | Source asset object. |
-| `fromAsset.code` | `string` | Yes | Source asset code. |
-| `fromAsset.network` | `string \| null` | No | Source asset network for crypto assets. |
-| `fromAsset.amount` | `number` | No | Source amount when quote is input-side based. |
-| `toAsset` | `object` | Yes | Target asset object. |
-| `toAsset.code` | `string` | Yes | Target asset code. |
-| `toAsset.network` | `string \| null` | No | Target asset network for crypto assets. |
-| `toAsset.amount` | `number` | No | Target amount when quote is output-side based. |
-| `paymentMethod` | `string` | No | Payment provider type used for the operation, for example `CA` or `ASSIST`. |
-| `paymentMethodToken` | `string` | No | Selected payment method token/id. |
-| `destinationCryptoAddress` | `string` | No | Optional destination wallet context. |
-| `comment` | `string` | No | Optional merchant comment. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Source asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Source asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Source asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.amount</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Source amount when quote is input-side based.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset</td>
+      <td>object</td>
+      <td>Yes</td>
+      <td>Target asset object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.code</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Target asset code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.network</td>
+      <td>string | null</td>
+      <td>No</td>
+      <td>Target asset network for crypto assets.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.amount</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Target amount when quote is output-side based.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">paymentMethod</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Payment provider type used for the operation, for example CA or ASSIST.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">paymentMethodToken</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Selected payment method token/id.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">destinationCryptoAddress</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional destination wallet context.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">comment</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional merchant comment.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `quoteId` | `string` | Quote identifier used for order creation. |
-| `fromAsset` | `object` | Resolved source asset and amount. |
-| `fromAsset.code` | `string` | Source asset code. |
-| `fromAsset.network` | `string \| null` | Source asset network if returned. |
-| `fromAsset.amount` | `string` | Source amount used in quote calculation. |
-| `toAsset` | `object` | Resolved target asset and amount. |
-| `toAsset.code` | `string` | Target asset code. |
-| `toAsset.network` | `string \| null` | Target asset network if returned. |
-| `toAsset.amount` | `string` | Target amount resolved by quote calculation. |
-| `rate` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
-| `plainRate` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
-| `fee` | `object` | Fee breakdown object. |
-| `fee.total` | `number` | Total fee amount in `fee.asset` currency. |
-| `fee.service` | `number \| null` | Service fee component in `fee.asset` currency. |
-| `fee.network` | `number \| null` | Network/payment component in `fee.asset` currency. |
-| `fee.asset` | `string` | Asset code in which `fee.total`, `fee.service`, and `fee.network` are expressed. |
-| `expirationDate` | `string` | Quote expiration timestamp in server date-time format. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">quoteId</td>
+      <td>string</td>
+      <td>Quote identifier used for order creation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
+      <td>Resolved source asset and amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.code</td>
+      <td>string</td>
+      <td>Source asset code.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
+      <td>string | null</td>
+      <td>Source asset network if returned.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromAsset.amount</td>
+      <td>string</td>
+      <td>Source amount used in quote calculation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset</td>
+      <td>object</td>
+      <td>Resolved target asset and amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.code</td>
+      <td>string</td>
+      <td>Target asset code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.network</td>
+      <td>string | null</td>
+      <td>Target asset network if returned.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toAsset.amount</td>
+      <td>string</td>
+      <td>Target amount resolved by quote calculation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">rate</td>
+      <td>number</td>
+      <td>Final client-facing rate applied to the quote/order. Show this value to the client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">plainRate</td>
+      <td>number</td>
+      <td>Base system rate at the moment of quote calculation. Used as a reference value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee</td>
+      <td>object</td>
+      <td>Fee breakdown object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.total</td>
+      <td>number</td>
+      <td>Total fee amount in fee.asset currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.service</td>
+      <td>number | null</td>
+      <td>Service fee component in fee.asset currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.network</td>
+      <td>number | null</td>
+      <td>Network/payment component in fee.asset currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fee.asset</td>
+      <td>string</td>
+      <td>Asset code in which fee.total, fee.service, and fee.network are expressed.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">expirationDate</td>
+      <td>string</td>
+      <td>Quote expiration timestamp in server date-time format.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated for provided values. |
-| `400 CURRENCY_NOT_FOUND` | BUSINESS | Invalid asset or network. |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `400 Bad Request` | HTTP | Request validation failed for one or more fields. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 INVALID_QUOTE</td>
+      <td>BUSINESS</td>
+      <td>Quote cannot be calculated for provided values.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CURRENCY_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Invalid asset or network.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 Bad Request</td>
+      <td>HTTP</td>
+      <td>Request validation failed for one or more fields.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 6. Sell Crypto 
 Use this endpoint to create a crypto-to-fiat order from an existing quote.
@@ -1572,48 +4114,194 @@ Use the response `id` as `orderId` for polling and status tracking.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `quoteId` | `string (UUID)` | Yes | Quote identifier returned by quote API. |
-| `failureDepositAddress` | `string` | No | Refund wallet address used if the order fails before completion. The address must belong to the network selected in `fromAsset.network`. |
-| `sourceAddress` | `string` | No | Sender wallet address for compliance checks. The address must belong to the network selected in `fromAsset.network`. |
-| `bankIdentifier` | `string` | No | Optional bank identifier used by selected payment provider. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">quoteId</td>
+      <td>string (UUID)</td>
+      <td>Yes</td>
+      <td>Quote identifier returned by quote API.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">failureDepositAddress</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Refund wallet address used if the order fails before completion. The address must belong to the network selected in fromAsset.network.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sourceAddress</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Sender wallet address for compliance checks. The address must belong to the network selected in fromAsset.network.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">bankIdentifier</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Optional bank identifier used by selected payment provider.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `body` | `none` | - | GET endpoint without request body. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">body</td>
+      <td>none</td>
+      <td>-</td>
+      <td>GET endpoint without request body.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Order identifier. |
-| `type` | `string` | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `status` | `string` | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| `creationDate` | `string` | Order creation timestamp in server date-time format. |
-| `modificationDate` | `string` | Last order update timestamp in server date-time format. |
-| `cryptoTransaction` | `object \| null` | Crypto transaction summary (nullable at creation step). |
-| `expiresAtDate` | `string` | Deposit/order expiration timestamp in server date-time format. |
-| `depositCryptoAddress` | `string` | Address where user must send crypto for sell flow. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Order identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">type</td>
+      <td>string</td>
+      <td>Order type. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Current order lifecycle state. Allowed values: NEW, PROCESSING, COMPLETED, EXPIRED, ERROR.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">modificationDate</td>
+      <td>string</td>
+      <td>Last order update timestamp in server date-time format.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction</td>
+      <td>object | null</td>
+      <td>Crypto transaction summary (nullable at creation step).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">expiresAtDate</td>
+      <td>string</td>
+      <td>Deposit/order expiration timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">depositCryptoAddress</td>
+      <td>string</td>
+      <td>Address where user must send crypto for sell flow.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 QUOTE_NOT_FOUND` | BUSINESS | Quote does not exist or already expired. |
-| `400 INVALID_QUOTE` | BUSINESS | Quote cannot be calculated or cannot be used for order creation. |
-| `400 AML_FRAUD_VALIDATION_ERROR` | BUSINESS | AML/fraud checks blocked order creation. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 QUOTE_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Quote does not exist or already expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 INVALID_QUOTE</td>
+      <td>BUSINESS</td>
+      <td>Quote cannot be calculated or cannot be used for order creation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 AML_FRAUD_VALIDATION_ERROR</td>
+      <td>BUSINESS</td>
+      <td>AML/fraud checks blocked order creation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 7. Get order by ID
 Use this endpoint to fetch complete OffRamp order details by `orderId`.
@@ -1696,94 +4384,421 @@ Use the response to track payout processing, crypto deposit state, and final sta
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `orderId` | `string (UUID)` | Yes | Order identifier returned by sell API. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderId</td>
+      <td>string (UUID)</td>
+      <td>Yes</td>
+      <td>Order identifier returned by sell API.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `body` | `none` | - | GET endpoint without request body. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">body</td>
+      <td>none</td>
+      <td>-</td>
+      <td>GET endpoint without request body.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Order identifier. |
-| `type` | `string` | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `status` | `string` | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| `creationDate` | `string` | Order creation timestamp in server date-time format. |
-| `modificationDate` | `string` | Last order update timestamp in server date-time format. |
-| `number` | `number` | Internal order number. |
-| `exchangeOperation` | `object` | Exchange side details (input/output, rates, fees). |
-| `exchangeOperation.inputCurrency` | `string` | Source asset/currency code. |
-| `exchangeOperation.inputAsset` | `number` | Source amount. |
-| `exchangeOperation.outputCurrency` | `string` | Destination asset/currency code. |
-| `exchangeOperation.outputAsset` | `number` | Destination amount. |
-| `exchangeOperation.exchangeFeeAssetInFiat` | `number` | Exchange fee represented in fiat asset currency (`exchangeOperation.inputCurrency` / fiat leg currency). |
-| `exchangeOperation.bonusOutputAsset` | `number \| null` | Bonus amount, if promo bonus is applied. |
-| `exchangeOperation.plainRatio` | `number` | Base system rate at the moment of quote calculation. Used as a reference value. |
-| `exchangeOperation.ratio` | `number` | Final client-facing rate applied to the quote/order. Show this value to the client. |
-| `exchangeOperation.currencyPair` | `object` | Currency pair metadata. |
-| `exchangeOperation.currencyPair.fromCurrency` | `string` | Pair source currency code. |
-| `exchangeOperation.currencyPair.toCurrency` | `string` | Pair destination currency code. |
-| `cryptoTransaction` | `object` | Crypto transfer details. |
-| `cryptoTransaction.hash` | `string \| null` | Blockchain transaction hash when available. |
-| `cryptoTransaction.externalCryptoAddress` | `string \| null` | External wallet address used in operation. |
-| `cryptoTransaction.internalCryptoAddress` | `string \| null` | Internal wallet/deposit address used in operation. |
-| `cryptoTransaction.fromAddress` | `string \| null` | Source blockchain address. |
-| `cryptoTransaction.toAddress` | `string \| null` | Destination blockchain address. |
-| `cryptoTransaction.status` | `string` | Crypto transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `NOT_FOUND`, `REJECTED`, `TIMEOUT`, `INVALID_AMOUNT`, `ERROR`, `AML_ERROR`, `AML_BLOCKED`, `ARREST`, `SUBMITTING`, `SUBMITTED`, `PENDING`, `SELECTED`, `CONFIRMED`, `PENDING_RESOLVE`. |
-| `cryptoTransaction.currency` | `string` | Crypto asset code used in transaction. |
-| `cryptoTransaction.fee` | `number \| null` | Blockchain/network fee amount in `cryptoTransaction.currency`. |
-| `cryptoTransaction.feePaymentEnabledByClient` | `boolean` | Whether client-paid network fee mode is enabled. |
-| `cryptoTransaction.type` | `string` | Crypto transfer processing type. |
-| `cryptoTransaction.comment` | `string \| null` | Transaction comment, if provided. |
-| `fiatTransaction` | `object` | Fiat processing details. |
-| `fiatTransaction.status` | `string` | Fiat transaction status. Allowed values: `NEW`, `PENDING_REVIEW`, `REJECTED`, `TIMEOUT`, `DECLINED`, `INVALID_AMOUNT`, `ERROR`, `AML_BLOCKED`, `PENDING`, `PROCESSING`, `APPROVED`. |
-| `fiatTransaction.paymentToken` | `string \| null` | Payment method token used by provider leg. |
-| `fiatTransaction.post` | `string \| null` | Provider postback payload/reference, if returned. |
-| `fiatTransaction.brand` | `string \| null` | Card/payment brand returned by provider. |
-| `fiatTransaction.internalToken` | `string \| null` | Internal provider token/reference. |
-| `fiatTransaction.orderIdentity` | `string \| null` | Provider-side order reference used for reconciliation. |
-| `fiatTransaction.link` | `string \| null` | Provider payment link/reference. |
-| `fiatTransaction.providerType` | `string \| null` | Fiat provider type. |
-| `fiatTransaction.paymentType` | `string \| null` | Provider payment channel/type. |
-| `fiatTransaction.processingBank` | `string \| null` | Processing bank, if returned by provider. |
-| `fiatTransaction.resultMessage` | `string \| null` | Provider processing message. |
-| `fiatTransaction.currency` | `string \| null` | Fiat currency used by provider transaction. |
-| `fiatTransaction.processorTransactionNumber` | `string \| null` | Provider processor transaction identifier. |
-| `client` | `object` | Client scope details. |
-| `client.clientId` | `string` | Client identifier used for request scoping. |
-| `operationType` | `string` | Internal operation type, for example `FIAT_TO_CRYPTO` or `CRYPTO_TO_FIAT`. |
-| `serverDate` | `string` | Server timestamp in server date-time format. |
-| `exchangeType` | `string` | Exchange direction as internal enum value. |
-| `orderType` | `string` | Internal order subtype. |
-| `completionDate` | `string \| null` | Completion timestamp in server date-time format. |
-| `resultMessage` | `string \| null` | Processing message. |
-| `submitByResident` | `boolean \| null` | Resident submission flag, if applicable. |
-| `merchantName` | `string` | Merchant name associated with order. |
-| `merchantBonus` | `number \| null` | Merchant bonus amount, if applicable. |
-| `promoCodeDetails` | `string \| null` | Promo code details payload, if applied. |
-| `fromSource` | `string` | Source side enum value (`EXT`/`INT`). |
-| `toSource` | `string` | Destination side enum value (`EXT`/`INT`). |
-| `expiresAtDate` | `string \| null` | Order expiration timestamp in server date-time format. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Order identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">type</td>
+      <td>string</td>
+      <td>Order type. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Current order lifecycle state. Allowed values: NEW, PROCESSING, COMPLETED, EXPIRED, ERROR.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">modificationDate</td>
+      <td>string</td>
+      <td>Last order update timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>number</td>
+      <td>Internal order number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation</td>
+      <td>object</td>
+      <td>Exchange side details (input/output, rates, fees).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.inputCurrency</td>
+      <td>string</td>
+      <td>Source asset/currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.inputAsset</td>
+      <td>number</td>
+      <td>Source amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.outputCurrency</td>
+      <td>string</td>
+      <td>Destination asset/currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.outputAsset</td>
+      <td>number</td>
+      <td>Destination amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.exchangeFeeAssetInFiat</td>
+      <td>number</td>
+      <td>Exchange fee represented in fiat asset currency (exchangeOperation.inputCurrency / fiat leg currency).</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.bonusOutputAsset</td>
+      <td>number | null</td>
+      <td>Bonus amount, if promo bonus is applied.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.plainRatio</td>
+      <td>number</td>
+      <td>Base system rate at the moment of quote calculation. Used as a reference value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.ratio</td>
+      <td>number</td>
+      <td>Final client-facing rate applied to the quote/order. Show this value to the client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.currencyPair</td>
+      <td>object</td>
+      <td>Currency pair metadata.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.currencyPair.fromCurrency</td>
+      <td>string</td>
+      <td>Pair source currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeOperation.currencyPair.toCurrency</td>
+      <td>string</td>
+      <td>Pair destination currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction</td>
+      <td>object</td>
+      <td>Crypto transfer details.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.hash</td>
+      <td>string | null</td>
+      <td>Blockchain transaction hash when available.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.externalCryptoAddress</td>
+      <td>string | null</td>
+      <td>External wallet address used in operation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.internalCryptoAddress</td>
+      <td>string | null</td>
+      <td>Internal wallet/deposit address used in operation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.fromAddress</td>
+      <td>string | null</td>
+      <td>Source blockchain address.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.toAddress</td>
+      <td>string | null</td>
+      <td>Destination blockchain address.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.status</td>
+      <td>string</td>
+      <td>Crypto transaction status. Allowed values: NEW, PENDING_REVIEW, NOT_FOUND, REJECTED, TIMEOUT, INVALID_AMOUNT, ERROR, AML_ERROR, AML_BLOCKED, ARREST, SUBMITTING, SUBMITTED, PENDING, SELECTED, CONFIRMED, PENDING_RESOLVE.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.currency</td>
+      <td>string</td>
+      <td>Crypto asset code used in transaction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.fee</td>
+      <td>number | null</td>
+      <td>Blockchain/network fee amount in cryptoTransaction.currency.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.feePaymentEnabledByClient</td>
+      <td>boolean</td>
+      <td>Whether client-paid network fee mode is enabled.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.type</td>
+      <td>string</td>
+      <td>Crypto transfer processing type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction.comment</td>
+      <td>string | null</td>
+      <td>Transaction comment, if provided.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction</td>
+      <td>object</td>
+      <td>Fiat processing details.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.status</td>
+      <td>string</td>
+      <td>Fiat transaction status. Allowed values: NEW, PENDING_REVIEW, REJECTED, TIMEOUT, DECLINED, INVALID_AMOUNT, ERROR, AML_BLOCKED, PENDING, PROCESSING, APPROVED.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.paymentToken</td>
+      <td>string | null</td>
+      <td>Payment method token used by provider leg.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.post</td>
+      <td>string | null</td>
+      <td>Provider postback payload/reference, if returned.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.brand</td>
+      <td>string | null</td>
+      <td>Card/payment brand returned by provider.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.internalToken</td>
+      <td>string | null</td>
+      <td>Internal provider token/reference.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.orderIdentity</td>
+      <td>string | null</td>
+      <td>Provider-side order reference used for reconciliation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.link</td>
+      <td>string | null</td>
+      <td>Provider payment link/reference.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.providerType</td>
+      <td>string | null</td>
+      <td>Fiat provider type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.paymentType</td>
+      <td>string | null</td>
+      <td>Provider payment channel/type.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.processingBank</td>
+      <td>string | null</td>
+      <td>Processing bank, if returned by provider.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.resultMessage</td>
+      <td>string | null</td>
+      <td>Provider processing message.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.currency</td>
+      <td>string | null</td>
+      <td>Fiat currency used by provider transaction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatTransaction.processorTransactionNumber</td>
+      <td>string | null</td>
+      <td>Provider processor transaction identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">client</td>
+      <td>object</td>
+      <td>Client scope details.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">client.clientId</td>
+      <td>string</td>
+      <td>Client identifier used for request scoping.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">operationType</td>
+      <td>string</td>
+      <td>Internal operation type, for example FIAT_TO_CRYPTO or CRYPTO_TO_FIAT.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">serverDate</td>
+      <td>string</td>
+      <td>Server timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">exchangeType</td>
+      <td>string</td>
+      <td>Exchange direction as internal enum value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderType</td>
+      <td>string</td>
+      <td>Internal order subtype.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">completionDate</td>
+      <td>string | null</td>
+      <td>Completion timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">resultMessage</td>
+      <td>string | null</td>
+      <td>Processing message.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">submitByResident</td>
+      <td>boolean | null</td>
+      <td>Resident submission flag, if applicable.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">merchantName</td>
+      <td>string</td>
+      <td>Merchant name associated with order.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">merchantBonus</td>
+      <td>number | null</td>
+      <td>Merchant bonus amount, if applicable.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">promoCodeDetails</td>
+      <td>string | null</td>
+      <td>Promo code details payload, if applied.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromSource</td>
+      <td>string</td>
+      <td>Source side enum value (EXT/INT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toSource</td>
+      <td>string</td>
+      <td>Destination side enum value (EXT/INT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">expiresAtDate</td>
+      <td>string | null</td>
+      <td>Order expiration timestamp in server date-time format.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `404 ORDER_NOT_FOUND` | BUSINESS | Order not found or not accessible in merchant scope. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">404 ORDER_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Order not found or not accessible in merchant scope.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 8. Get current order (optional)
 Use this endpoint to fetch the current active OffRamp order for a client.
@@ -1810,43 +4825,166 @@ Use the response to restore flow state when user comes back to the session.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `body` | `none` | - | GET endpoint without request body. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">body</td>
+      <td>none</td>
+      <td>-</td>
+      <td>GET endpoint without request body.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `id` | `string` | Current active order id. |
-| `type` | `string` | Order type. Allowed values: `BUY`, `SELL`, `SWAP`. |
-| `status` | `string` | Current order lifecycle state. Allowed values: `NEW`, `PROCESSING`, `COMPLETED`, `EXPIRED`, `ERROR`. |
-| `creationDate` | `string` | Order creation timestamp in server date-time format. |
-| `modificationDate` | `string` | Last order update timestamp in server date-time format. |
-| `cryptoTransaction` | `object \| null` | Crypto transaction summary (nullable at creation step). |
-| `expiresAtDate` | `string` | Deposit/order expiration timestamp in server date-time format. |
-| `depositCryptoAddress` | `string` | Address where user must send crypto for sell flow. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">id</td>
+      <td>string</td>
+      <td>Current active order id.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">type</td>
+      <td>string</td>
+      <td>Order type. Allowed values: BUY, SELL, SWAP.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">status</td>
+      <td>string</td>
+      <td>Current order lifecycle state. Allowed values: NEW, PROCESSING, COMPLETED, EXPIRED, ERROR.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">modificationDate</td>
+      <td>string</td>
+      <td>Last order update timestamp in server date-time format.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoTransaction</td>
+      <td>object | null</td>
+      <td>Crypto transaction summary (nullable at creation step).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">expiresAtDate</td>
+      <td>string</td>
+      <td>Deposit/order expiration timestamp in server date-time format.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">depositCryptoAddress</td>
+      <td>string</td>
+      <td>Address where user must send crypto for sell flow.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Step 9. Get order history (optional)
 Use this endpoint to fetch paged OffRamp order history for a client.
@@ -1919,97 +5057,455 @@ Use the response for history UI, status analytics, and reconciliation.
 
 ### Headers
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `x-api-key` | `string` | Yes | Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment. |
-| `externalClientId` | `string` | No | External client mapping identifier. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">x-api-key</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Authenticates the merchant server-to-server request. Use the API key issued for the merchant and target environment.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">externalClientId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>External client mapping identifier.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Params
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `page` | `number` | No | Page number (Spring pageable). |
-| `size` | `number` | No | Page size. |
-| `sort` | `string` | No | Sort format (default by `creationDate,DESC`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">page</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Page number (Spring pageable).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">size</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Page size.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Sort format (default by creationDate,DESC).</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Request
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Yes | Client identifier used to scope the request to a specific client. |
-| `statuses` | `array of string` | No | Filter by order status values. |
-| `types` | `array of string` | No | Filter by order type values (`BUY`, `SELL`, `SWAP`). |
-| `orderTypes` | `array of string` | No | Filter by exchange direction types. |
-| `operationTypes` | `array of string` | No | Filter by operation direction (`FIAT_TO_CRYPTO`, `CRYPTO_TO_FIAT`). |
-| `providerTypes` | `array of string` | No | Filter by fiat provider ids (`ASSIST`, `CA`, `MTS`). |
-| `fiatStatuses` | `array of string` | No | Filter by fiat transaction statuses. |
-| `cryptoStatuses` | `array of string` | No | Filter by crypto transaction statuses. |
-| `creationDateFrame` | `object` | No | Creation date range filter object `{from, to}`. |
-| `completionDateFrame` | `object` | No | Completion date range filter object `{from, to}`. |
-| `orderId` | `string` | No | Filter by specific order id (UUID). |
-| `number` | `number` | No | Filter by numeric order number. |
-| `inputAssets` | `array of string` | No | Filter by source asset codes. |
-| `outputAssets` | `array of string` | No | Filter by destination asset codes. |
-| `assets` | `array of string` | No | Filter by asset code on either side of operation. |
-| `cryptoAddress` | `string` | No | Filter by crypto address involved in transaction. |
-| `fromSource` | `string` | No | Filter by source type (`EXT`/`INT`). |
-| `toSource` | `string` | No | Filter by destination type (`EXT`/`INT`). |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="100">Required</th>
+      <th width="580">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">clientId</td>
+      <td>string</td>
+      <td>Yes</td>
+      <td>Client identifier used to scope the request to a specific client.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">statuses</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by order status values.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">types</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by order type values (BUY, SELL, SWAP).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderTypes</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by exchange direction types.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">operationTypes</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by operation direction (FIAT_TO_CRYPTO, CRYPTO_TO_FIAT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">providerTypes</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by fiat provider ids (ASSIST, CA, MTS).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fiatStatuses</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by fiat transaction statuses.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoStatuses</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by crypto transaction statuses.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">creationDateFrame</td>
+      <td>object</td>
+      <td>No</td>
+      <td>Creation date range filter object {from, to}.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">completionDateFrame</td>
+      <td>object</td>
+      <td>No</td>
+      <td>Completion date range filter object {from, to}.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">orderId</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by specific order id (UUID).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>number</td>
+      <td>No</td>
+      <td>Filter by numeric order number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">inputAssets</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by source asset codes.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">outputAssets</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by destination asset codes.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">assets</td>
+      <td>array of string</td>
+      <td>No</td>
+      <td>Filter by asset code on either side of operation.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">cryptoAddress</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by crypto address involved in transaction.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">fromSource</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by source type (EXT/INT).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">toSource</td>
+      <td>string</td>
+      <td>No</td>
+      <td>Filter by destination type (EXT/INT).</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Response
 
-| Name | Type | Description |
-| --- | --- | --- |
-| `content` | `array of objects` | Orders page content. |
-| `content[].id` | `string` | Entry identifier. |
-| `content[].transactionId` | `string` | Related transaction identifier. |
-| `content[].number` | `string` | Operation number. |
-| `content[].type` | `string` | Operation type value (for example `WITHDRAWAL`). |
-| `content[].status` | `string` | Operation status value. |
-| `content[].post` | `string \| null` | Masked payment method or provider post field. |
-| `content[].providerType` | `string \| null` | Provider type value. |
-| `content[].paymentSystem` | `string \| null` | Payment system/brand value. |
-| `content[].transactionHash` | `string \| null` | Blockchain transaction hash. |
-| `content[].externalCryptoAddress` | `string \| null` | External crypto address in operation context. |
-| `content[].asset` | `string` | Asset/currency code. |
-| `content[].amount` | `string` | Operation amount. |
-| `content[].requestedAmount` | `string` | Requested amount. |
-| `content[].grossAmount` | `string` | Gross amount before net adjustments. |
-| `content[].netAmount` | `string` | Net amount after commissions/fees. |
-| `content[].clientId` | `string` | Client identifier. |
-| `content[].userId` | `string \| null` | User identifier. |
-| `content[].creationDate` | `string` | Creation timestamp. |
-| `content[].completionDate` | `string \| null` | Completion timestamp. |
-| `pageable` | `object` | Spring pageable metadata object. |
-| `pageable.pageNumber` | `number` | Current page number. |
-| `pageable.pageSize` | `number` | Current page size. |
-| `pageable.offset` | `number` | Current page offset. |
-| `pageable.paged` | `boolean` | Whether pageable mode is enabled. |
-| `pageable.unpaged` | `boolean` | Whether unpaged mode is enabled. |
-| `pageable.sort` | `object` | Pageable sort metadata. |
-| `pageable.sort.unsorted` | `boolean` | True when pageable sort is not set. |
-| `pageable.sort.sorted` | `boolean` | True when pageable sort is set. |
-| `pageable.sort.empty` | `boolean` | True when pageable sort metadata is empty. |
-| `totalElements` | `number` | Total matched items. |
-| `totalPages` | `number` | Total page count. |
-| `last` | `boolean` | True when this page is the last page. |
-| `numberOfElements` | `number` | Number of elements in current page. |
-| `number` | `number` | Current page number. |
-| `size` | `number` | Current page size. |
-| `sort` | `object` | Top-level sort metadata. |
-| `sort.unsorted` | `boolean` | True when top-level sort is not set. |
-| `sort.sorted` | `boolean` | True when top-level sort is set. |
-| `sort.empty` | `boolean` | True when top-level sort metadata is empty. |
-| `first` | `boolean` | True when this page is the first page. |
-| `empty` | `boolean` | True when page content is empty. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content</td>
+      <td>array of objects</td>
+      <td>Orders page content.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].id</td>
+      <td>string</td>
+      <td>Entry identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].transactionId</td>
+      <td>string</td>
+      <td>Related transaction identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].number</td>
+      <td>string</td>
+      <td>Operation number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].type</td>
+      <td>string</td>
+      <td>Operation type value (for example WITHDRAWAL).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].status</td>
+      <td>string</td>
+      <td>Operation status value.</td>
+    </tr>
+  </tbody>
+</table>
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Type</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].post</td>
+      <td>string | null</td>
+      <td>Masked payment method or provider post field.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].providerType</td>
+      <td>string | null</td>
+      <td>Provider type value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].paymentSystem</td>
+      <td>string | null</td>
+      <td>Payment system/brand value.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].transactionHash</td>
+      <td>string | null</td>
+      <td>Blockchain transaction hash.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].externalCryptoAddress</td>
+      <td>string | null</td>
+      <td>External crypto address in operation context.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].asset</td>
+      <td>string</td>
+      <td>Asset/currency code.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].amount</td>
+      <td>string</td>
+      <td>Operation amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].requestedAmount</td>
+      <td>string</td>
+      <td>Requested amount.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].grossAmount</td>
+      <td>string</td>
+      <td>Gross amount before net adjustments.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].netAmount</td>
+      <td>string</td>
+      <td>Net amount after commissions/fees.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].clientId</td>
+      <td>string</td>
+      <td>Client identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].userId</td>
+      <td>string | null</td>
+      <td>User identifier.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].creationDate</td>
+      <td>string</td>
+      <td>Creation timestamp.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].completionDate</td>
+      <td>string | null</td>
+      <td>Completion timestamp.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable</td>
+      <td>object</td>
+      <td>Spring pageable metadata object.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.pageNumber</td>
+      <td>number</td>
+      <td>Current page number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.pageSize</td>
+      <td>number</td>
+      <td>Current page size.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.offset</td>
+      <td>number</td>
+      <td>Current page offset.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.paged</td>
+      <td>boolean</td>
+      <td>Whether pageable mode is enabled.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.unpaged</td>
+      <td>boolean</td>
+      <td>Whether unpaged mode is enabled.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort</td>
+      <td>object</td>
+      <td>Pageable sort metadata.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort.unsorted</td>
+      <td>boolean</td>
+      <td>True when pageable sort is not set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort.sorted</td>
+      <td>boolean</td>
+      <td>True when pageable sort is set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">pageable.sort.empty</td>
+      <td>boolean</td>
+      <td>True when pageable sort metadata is empty.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">totalElements</td>
+      <td>number</td>
+      <td>Total matched items.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">totalPages</td>
+      <td>number</td>
+      <td>Total page count.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">last</td>
+      <td>boolean</td>
+      <td>True when this page is the last page.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">numberOfElements</td>
+      <td>number</td>
+      <td>Number of elements in current page.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">number</td>
+      <td>number</td>
+      <td>Current page number.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">size</td>
+      <td>number</td>
+      <td>Current page size.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort</td>
+      <td>object</td>
+      <td>Top-level sort metadata.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort.unsorted</td>
+      <td>boolean</td>
+      <td>True when top-level sort is not set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort.sorted</td>
+      <td>boolean</td>
+      <td>True when top-level sort is set.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">sort.empty</td>
+      <td>boolean</td>
+      <td>True when top-level sort metadata is empty.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">first</td>
+      <td>boolean</td>
+      <td>True when this page is the first page.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">empty</td>
+      <td>boolean</td>
+      <td>True when page content is empty.</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Errors
 
-| Name | Code | Description |
-| --- | --- | --- |
-| `400 CLIENT_NOT_FOUND` | BUSINESS | Client id is invalid or not linked to the merchant. |
-| `400 Bad Request` | HTTP | Invalid pageable/filter request. |
-| `401 Unauthorized` | HTTP | `x-api-key` is missing, invalid, or expired. |
-| `403 Forbidden` | HTTP | Merchant has no permission for this operation or client scope. |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
+      <th width="120">Code</th>
+      <th width="640">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
+      <td>Client id is invalid or not linked to the merchant.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">400 Bad Request</td>
+      <td>HTTP</td>
+      <td>Invalid pageable/filter request.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">401 Unauthorized</td>
+      <td>HTTP</td>
+      <td>x-api-key is missing, invalid, or expired.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">403 Forbidden</td>
+      <td>HTTP</td>
+      <td>Merchant has no permission for this operation or client scope.</td>
+    </tr>
+  </tbody>
+</table>
 
 ## 3. Quote fields
 

@@ -21,7 +21,7 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
 **Response**
 ```json
 {
-    "fiatAssets": [
+  "fiatAssets": [
         {
             "id": "BYN",
             "code": "BYN"
@@ -38,8 +38,8 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
             "id": "USD",
             "code": "USD"
         }
-    ],
-    "cryptoAssets": [
+  ],
+  "cryptoAssets": [
         {
             "id": "BTC",
             "code": "BTC",
@@ -148,11 +148,11 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
             "network": "SOLANA",
             "protocol": "SPL"
         }
-    ]
+  ]
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -173,7 +173,7 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -194,7 +194,7 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -248,7 +248,7 @@ Use this endpoint to retrieve available fiat and crypto assets for the merchant 
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -330,7 +330,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
 ]
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -357,7 +357,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -414,7 +414,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -513,7 +513,7 @@ Use this endpoint to retrieve available fiat payment providers for the selected 
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -577,7 +577,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
 ]
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -604,7 +604,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -661,7 +661,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -764,7 +764,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -830,7 +830,7 @@ Use the response to validate user input before quote creation.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -857,7 +857,7 @@ Use the response to validate user input before quote creation.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -932,7 +932,7 @@ Use the response to validate user input before quote creation.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -987,7 +987,7 @@ Use the response to validate user input before quote creation.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -1079,7 +1079,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -1106,7 +1106,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -1211,7 +1211,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -1319,7 +1319,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -1386,7 +1386,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -1458,7 +1458,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -1479,7 +1479,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -1539,7 +1539,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -1657,7 +1657,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -1705,7 +1705,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -1726,7 +1726,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -2046,7 +2046,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -2088,8 +2088,8 @@ Use the response for quick status restore when user returns to the flow.
 ```json
 {
     "id": "a1fcd0f0-8286-4015-914d-04db79921435",
-    "type": "BUY",
-    "status": "PROCESSING",
+  "type": "BUY",
+  "status": "PROCESSING",
     "creationDate": "2026-05-06T17:48:38.699568",
     "modificationDate": "2026-05-06T17:48:42.242808",
     "cryptoTransaction": null,
@@ -2098,7 +2098,7 @@ Use the response for quick status restore when user returns to the flow.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -2146,7 +2146,7 @@ Use the response for quick status restore when user returns to the flow.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -2167,7 +2167,7 @@ Use the response for quick status restore when user returns to the flow.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -2211,7 +2211,7 @@ Use the response for quick status restore when user returns to the flow.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -2258,8 +2258,8 @@ Use the response to build transaction history screens and filtering/pagination U
 **Response**
 ```json
 {
-    "content": [
-        {
+  "content": [
+    {
             "id": "dd6a9d8a-805d-42e1-a55c-fb8b129f3475",
             "transactionId": "bdc30aff-17a7-42ed-93ec-55aebfcf46af",
             "number": "4046",
@@ -2298,7 +2298,7 @@ Use the response to build transaction history screens and filtering/pagination U
     "last": false,
     "numberOfElements": 20,
     "size": 20,
-    "number": 0,
+  "number": 0,
     "sort": {
         "unsorted": false,
         "sorted": true,
@@ -2309,7 +2309,7 @@ Use the response to build transaction history screens and filtering/pagination U
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -2369,7 +2369,7 @@ Use the response to build transaction history screens and filtering/pagination U
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -2492,7 +2492,7 @@ Use the response to build transaction history screens and filtering/pagination U
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -2727,7 +2727,7 @@ Use the response to build transaction history screens and filtering/pagination U
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -2776,7 +2776,7 @@ Use the response to validate selected source crypto and target fiat assets befor
 **Response**
 ```json
 {
-    "fiatAssets": [
+  "fiatAssets": [
         {
             "id": "BYN",
             "code": "BYN"
@@ -2793,8 +2793,8 @@ Use the response to validate selected source crypto and target fiat assets befor
             "id": "USD",
             "code": "USD"
         }
-    ],
-    "cryptoAssets": [
+  ],
+  "cryptoAssets": [
         {
             "id": "BTC",
             "code": "BTC",
@@ -2903,11 +2903,11 @@ Use the response to validate selected source crypto and target fiat assets befor
             "network": "SOLANA",
             "protocol": "SPL"
         }
-    ]
+  ]
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -2928,7 +2928,7 @@ Use the response to validate selected source crypto and target fiat assets befor
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -2949,7 +2949,7 @@ Use the response to validate selected source crypto and target fiat assets befor
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -3003,7 +3003,7 @@ Use the response to validate selected source crypto and target fiat assets befor
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -3055,16 +3055,16 @@ Use the response to select provider and payout corridor before requesting paymen
   {
         "id": "MTS",
         "name": "MTS",
-        "addPaymentMethod": true,
-        "config": {
-            "paymentSystems": [
-                {
+    "addPaymentMethod": true,
+    "config": {
+      "paymentSystems": [
+        {
                     "paymentSystem": "MIR",
-                    "type": "PSP",
-                    "directions": [
-                        {
-                            "direction": "SELL",
-                            "currencies": [
+          "type": "PSP",
+          "directions": [
+            {
+              "direction": "SELL",
+              "currencies": [
                                 {
                                     "currency": "RUB",
                                     "countries": [
@@ -3072,12 +3072,12 @@ Use the response to select provider and payout corridor before requesting paymen
                                     ]
                                 }
                             ]
-                        }
-                    ]
-                }
-            ]
-        },
-        "commissions": [
+            }
+          ]
+        }
+      ]
+    },
+    "commissions": [
             {
                 "buyCommission": "2,5",
                 "sellCommission": "2,0"
@@ -3105,12 +3105,12 @@ Use the response to select provider and payout corridor before requesting paymen
                 "destination": "ACCOUNTING",
                 "sellCommission": "1,5"
             }
-        ]
-    }
+    ]
+  }
 ]
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -3137,7 +3137,7 @@ Use the response to select provider and payout corridor before requesting paymen
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -3194,7 +3194,7 @@ Use the response to select provider and payout corridor before requesting paymen
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -3298,7 +3298,7 @@ Use the response to select provider and payout corridor before requesting paymen
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -3363,7 +3363,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
 ]
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -3390,7 +3390,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -3447,7 +3447,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -3550,7 +3550,7 @@ Use the response to select `paymentMethodToken` for quote and sell order creatio
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -3617,7 +3617,7 @@ Use the response to validate the amount before quote creation.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -3644,7 +3644,7 @@ Use the response to validate the amount before quote creation.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -3719,7 +3719,7 @@ Use the response to validate the amount before quote creation.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -3774,7 +3774,7 @@ Use the response to validate the amount before quote creation.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -3867,7 +3867,7 @@ Use the response `quoteId` to create the sell order.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -3894,7 +3894,7 @@ Use the response `quoteId` to create the sell order.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -3999,7 +3999,7 @@ Use the response `quoteId` to create the sell order.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -4107,7 +4107,7 @@ Use the response `quoteId` to create the sell order.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -4176,7 +4176,7 @@ Use the response `id` as `orderId` for polling and status tracking.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -4242,7 +4242,7 @@ Use the response `id` as `orderId` for polling and status tracking.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -4263,7 +4263,7 @@ Use the response `id` as `orderId` for polling and status tracking.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -4328,7 +4328,7 @@ Use the response `id` as `orderId` for polling and status tracking.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -4445,7 +4445,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -4493,7 +4493,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -4514,7 +4514,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -4834,7 +4834,7 @@ Use the response to track payout processing, crypto deposit state, and final sta
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -4877,7 +4877,7 @@ Use the response to restore flow state when user comes back to the session.
 {
     "id": "a1fcd0f0-8286-4015-914d-04db79921435",
     "type": "SELL",
-    "status": "PROCESSING",
+  "status": "PROCESSING",
     "creationDate": "2026-05-06T17:48:38.699568",
     "modificationDate": "2026-05-06T17:48:42.242808",
     "cryptoTransaction": null,
@@ -4886,7 +4886,7 @@ Use the response to restore flow state when user comes back to the session.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -4934,7 +4934,7 @@ Use the response to restore flow state when user comes back to the session.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -4955,7 +4955,7 @@ Use the response to restore flow state when user comes back to the session.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -5020,7 +5020,7 @@ Use the response to restore flow state when user comes back to the session.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>
@@ -5066,8 +5066,8 @@ Use the response for history UI, status analytics, and reconciliation.
 **Response**
 ```json
 {
-    "content": [
-        {
+  "content": [
+    {
             "id": "dd6a9d8a-805d-42e1-a55c-fb8b129f3475",
             "transactionId": "bdc30aff-17a7-42ed-93ec-55aebfcf46af",
             "number": "4046",
@@ -5106,7 +5106,7 @@ Use the response for history UI, status analytics, and reconciliation.
     "last": false,
     "numberOfElements": 20,
     "size": 20,
-    "number": 0,
+  "number": 0,
     "sort": {
         "unsorted": false,
         "sorted": true,
@@ -5117,7 +5117,7 @@ Use the response for history UI, status analytics, and reconciliation.
 }
 ```
 
-### Headers
+**Headers**
 
 <table width="100%">
   <thead>
@@ -5177,7 +5177,7 @@ Use the response for history UI, status analytics, and reconciliation.
   </tbody>
 </table>
 
-### Request
+**Request**
 
 <table width="100%">
   <thead>
@@ -5300,7 +5300,7 @@ Use the response for history UI, status analytics, and reconciliation.
   </tbody>
 </table>
 
-### Response
+**Response**
 
 <table width="100%">
   <thead>
@@ -5535,7 +5535,7 @@ Use the response for history UI, status analytics, and reconciliation.
   </tbody>
 </table>
 
-### Errors
+**Errors**
 
 <table width="100%">
   <thead>

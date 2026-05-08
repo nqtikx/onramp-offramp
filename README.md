@@ -958,17 +958,7 @@ Use the response to validate user input before quote creation.
       <td>string</td>
       <td>Asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
+  
     <tr>
       <td style="word-break: break-word; white-space: normal;">asset.network</td>
       <td>string | null</td>
@@ -1236,17 +1226,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
       <td>string</td>
       <td>Source asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
+  
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
       <td>string | null</td>

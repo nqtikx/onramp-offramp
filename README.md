@@ -1219,6 +1219,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
       <td>Quote identifier returned by quote creation; required to create an order before quote expiration.</td>
     </tr>
     <tr>
@@ -1264,6 +1265,7 @@ Use the response `quoteId` as an input for buy/sell order creation.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">plainRate</td>
+      <td>number</td>
       <td>Rate pair for the operation. Display this value to the client as the final pair label.</td>
     </tr>
     <tr>
@@ -4027,6 +4029,7 @@ Use the response `quoteId` to create the sell order.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset</td>
+      <td>object</td>
       <td>Quote identifier returned by quote creation; required to create an order before quote expiration.</td>
     </tr>
     <tr>
@@ -4082,6 +4085,7 @@ Use the response `quoteId` to create the sell order.
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">plainRate</td>
+      <td>number</td>
       <td>Rate pair for the operation. Display this value to the client as the final pair label.</td>
     </tr>
     <tr>
@@ -4351,6 +4355,7 @@ Use the response `id` as `orderId` for polling and status tracking.
   <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">400 QUOTE_NOT_FOUND</td>
+      <td>BUSINESS</td>
       <td>Blockchain address that must be shown to the client as the destination for crypto deposit.</td>
     </tr>
     <tr>
@@ -5043,6 +5048,7 @@ Use the response to restore flow state when user comes back to the session.
   <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">400 CLIENT_NOT_FOUND</td>
+      <td>BUSINESS</td>
       <td>Blockchain address that must be shown to the client as the destination for crypto deposit.</td>
     </tr>
     <tr>

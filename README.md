@@ -1500,17 +1500,7 @@ Use the response `id` as `orderId` for status polling and order details retrieva
       <td>string</td>
       <td>Payment link/token for fiat step processing.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
+  
     <tr>
       <td style="word-break: break-word; white-space: normal;">expiresAtDate</td>
       <td>string | null</td>
@@ -1777,17 +1767,7 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
       <td>number</td>
       <td>Exchange fee represented in fiat asset currency (exchangeOperation.inputCurrency / fiat leg currency).</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
+  
     <tr>
       <td style="word-break: break-word; white-space: normal;">exchangeOperation.bonusOutputAsset</td>
       <td>number | null</td>

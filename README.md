@@ -735,7 +735,7 @@ Use this endpoint to retrieve payment methods/tokens available for the selected 
   </tbody>
 </table>
 
-#**Payment method status values**
+**Payment method status values**
 
 <table width="100%">
   <thead>
@@ -887,18 +887,6 @@ Use the response to validate user input before quote creation.
       <td>Yes</td>
       <td>Source asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="100">Required</th>
-      <th width="580">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
       <td>string | null</td>
@@ -958,7 +946,6 @@ Use the response to validate user input before quote creation.
       <td>string</td>
       <td>Asset code.</td>
     </tr>
-  
     <tr>
       <td style="word-break: break-word; white-space: normal;">asset.network</td>
       <td>string | null</td>
@@ -1126,18 +1113,6 @@ Use the response `quoteId` as an input for buy/sell order creation.
       <td>Yes</td>
       <td>Source asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="100">Required</th>
-      <th width="580">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
       <td>string | null</td>
@@ -1227,7 +1202,6 @@ Use the response `quoteId` as an input for buy/sell order creation.
       <td>string</td>
       <td>Source asset code.</td>
     </tr>
-  
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
       <td>string | null</td>
@@ -1502,7 +1476,6 @@ Use the response `id` as `orderId` for status polling and order details retrieva
       <td>string</td>
       <td>Payment link/token for fiat step processing.</td>
     </tr>
-  
     <tr>
       <td style="word-break: break-word; white-space: normal;">expiresAtDate</td>
       <td>string | null</td>
@@ -1769,7 +1742,6 @@ Use the response to track all order phases (exchange, fiat transaction, crypto t
       <td>number</td>
       <td>Exchange fee represented in fiat asset currency (exchangeOperation.inputCurrency / fiat leg currency).</td>
     </tr>
-  
     <tr>
       <td style="word-break: break-word; white-space: normal;">exchangeOperation.bonusOutputAsset</td>
       <td>number | null</td>
@@ -2550,17 +2522,6 @@ Use the response to build transaction history screens and filtering/pagination U
       <td>string</td>
       <td>Order last modification timestamp.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">content[].number</td>
       <td>number</td>
@@ -3686,18 +3647,6 @@ Use the response to validate the amount before quote creation.
       <td>Yes</td>
       <td>Source asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="100">Required</th>
-      <th width="580">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
       <td>string | null</td>
@@ -3757,17 +3706,6 @@ Use the response to validate the amount before quote creation.
       <td>string</td>
       <td>Asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">asset.network</td>
       <td>string | null</td>
@@ -3936,18 +3874,6 @@ Use the response `quoteId` to create the sell order.
       <td>Yes</td>
       <td>Source asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="200" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="100">Required</th>
-      <th width="580">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
       <td>string | null</td>
@@ -4037,17 +3963,6 @@ Use the response `quoteId` to create the sell order.
       <td>string</td>
       <td>Source asset code.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">fromAsset.network</td>
       <td>string | null</td>
@@ -4313,17 +4228,6 @@ Use the response `id` as `orderId` for polling and status tracking.
       <td>string</td>
       <td>Last order update timestamp in server date-time format.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">cryptoTransaction</td>
       <td>object | null</td>
@@ -4600,17 +4504,6 @@ Use the response to track payout processing, crypto deposit state, and final sta
       <td>number</td>
       <td>Exchange fee represented in fiat asset currency (exchangeOperation.inputCurrency / fiat leg currency).</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">exchangeOperation.bonusOutputAsset</td>
       <td>number | null</td>
@@ -5006,17 +4899,6 @@ Use the response to restore flow state when user comes back to the session.
       <td>string</td>
       <td>Last order update timestamp in server date-time format.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">cryptoTransaction</td>
       <td>object | null</td>
@@ -5412,17 +5294,6 @@ Use the response for history UI, status analytics, and reconciliation.
       <td>string</td>
       <td>Order last modification timestamp.</td>
     </tr>
-  </tbody>
-</table>
-<table width="100%">
-  <thead>
-    <tr>
-      <th width="240" style="word-break: break-word; white-space: normal;">Name</th>
-      <th width="120">Type</th>
-      <th width="640">Description</th>
-    </tr>
-  </thead>
-  <tbody>
     <tr>
       <td style="word-break: break-word; white-space: normal;">content[].number</td>
       <td>number</td>

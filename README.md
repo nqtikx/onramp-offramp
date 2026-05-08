@@ -2252,7 +2252,17 @@ Use the response to build transaction history screens and filtering/pagination U
 **Request**
 ```json
 {
-  "clientId": "{{clientId}}"
+  "clientId": "{{clientId}}",
+  "statuses": [
+    "COMPLETED"
+  ],
+  "types": [
+    "BUY"
+  ],
+  "providerTypes": [
+    "ASSIST"
+  ],
+  "number": 491000004334
 }
 ```
 **Response**
@@ -2260,52 +2270,97 @@ Use the response to build transaction history screens and filtering/pagination U
 {
   "content": [
     {
-            "id": "dd6a9d8a-805d-42e1-a55c-fb8b129f3475",
-            "transactionId": "bdc30aff-17a7-42ed-93ec-55aebfcf46af",
-            "number": "4046",
-            "type": "WITHDRAWAL",
-            "status": "DECLINED",
-            "post": "**** **** **** 1111",
-            "providerType": "ASSIST",
-            "paymentSystem": "VISA",
-            "transactionHash": null,
-            "externalCryptoAddress": null,
-            "asset": "BYN",
-            "amount": "44",
-            "requestedAmount": "44",
-            "grossAmount": "44",
-            "netAmount": "43.34",
-            "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562",
-            "userId": "86c2b12b-a332-49ad-a447-d02c0b621dc4",
-            "creationDate": "2026-05-06T08:10:03+0000",
-            "completionDate": "2026-05-06T08:10:27+0000"
+            "id": "f8e67902-6dd3-4554-8f50-cd0a5c8a894b",
+            "type": "BUY",
+            "status": "COMPLETED",
+            "creationDate": "2026-05-06T17:44:59.534092",
+            "modificationDate": "2026-05-06T17:47:30.210422",
+            "number": 491000004334,
+            "exchangeOperation": {
+                "inputCurrency": "BYN",
+                "inputAsset": 50,
+                "outputCurrency": "TRX",
+                "outputAsset": 44.692189,
+                "exchangeFeeAssetInFiat": 3.35,
+                "bonusOutputAsset": null,
+                "plainRatio": 1.0377,
+                "ratio": 1.1188,
+                "currencyPair": {
+                    "fromCurrency": "BYN",
+                    "toCurrency": "TRX"
+                }
+            },
+            "cryptoTransaction": {
+                "hash": "8bd6f85d606d9511d28471a91b72dce634b61b51b4bcef45fb5c29f5e4d94875",
+                "externalCryptoAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+                "internalCryptoAddress": "TVEwq1PiFDfJKYvWiDFhVXQkzDwqWCyPXV",
+                "fromAddress": "TVEwq1PiFDfJKYvWiDFhVXQkzDwqWCyPXV",
+                "toAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+                "status": "CONFIRMED",
+                "currency": "TRX",
+                "fee": "0.268",
+                "feePaymentEnabledByClient": false,
+                "type": "AUTO",
+                "comment": null
+            },
+            "fiatTransaction": {
+                "status": "APPROVED",
+                "paymentToken": "fc4b130e-c3bf-4a3d-abe5-9ec5900c9868",
+                "post": "**** **** **** 1111",
+                "brand": "VISA",
+                "internalToken": "97fe9aa7-7805-438f-8c5e-aea24b4f9dc4",
+                "orderIdentity": "97e3d1f09aed4442a793fb5eace5582b",
+                "link": "https://payments.t.paysecure.ru/pay/p2p/cc2mc.cfm...",
+                "providerType": "ASSIST",
+                "paymentType": "P2P",
+                "processingBank": "BELARUSBANK",
+                "resultMessage": null,
+                "currency": "BYN",
+                "processorTransactionNumber": null
+            },
+            "client": {
+                "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
+            },
+            "serverDate": "2026-05-08T08:24:42+0000",
+            "exchangeType": "SELL",
+            "operationType": "FIAT_TO_CRYPTO",
+            "orderType": "DEFAULT",
+            "completionDate": "2026-05-06T17:47:28+0000",
+            "resultMessage": null,
+            "submitByResident": null,
+            "merchantName": "wb",
+            "merchantBonus": null,
+            "promoCodeDetails": null,
+            "fromSource": "EXT",
+            "toSource": "EXT",
+            "expiresAtDate": null
         }
-    ],
-    "pageable": {
-        "sort": {
-            "unsorted": false,
-            "sorted": true,
-            "empty": false
-        },
-        "pageNumber": 0,
-        "pageSize": 20,
-        "offset": 0,
-        "paged": true,
-        "unpaged": false
-    },
-    "totalElements": 52,
-    "totalPages": 3,
-    "last": false,
-    "numberOfElements": 20,
-    "size": 20,
-  "number": 0,
+  ],
+  "pageable": {
     "sort": {
-        "unsorted": false,
-        "sorted": true,
-        "empty": false
+      "unsorted": false,
+      "sorted": true,
+      "empty": false
     },
-    "first": true,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "totalElements": 52,
+  "totalPages": 6,
+  "last": false,
+  "numberOfElements": 10,
+  "size": 10,
+  "number": 0,
+  "sort": {
+    "unsorted": false,
+    "sorted": true,
     "empty": false
+  },
+  "first": true,
+  "empty": false
 }
 ```
 
@@ -2514,24 +2569,24 @@ Use the response to build transaction history screens and filtering/pagination U
       <td>Entry identifier.</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].transactionId</td>
-      <td>string</td>
-      <td>Related transaction identifier.</td>
-    </tr>
-    <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].number</td>
-      <td>string</td>
-      <td>Operation number.</td>
-    </tr>
-    <tr>
       <td style="word-break: break-word; white-space: normal;">content[].type</td>
       <td>string</td>
-      <td>Operation type value (for example WITHDRAWAL).</td>
+      <td>Order type (BUY/SELL).</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">content[].status</td>
       <td>string</td>
-      <td>Operation status value.</td>
+      <td>Order status value (NEW, PROCESSING, COMPLETED, EXPIRED, ERROR).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].modificationDate</td>
+      <td>string</td>
+      <td>Order last modification timestamp.</td>
     </tr>
   </tbody>
 </table>
@@ -2545,54 +2600,49 @@ Use the response to build transaction history screens and filtering/pagination U
   </thead>
   <tbody>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].post</td>
-      <td>string | null</td>
-      <td>Masked payment method or provider post field.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].number</td>
+      <td>number</td>
+      <td>Human-readable order number.</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].providerType</td>
-      <td>string | null</td>
-      <td>Provider type value.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].exchangeOperation</td>
+      <td>object</td>
+      <td>Exchange operation details (input/output assets, ratio, fees).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].paymentSystem</td>
-      <td>string | null</td>
-      <td>Payment system/brand value.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].cryptoTransaction</td>
+      <td>object | null</td>
+      <td>Crypto transaction details (addresses, hash, status, fee, type, comment).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].transactionHash</td>
-      <td>string | null</td>
-      <td>Blockchain transaction hash.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].fiatTransaction</td>
+      <td>object | null</td>
+      <td>Fiat transaction details (provider, status, payment metadata).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].externalCryptoAddress</td>
-      <td>string | null</td>
-      <td>External crypto address in operation context.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].client</td>
+      <td>object</td>
+      <td>Client block with clientId.</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].asset</td>
+      <td style="word-break: break-word; white-space: normal;">content[].exchangeType</td>
       <td>string</td>
-      <td>Asset/currency code.</td>
+      <td>Exchange direction (BUY/SELL/SWAP).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].amount</td>
+      <td style="word-break: break-word; white-space: normal;">content[].operationType</td>
       <td>string</td>
-      <td>Operation amount.</td>
+      <td>Operation type (FIAT_TO_CRYPTO/CRYPTO_TO_FIAT).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].requestedAmount</td>
+      <td style="word-break: break-word; white-space: normal;">content[].orderType</td>
       <td>string</td>
-      <td>Requested amount.</td>
+      <td>Order subtype (for example DEFAULT).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].grossAmount</td>
-      <td>string</td>
-      <td>Gross amount before net adjustments.</td>
-    </tr>
-    <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].netAmount</td>
-      <td>string</td>
-      <td>Net amount after commissions/fees.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].expiresAtDate</td>
+      <td>string | null</td>
+      <td>Order expiration timestamp.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">content[].clientId</td>
@@ -5060,7 +5110,17 @@ Use the response for history UI, status analytics, and reconciliation.
 **Request**
 ```json
 {
-  "clientId": "{{clientId}}"
+  "clientId": "{{clientId}}",
+  "statuses": [
+    "COMPLETED"
+  ],
+  "types": [
+    "BUY"
+  ],
+  "providerTypes": [
+    "ASSIST"
+  ],
+  "number": 491000004334
 }
 ```
 **Response**
@@ -5068,52 +5128,97 @@ Use the response for history UI, status analytics, and reconciliation.
 {
   "content": [
     {
-            "id": "dd6a9d8a-805d-42e1-a55c-fb8b129f3475",
-            "transactionId": "bdc30aff-17a7-42ed-93ec-55aebfcf46af",
-            "number": "4046",
-            "type": "WITHDRAWAL",
-            "status": "DECLINED",
-            "post": "**** **** **** 1111",
-            "providerType": "ASSIST",
-            "paymentSystem": "VISA",
-            "transactionHash": null,
-            "externalCryptoAddress": null,
-            "asset": "BYN",
-            "amount": "44",
-            "requestedAmount": "44",
-            "grossAmount": "44",
-            "netAmount": "43.34",
-            "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562",
-            "userId": "86c2b12b-a332-49ad-a447-d02c0b621dc4",
-            "creationDate": "2026-05-06T08:10:03+0000",
-            "completionDate": "2026-05-06T08:10:27+0000"
+            "id": "f8e67902-6dd3-4554-8f50-cd0a5c8a894b",
+            "type": "BUY",
+            "status": "COMPLETED",
+            "creationDate": "2026-05-06T17:44:59.534092",
+            "modificationDate": "2026-05-06T17:47:30.210422",
+            "number": 491000004334,
+            "exchangeOperation": {
+                "inputCurrency": "BYN",
+                "inputAsset": 50,
+                "outputCurrency": "TRX",
+                "outputAsset": 44.692189,
+                "exchangeFeeAssetInFiat": 3.35,
+                "bonusOutputAsset": null,
+                "plainRatio": 1.0377,
+                "ratio": 1.1188,
+                "currencyPair": {
+                    "fromCurrency": "BYN",
+                    "toCurrency": "TRX"
+                }
+            },
+            "cryptoTransaction": {
+                "hash": "8bd6f85d606d9511d28471a91b72dce634b61b51b4bcef45fb5c29f5e4d94875",
+                "externalCryptoAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+                "internalCryptoAddress": "TVEwq1PiFDfJKYvWiDFhVXQkzDwqWCyPXV",
+                "fromAddress": "TVEwq1PiFDfJKYvWiDFhVXQkzDwqWCyPXV",
+                "toAddress": "TCT2pKJXo233hrKWQMeCptC8My1KGvtsU4",
+                "status": "CONFIRMED",
+                "currency": "TRX",
+                "fee": "0.268",
+                "feePaymentEnabledByClient": false,
+                "type": "AUTO",
+                "comment": null
+            },
+            "fiatTransaction": {
+                "status": "APPROVED",
+                "paymentToken": "fc4b130e-c3bf-4a3d-abe5-9ec5900c9868",
+                "post": "**** **** **** 1111",
+                "brand": "VISA",
+                "internalToken": "97fe9aa7-7805-438f-8c5e-aea24b4f9dc4",
+                "orderIdentity": "97e3d1f09aed4442a793fb5eace5582b",
+                "link": "https://payments.t.paysecure.ru/pay/p2p/cc2mc.cfm?...",
+                "providerType": "ASSIST",
+                "paymentType": "P2P",
+                "processingBank": "BELARUSBANK",
+                "resultMessage": null,
+                "currency": "BYN",
+                "processorTransactionNumber": null
+            },
+            "client": {
+                "clientId": "3e1469fa-8d35-441c-87b1-a007aeba2562"
+            },
+            "serverDate": "2026-05-08T08:24:42+0000",
+            "exchangeType": "SELL",
+            "operationType": "FIAT_TO_CRYPTO",
+            "orderType": "DEFAULT",
+            "completionDate": "2026-05-06T17:47:28+0000",
+            "resultMessage": null,
+            "submitByResident": null,
+            "merchantName": "wb",
+            "merchantBonus": null,
+            "promoCodeDetails": null,
+            "fromSource": "EXT",
+            "toSource": "EXT",
+            "expiresAtDate": null
         }
-    ],
-    "pageable": {
-        "sort": {
-            "unsorted": false,
-            "sorted": true,
-            "empty": false
-        },
-        "pageNumber": 0,
-        "pageSize": 20,
-        "offset": 0,
-        "paged": true,
-        "unpaged": false
-    },
-    "totalElements": 52,
-    "totalPages": 3,
-    "last": false,
-    "numberOfElements": 20,
-    "size": 20,
-  "number": 0,
+  ],
+  "pageable": {
     "sort": {
-        "unsorted": false,
-        "sorted": true,
-        "empty": false
+      "unsorted": false,
+      "sorted": true,
+      "empty": false
     },
-    "first": true,
+    "pageNumber": 0,
+    "pageSize": 10,
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "totalElements": 52,
+  "totalPages": 6,
+  "last": false,
+  "numberOfElements": 10,
+  "size": 10,
+  "number": 0,
+  "sort": {
+    "unsorted": false,
+    "sorted": true,
     "empty": false
+  },
+  "first": true,
+  "empty": false
 }
 ```
 
@@ -5322,24 +5427,24 @@ Use the response for history UI, status analytics, and reconciliation.
       <td>Entry identifier.</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].transactionId</td>
-      <td>string</td>
-      <td>Related transaction identifier.</td>
-    </tr>
-    <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].number</td>
-      <td>string</td>
-      <td>Operation number.</td>
-    </tr>
-    <tr>
       <td style="word-break: break-word; white-space: normal;">content[].type</td>
       <td>string</td>
-      <td>Operation type value (for example WITHDRAWAL).</td>
+      <td>Order type (BUY/SELL).</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">content[].status</td>
       <td>string</td>
-      <td>Operation status value.</td>
+      <td>Order status value (NEW, PROCESSING, COMPLETED, EXPIRED, ERROR).</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].creationDate</td>
+      <td>string</td>
+      <td>Order creation timestamp.</td>
+    </tr>
+    <tr>
+      <td style="word-break: break-word; white-space: normal;">content[].modificationDate</td>
+      <td>string</td>
+      <td>Order last modification timestamp.</td>
     </tr>
   </tbody>
 </table>
@@ -5353,54 +5458,49 @@ Use the response for history UI, status analytics, and reconciliation.
   </thead>
   <tbody>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].post</td>
-      <td>string | null</td>
-      <td>Masked payment method or provider post field.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].number</td>
+      <td>number</td>
+      <td>Human-readable order number.</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].providerType</td>
-      <td>string | null</td>
-      <td>Provider type value.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].exchangeOperation</td>
+      <td>object</td>
+      <td>Exchange operation details (input/output assets, ratio, fees).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].paymentSystem</td>
-      <td>string | null</td>
-      <td>Payment system/brand value.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].cryptoTransaction</td>
+      <td>object | null</td>
+      <td>Crypto transaction details (addresses, hash, status, fee, type, comment).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].transactionHash</td>
-      <td>string | null</td>
-      <td>Blockchain transaction hash.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].fiatTransaction</td>
+      <td>object | null</td>
+      <td>Fiat transaction details (provider, status, payment metadata).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].externalCryptoAddress</td>
-      <td>string | null</td>
-      <td>External crypto address in operation context.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].client</td>
+      <td>object</td>
+      <td>Client block with clientId.</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].asset</td>
+      <td style="word-break: break-word; white-space: normal;">content[].exchangeType</td>
       <td>string</td>
-      <td>Asset/currency code.</td>
+      <td>Exchange direction (BUY/SELL/SWAP).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].amount</td>
+      <td style="word-break: break-word; white-space: normal;">content[].operationType</td>
       <td>string</td>
-      <td>Operation amount.</td>
+      <td>Operation type (FIAT_TO_CRYPTO/CRYPTO_TO_FIAT).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].requestedAmount</td>
+      <td style="word-break: break-word; white-space: normal;">content[].orderType</td>
       <td>string</td>
-      <td>Requested amount.</td>
+      <td>Order subtype (for example DEFAULT).</td>
     </tr>
     <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].grossAmount</td>
-      <td>string</td>
-      <td>Gross amount before net adjustments.</td>
-    </tr>
-    <tr>
-      <td style="word-break: break-word; white-space: normal;">content[].netAmount</td>
-      <td>string</td>
-      <td>Net amount after commissions/fees.</td>
+      <td style="word-break: break-word; white-space: normal;">content[].expiresAtDate</td>
+      <td>string | null</td>
+      <td>Order expiration timestamp.</td>
     </tr>
     <tr>
       <td style="word-break: break-word; white-space: normal;">content[].clientId</td>
